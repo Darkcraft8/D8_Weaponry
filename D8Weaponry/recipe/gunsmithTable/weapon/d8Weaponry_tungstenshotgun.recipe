@@ -1,0 +1,8 @@
+{
+  "input" : [
+    { "item" : "tungstenbar", "count" : 6 },
+    { "item" : "copperbar", "count" : 2 }
+  ],
+  "output" : { "item" : "d8Weaponry_tungstenshotgun", "count" : 1 },
+  "groups" : [ "d8Weaponry_gunsmithing_level1" ]
+}

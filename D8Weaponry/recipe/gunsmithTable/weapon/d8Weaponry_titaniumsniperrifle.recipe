@@ -1,0 +1,8 @@
+{
+  "input" : [
+    { "item" : "titaniumbar", "count" : 3 },
+    { "item" : "copperbar", "count" : 2 }
+  ],
+  "output" : { "item" : "d8Weaponry_titaniumsniperrifle", "count" : 1 },
+  "groups" : [ "d8Weaponry_gunsmithing_level2" ]
+}

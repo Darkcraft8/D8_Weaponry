@@ -1,0 +1,8 @@
+{
+  "input" : [
+    { "item" : "ironbar", "count" : 3 },
+    { "item" : "darkwoodmaterial", "count" : 2 }
+  ],
+  "output" : { "item" : "d8Weaponry_ironrevolver", "count" : 1 },
+  "groups" : [ "d8Weaponry_gunsmithing_level1" ]
+}

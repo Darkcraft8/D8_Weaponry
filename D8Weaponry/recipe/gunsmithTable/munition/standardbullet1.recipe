@@ -1,0 +1,10 @@
+{
+    "input" : [
+      { "item" : "copperbar", "count" : 1 },
+      { "item" : "ironbar", "count" : 1 },
+      { "item" : "volatilepowder", "count" : 1 }
+    ],
+    "output" : { "item" : "d8Weaponry_standardbullet", "count" : 10 },
+    "groups" : [ "d8Weaponry_munition_level1" ]
+  }
+  

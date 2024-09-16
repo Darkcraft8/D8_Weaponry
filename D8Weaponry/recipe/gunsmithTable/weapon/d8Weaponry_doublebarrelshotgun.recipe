@@ -1,0 +1,9 @@
+{
+  "input" : [
+    { "item" : "ironbar", "count" : 4 },
+    { "item" : "tungstenbar", "count" : 6 },
+    { "item" : "darkwoodmaterial", "count" : 3 }
+  ],
+  "output" : { "item" : "d8Weaponry_doublebarrelshotgun", "count" : 1 },
+  "groups" : [ "d8Weaponry_gunsmithing_level2" ]
+}

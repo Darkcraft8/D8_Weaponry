@@ -1,0 +1,10 @@
+{
+  "input" : [
+    { "item" : "ironbar", "count" : 4 },
+    { "item" : "tungstenbar", "count" : 2 },
+    { "item" : "darkwoodmaterial", "count" : 5 },
+    { "item" : "volatilepowder", "count" : 2 }
+  ],
+  "output" : { "item" : "d8Weaponry_tommygun", "count" : 1 },
+  "groups" : [ "d8Weaponry_gunsmithing_level2" ]
+}
