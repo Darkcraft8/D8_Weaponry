@@ -1,0 +1,28 @@
+{
+	"frameGrid" : {
+		"size" : [56, 48],
+		"dimensions" : [12, 2],
+
+		"names" : [
+			[ "stage1", "stage2", "null", "null", "null", "null", "null", "null", "null", "null", "null", "null" ],
+			[ "stage3.1", "stage3.2", "stage3.3", "stage3.4", "stage3.5", "stage3.6", "stage3.7", "stage3.8", "stage3.9", "stage3.10", "stage3.11", "stage3.12" ]
+		]
+	},
+	"aliases" : {
+		"stage1.default" : "stage1",
+		"stage2.default" : "stage1",
+
+		"stage3.1.default" : "stage3.1",
+		"stage3.2.default" : "stage3.2",
+		"stage3.3.default" : "stage3.3",
+		"stage3.4.default" : "stage3.4",
+		"stage3.5.default" : "stage3.5",
+		"stage3.6.default" : "stage3.6",
+		"stage3.7.default" : "stage3.7",
+		"stage3.8.default" : "stage3.8",
+		"stage3.9.default" : "stage3.9",
+		"stage3.10.default" : "stage3.10",
+		"stage3.11.default" : "stage3.11",
+		"stage3.12.default" : "stage3.12"
+	}
+}

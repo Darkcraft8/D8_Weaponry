@@ -1,0 +1,21 @@
+{
+  "animationCustom" : {
+  },
+
+  "ability" : {
+    "name" : "Switch Ammo",
+    "type" : "d8Weaponry_switchammo",
+    "scripts" : ["/D8Weaponry/activeitem/ranged/ability/ranged/switchAmmo/switchAmmo.lua"],
+    "class" : "SwitchAmmo",
+
+    "changeWeaponryRender" : false,
+    "targetAbility" : 1,
+    "currentAmmoType" : 1,
+    "ammoSwap" : [
+        {
+            "d8Weaponry" : [],
+            "ability" : {}
+        }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+[
+    "ironassaultrifle",
+    "ironrevolver",
+    "titaniummachinepistol",
+    "titaniumsniperrifle",
+    "tungstenmagnum",
+    "tungstenshotgun",
+
+    { "d8Weaponry_ironassaultrifle" : ["ironassaultrifle"] },
+    { "d8Weaponry_ironrevolver" : ["ironrevolver"] },
+    { "d8Weaponry_titaniummachinepistol" : ["titaniummachinepistol"] },
+    { "d8Weaponry_titaniumsniperrifle" : ["titaniumsniperrifle"] },
+    { "d8Weaponry_tungstenmagnum" : ["tungstenmagnum"] },
+    { "d8Weaponry_tungstenshotgun" : ["tungstenshotgun"] }
+]

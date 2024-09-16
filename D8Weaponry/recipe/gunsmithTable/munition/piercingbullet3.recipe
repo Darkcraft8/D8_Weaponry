@@ -1,0 +1,10 @@
+{
+    "input" : [
+      { "item" : "copperbar", "count" : 3 },
+      { "item" : "titaniumbar", "count" : 2 },
+      { "item" : "volatilepowder", "count" : 3 }
+    ],
+    "output" : { "item" : "d8Weaponry_piercingbullet", "count" : 30 },
+    "groups" : [ "d8Weaponry_munition_level3" ]
+  }
+  

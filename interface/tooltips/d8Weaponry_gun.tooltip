@@ -1,0 +1,154 @@
+{
+  "background" : {
+    "type" : "background",
+    "fileHeader" : "/interface/tooltips/d8Weaponry_header1.png",
+    "fileBody" : "/interface/tooltips/d8Weaponry_bodyobject1.png",
+    "fileFooter" : "/interface/tooltips/d8Weaponry_footer1.png"
+  },
+  "moneyIcon" : {
+    "type" : "image",
+    "position" : [120, 23],
+    "file" : "/interface/money.png"
+  },
+  "priceLabel" : {
+    "type" : "label",
+    "position" : [180, 23],
+    "hAnchor" : "right",
+    "value" : "tree"
+  },
+  "altAbilityTitleLabel" : {
+    "type" : "label",
+    "position" : [9, 41],
+    "hAnchor" : "left",
+    "value" : ""
+  },
+  "altAbilityLabel" : {
+    "type" : "label",
+    "position" : [180, 41],
+    "hAnchor" : "right",
+    "centered" : true,
+    "wrapWidth" : 126
+  },
+  "speedTitleLabel" : {
+    "type" : "label",
+    "position" : [9, 59],
+    "hAnchor" : "left",
+    "value" : "Rate of Fire:"
+  },
+  "speedLabel" : {
+    "type" : "label",
+    "position" : [180, 59],
+    "hAnchor" : "right",
+    "wrapWidth" : 126
+  },
+  "damagePerShotTitleLabel" : {
+    "type" : "label",
+    "position" : [9, 68],
+    "hAnchor" : "left",
+    "value" : "Damage Per Shot:"
+  },
+  "damagePerShotLabel" : {
+    "type" : "label",
+    "position" : [180, 68],
+    "hAnchor" : "right",
+    "wrapWidth" : 126
+  },
+  "energyPerShotTitleLabel" : {
+    "type" : "label",
+    "position" : [9, 50],
+    "hAnchor" : "left",
+    "value" : "Energy Per Shot:"
+  },
+  "energyPerShotLabel" : {
+    "type" : "label",
+    "position" : [180, 50],
+    "hAnchor" : "right",
+    "wrapWidth" : 126
+  },
+  "handednessLabel" : {
+    "type" : "label",
+    "position" : [56, 134],
+    "hAnchor" : "right",
+    "centered" : true,
+    "wrapWidth" : 126
+  },
+  "rarityLabel" : {
+    "type" : "label",
+    "position" : [7, 23],
+    "hAnchor" : "left",
+    "centered" : true,
+    "wrapWidth" : 126
+  },
+  "damageKindImage" : {
+    "type" : "image",
+    "position" : [120, 90],
+    "file" : "",
+    "centered" : true,
+    "maxSize" : [16, 16],
+    "minSize" : [16, 16]
+  },
+  "objectImage" : {
+    "type" : "image",
+    "position" : [37, 106],
+    "file" : "",
+    "centered" : true,
+    "maxSize" : [60, 60],
+    "minSize" : [60, 60]
+  },
+
+  "ammo1NameLabel" : {
+    "type" : "label",
+    "position" : [71, 134],
+    "hAnchor" : "left"
+  },
+  "ammo1CapacityTitleLabel" : {
+    "type" : "label",
+    "position" : [71, 124],
+    "hAnchor" : "left"
+  },
+  "ammo1CapacityLabel" : {
+    "type" : "label",
+    "position" : [180, 124],
+    "hAnchor" : "right",
+    "wrapWidth" : 126
+  },
+  "ammo1TitleLabel" : {
+    "type" : "label",
+    "position" : [71, 114],
+    "hAnchor" : "left"
+  },
+  "ammo1Label" : {
+    "type" : "label",
+    "position" : [180, 114],
+    "hAnchor" : "right",
+    "wrapWidth" : 126
+  },
+
+  "ammo2NameLabel" : {
+    "type" : "label",
+    "position" : [71, 104],
+    "hAnchor" : "left"
+  },
+  "ammo2CapacityTitleLabel" : {
+    "type" : "label",
+    "position" : [71, 94],
+    "hAnchor" : "left"
+  },
+  "ammo2CapacityLabel" : {
+    "type" : "label",
+    "position" : [180, 94],
+    "hAnchor" : "right",
+    "wrapWidth" : 126
+  },
+  "ammo2TitleLabel" : {
+    "type" : "label",
+    "position" : [71, 84],
+    "hAnchor" : "left"
+  },
+  "ammo2Label" : {
+    "type" : "label",
+    "position" : [180, 84],
+    "hAnchor" : "right",
+    "wrapWidth" : 126
+  }
+}

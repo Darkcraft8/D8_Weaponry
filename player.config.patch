@@ -1,0 +1,95 @@
+[
+  [
+    { 
+      "op" : "add",
+      "path" : "/deploymentConfig/scripts/-",
+      "value" : "/D8Weaponry/localscript/weapInfoRenderer.lua"
+    }
+  ],
+  [
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_gunsmithTable"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_standardbullet"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_piercingbullet"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_shotgunshell"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_doublebarrelshotgun"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_ironassaultrifle"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_ironrevolver"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_titaniummachinepistol"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_titaniumsniperrifle"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_tommygun"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_tungstenmagnum"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_tungstenshotgun"
+      }
+    }
+  ]
+]

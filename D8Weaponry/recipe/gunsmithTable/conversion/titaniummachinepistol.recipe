@@ -1,0 +1,8 @@
+{
+  "input" : [
+    { "item" : "titaniummachinepistol", "count" : 1 },
+    { "item" : "volatilepowder", "count" : 10 }
+  ],
+  "output" : { "item" : "d8Weaponry_titaniummachinepistol", "count" : 1 },
+  "groups" : [ "d8Conversion_titaniummachinepistol" ]
+}

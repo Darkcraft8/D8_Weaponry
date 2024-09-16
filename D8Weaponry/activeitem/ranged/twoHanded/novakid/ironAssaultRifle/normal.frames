@@ -1,0 +1,15 @@
+{
+	"frameGrid" : {
+		"size" : [32, 9],
+		"dimensions" : [3, 2],
+
+		"names" : [
+			[ "idle", "transition.1", "open" ],
+			[ "slide.1", "slide.2" ]
+		]
+	},
+	"aliases" : {
+		"fire.1" : "slide.2",
+		"fire.2" : "slide.1"
+	}
+}

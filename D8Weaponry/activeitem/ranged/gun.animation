@@ -1,0 +1,165 @@
+{
+  "globalTagDefaults" : {
+    "paletteSwaps" : "",
+    "weaponDirective" : ""
+  },
+
+  "animatedParts" : {
+    "stateTypes" : {
+      "firing" : {
+        "default" : "off",
+        "states" : {
+          "off" : {},
+          "fire" : {
+            "frames" : 2,
+            "cycle" : 0.07,
+            "mode" : "transition",
+            "transition" : "off"
+          }
+        }
+      },
+      "animation" : {
+        "default" : "idle",
+        "states" : {
+          "idle" : {},
+          "transition" : {
+            "frames" : 1,
+            "cycle" : 0.07,
+            "mode" : "transition",
+            "transition" : "open"
+          },
+          "open" : {}
+        }
+      },
+      "barrelSmoke" : {
+        "default" : "off",
+        "states" : {
+           "off" : {
+            "properties" : {
+             "particleEmittersOff" : ["barrelSmoke"]
+            }
+           },
+           "on" : {
+            "frames" : 1,
+            "cycle" : 2.5,
+            "mode" : "transition",
+            "transition" : "off",
+            "properties" : {
+             "particleEmittersOn" : ["barrelSmoke"]
+            }
+           }
+        }
+      }
+    },
+
+    "parts" : {
+      "middle" : {
+        "properties" : {
+          "centered" : true,
+          "offset" : [0, 0],
+          "transformationGroups" : ["weapon"]
+        },
+
+        "partStates" : {
+          "animation" : {
+            "idle" : {
+              "properties" : {
+                "image" : "<partImage>:idle<paletteSwaps><weaponDirective>"
+              }
+            },
+            "transition" : {
+              "properties" : {
+                "image" : "<partImage>:transition.<frame><paletteSwaps><weaponDirective>"
+              }
+            },
+            "open" : {
+              "properties" : {
+                "image" : "<partImage>:open<paletteSwaps><weaponDirective>"
+              }
+            }
+          }
+        }
+      },
+      "muzzleFlash" : {
+        "properties" : {
+          "zLevel" : -1,
+          "centered" : true,
+          "offset" : [0, 0],
+          "fullbright" : true,
+          "transformationGroups" : ["muzzle"]
+        },
+
+        "partStates" : {
+          "firing" : {
+            "fire" : {
+              "properties" : {
+                "image" : "<partImage>:<variant>.<frame>"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "rotationGroups" : {
+    "weapon" : {
+      "angularVelocity" : 0
+    }
+  },
+
+  "transformationGroups" : {
+    "weapon" : {},
+    "muzzle" : {}
+  },
+
+  "particleEmitters" : {
+    "muzzleFlash" : {
+      "transformationGroups" : ["muzzle"],
+      "offsetRegion" : [0, 0, 0, 0],
+      "particles" : [ ]
+    },
+    "barrelSmoke" : {
+      "active" : false,
+      "transformationGroups" : ["muzzle"],
+      "emissionRate" : 30,
+      "particles" : [
+        {
+            "particle" : {			
+            "type" : "textured",
+            "image" : "/particles/darksandcloud/1.png?saturation=-100",
+            "position" : [-0.75, 0.15],
+            "initialVelocity" : [0, 0.0],
+            "finalVelocity" : [0, 2.0],
+            "approach" : [0.25, 10],
+            "fade" : 1.5,
+            "destructionAction" : "shrink",
+            "destructionTime" : 1.5,
+            "size" : 0.02,
+            "timeToLive" : 2,
+            "fullbright" : false,
+            "layer" : "front",
+            "collidesForeground" : true,
+            "color" : [255, 255, 255, 255],
+            "variance" : {
+                "position" : [0.05, 0.05],
+                "initialVelocity" : [0.5, 0.5]
+            }
+            }
+        }
+      ]
+    }
+  },
+
+  "lights" : {
+    "muzzleFlash" : {
+      "active" : false,
+      "position" : [0, 0],
+      "color" : [140, 80, 0]
+    }
+  },
+
+  "sounds" : {
+    "fire" : [ ]
+  }
+}

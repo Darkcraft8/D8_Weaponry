@@ -1,0 +1,8 @@
+{
+  "input" : [
+    { "item" : "d8Weaponry_ironassaultrifle", "count" : 1 },
+    { "item" : "volatilepowder", "count" : 10 }
+  ],
+  "output" : { "item" : "ironassaultrifle", "count" : 1 },
+  "groups" : [ "d8Conversion_ironassaultrifle" ]
+}

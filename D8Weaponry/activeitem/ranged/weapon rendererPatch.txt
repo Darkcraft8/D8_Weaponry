@@ -1,0 +1,26 @@
+[
+  [
+    { 
+      "op": "test",
+      "path": "/d8Weaponry",
+      "inverse" : true
+    },
+    {
+      "op": "add",
+      "path": "/d8Weaponry",
+      "value": []
+    }
+  ],
+  [
+    {
+      "op": "add",
+      "path": "/d8Weaponry/-",
+      "value": {
+        "ressourceName": "energy",
+        "isRessource": true,
+        "barText": "/interface/fillbarpiece.png:?hueshift=125",
+        "ammoText": "/interface/stats/maxenergy.png:?crop;0;0;16;15"
+      }
+    }
+  ]
+]

@@ -1,0 +1,12 @@
+{
+    "itemName" : "d8Weaponry_standardbullet",
+    "price" : 1,
+    "level" : 1,
+    "maxStack" : 5000,
+    "rarity" : "Common",
+    "category" : "Munition",
+    "description" : "a standard bullet",
+    "shortdescription" : "Standard bullet",
+    "itemTags" : ["munition"],
+    "inventoryIcon" : "/projectiles/guns/bullets/standardbullet/icon.png"
+}

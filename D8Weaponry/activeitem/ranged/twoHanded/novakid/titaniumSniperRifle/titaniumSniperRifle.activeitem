@@ -1,0 +1,611 @@
+{
+    "itemName" : "d8Weaponry_titaniumsniperrifle",
+    "price" : 960,
+    "maxStack" : 1,
+    "rarity" : "Uncommon",
+    "description" : "Powerfully strong to cover long distances.",
+    "shortdescription" : "Titanium Sniper Rifle",
+    "category" : "sniperRifle",
+    "tooltipKind" : "d8Weaponry_gun",
+    "twoHanded" : true,
+    "itemTags" : ["weapon","ranged","sniperrifle"],
+    
+    "inventoryIcon" : [
+        { "image" : "normal.png:idle" }
+    ],
+    
+    "animation" : "/D8Weaponry/activeitem/ranged/gun.animation",
+    "animationParts" : {
+        "middle" : "normal.png",
+        "middleFB" : "fullbright.png",
+        "muzzleFlash" : "/items/active/weapons/ranged/muzzleflash.png"
+    },
+    "animationCustom" : {
+        "sounds" : {
+                "fire" : {
+                    "rangeMultiplier" : 1,
+                    "pitchMultiplier" : 1.35,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/rifle1.ogg"]
+                },
+                "open" : {
+                    "rangeMultiplier" : 1,
+                    "pitchMultiplier" : 0.75,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/reload/pistol_reload_clip2.ogg"]
+                },
+                "reload" : {
+                    "rangeMultiplier" : 1,
+                    "pitchMultiplier" : 1,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/reload/pistol_reload_clip2.ogg"]
+                },
+                "close" : {
+                    "rangeMultiplier" : 1,
+                    "pitchMultiplier" : 0.75,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/reload/pistol_reload_clip3.ogg"]
+                },
+                "altFire" : {
+                    "rangeMultiplier" : 1.25,
+                    "pitchMultiplier" : 1,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/shotgun1.ogg"]
+                }
+        },
+        "animatedParts" : {
+            "stateTypes" : {
+                "animation" : {
+                  "default" : "idle",
+                  "states" : {
+                    "idle" : {},
+                    "transition" : {
+                        "frames" : 1,
+                        "cycle" : 0.2,
+                        "mode" : "transition",
+                        "transition" : "open"
+                    },
+                    "open" : {},
+                    "slide" : {
+                        "frames" : 2,
+                        "cycle" : 0.07,
+                        "mode" : "transition",
+                        "transition" : "fire"
+                    },
+                    "fire" : {
+                        "frames" : 2,
+                        "cycle" : 0.07,
+                        "mode" : "transition",
+                        "transition" : "idle"
+                    }
+                  }
+                }
+              },
+            "parts" : {
+                "middle" : {
+                    "properties" : {
+                        "centered" : true,
+                        "offset" : [0, 0],
+                        "transformationGroups" : ["weapon"]
+                    },
+
+                    "partStates" : {
+                        "animation" : {
+                            "idle" : {
+                                "properties" : {
+                                    "image" : "<partImage>:idle"
+                                }
+                            },
+                            "transition" : {
+                                "properties" : {
+                                    "image" : "<partImage>:transition.<frame>"
+                                }
+                            },
+                            "slide" : {
+                                "properties" : {
+                                    "image" : "<partImage>:slide.<frame>"
+                                }
+                            },
+                            "fire" : {
+                                "properties" : {
+                                    "image" : "<partImage>:fire.<frame>"
+                                }
+                            },
+                            "open" : {
+                                "properties" : {
+                                    "image" : "<partImage>:open"
+                                }
+                            }
+                        }
+                    }
+                },
+                "middleFB" : {
+                    "properties" : {
+                        "zLevel" : 1,
+                        "fullbright" : true,
+                        "centered" : true,
+                        "offset" : [0, 0],
+                        "transformationGroups" : ["weapon"]
+                    },
+
+                    "partStates" : {
+                        "animation" : {
+                            "idle" : {
+                                "properties" : {
+                                    "image" : "<partImage>:idle"
+                                }
+                            },
+                            "transition" : {
+                                "properties" : {
+                                    "image" : "<partImage>:transition.<frame>"
+                                }
+                            },
+                            "slide" : {
+                                "properties" : {
+                                    "image" : "<partImage>:slide.<frame>"
+                                }
+                            },
+                            "fire" : {
+                                "properties" : {
+                                    "image" : "<partImage>:fire.<frame>"
+                                }
+                            },
+                            "open" : {
+                                "properties" : {
+                                    "image" : "<partImage>:open"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    "baseOffset" : [0, 0],
+    "muzzleOffset" : [3.5, 0],
+    "aimOffset" : 0.4,
+    
+    "scripts" : ["/items/active/weapons/ranged/gun.lua"],
+    
+    "elementalType" : "physical",
+    
+    "tooltipFields" : {
+        "rarityLabel" : "^green;Uncommon"
+    },
+    
+    "primaryAbility" : {
+        "scripts" : ["/D8Weaponry/activeitem/ranged/d8weap_gunfire_fork.lua"],
+        "class" : "GunFire",
+        
+        "fireTime" : 1.3,
+        "baseDps" : 8.5,
+        "energyUsage" : 17,
+        "projectileCount" : 1,
+        "inaccuracy" : 0.008,
+        "fireType" : "auto",
+        
+        "projectileType" : "standardbullet",
+        "projectileParameters" : {
+            "speed" : 200,
+            "knockback" : 5,
+            "actionOnReap" : [
+                {
+                    "options" : [ "/sfx/projectiles/bullet_ricochet1.ogg", "/sfx/projectiles/bullet_ricochet3.ogg", "/sfx/projectiles/bullet_ricochet11.ogg", "/sfx/projectiles/bullet_ricochet12.ogg", "/sfx/projectiles/bullet_ricochet13.ogg" ],
+                    "action" : "sound"
+                },
+                {
+                    "action" : "loop",
+                    "count" : 7,
+                    "body" : [
+                        {
+                            "action" : "particle",
+                            "specification" : {
+                                "type" : "ember",
+                                "size" : 0.8,
+                                "color" : [20, 20, 20, 255],
+                                "fade" : 0.5,
+                                "initialVelocity" : [0, 1.5],
+                                "finalVelocity" : [0, -2],
+                                "approach" : [20, 20],
+                                "destructionTime" : 0.2,
+                                "layer" : "back",
+                                "variance" : {
+                                    "initialVelocity" : [5, 5],
+                                    "finalVelocity" : [0, 1.5],
+                                    "size" : 0.5
+                                }
+                            }
+                        },
+                        {
+                            "action" : "particle",
+                            "specification" : {
+                                "type" : "ember",
+                                "size" : 0.8,
+                                "color" : [100, 100, 100, 255],
+                                "fade" : 0.3,
+                                "initialVelocity" : [0, 1.5],
+                                "finalVelocity" : [0, -2],
+                                "approach" : [20, 20],
+                                "destructionTime" : 0.2,
+                                "layer" : "back",
+                                "variance" : {
+                                    "initialVelocity" : [5, 5],
+                                    "finalVelocity" : [0, 1.5],
+                                    "size" : 0.5
+                                }
+                            }
+                        },
+                        {
+                            "action" : "particle",
+                            "specification" : {
+                                "type" : "ember",
+                                "size" : 0.5,
+                                "color" : [50, 50, 50, 255],
+                                "fade" : 0.3,
+                                "initialVelocity" : [0, 1.5],
+                                "finalVelocity" : [0, -2],
+                                "approach" : [20, 20],
+                                "destructionTime" : 0.2,
+                                "layer" : "back",
+                                "variance" : {
+                                    "initialVelocity" : [5, 5],
+                                    "finalVelocity" : [0, 1.5],
+                                    "size" : 0.5
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "projectileOffset" : [0, 0.5],
+        "muzzleFlashVariants" : 1,
+        
+        "stances" : {
+            "idle" : {
+                "weaponRotation" : 0,
+                "armRotation" : 0,
+                "weaponOffset" : [0.2, 0.25],
+                "frontArmFrame" : "swimIdle.2?scalenearest=1.13",
+                "backArmFrame" : "rotation?scalenearest=0.8;1.2",
+                "twoHanded" : true,
+                
+                "allowRotate" : true,
+                "allowFlip" : true
+            },
+            "fire" : {
+                "duration" : 0,
+                "weaponRotation" : 2,
+                "armRotation" : 2,
+                "weaponOffset" : [0.2, 0.25],
+                "frontArmFrame" : "swimIdle.2?scalenearest=1.13",
+                "backArmFrame" : "rotation?scalenearest=0.8;1.2",
+                "animationStates" : {
+                    "barrelSmoke" : "on"
+                },
+                "twoHanded" : true,
+                
+                "allowRotate" : false,
+                "allowFlip" : false
+            },
+            "cooldown" : {
+                "duration" : 0.06,
+                "weaponRotation" : 2,
+                "armRotation" : 2,
+                "weaponOffset" : [0.2, 0.25],
+                "frontArmFrame" : "swimIdle.2?scalenearest=1.13",
+                "backArmFrame" : "rotation?scalenearest=0.8;1.2",
+                "twoHanded" : true,
+                
+                "allowRotate" : false,
+                "allowFlip" : false
+            },
+            "reload1" : {
+                "duration" : 0.2,
+                "weaponRotation" : 30,
+                "armRotation" : 25,
+                "aimAngle" : 0,
+                "weaponOffset" : [0, 0.5],
+                "frontArmFrame" : "swimIdle.2?scalenearest=1.13",
+                "backArmFrame" : "rotation",
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : true
+
+            },
+            "reload2" : {
+                "duration" : 0.2,
+                "weaponRotation" : 30,
+                "armRotation" : 25,
+                "aimAngle" : 0,
+                "weaponOffset" : [0, 0.5],
+                "frontArmFrame" : "swimIdle.2?scalenearest=1.13",
+                "backArmFrame" : "idle.4",
+                "animationStates" : {
+                    "animation" : "transition"
+                },
+                "playSounds" : ["open"],
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : true
+
+            },
+            "reload3" : {
+                "duration" : 0.2,
+                "weaponRotation" : 30,
+                "armRotation" : 25,
+                "aimAngle" : 0,
+                "weaponOffset" : [0, 0.5],
+                "frontArmFrame" : "swimIdle.2?scalenearest=1.13",
+                "backArmFrame" : "walk.4?crop;4;0;43;43",
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : true
+            },
+            "reload4" : {
+                "duration" : 0.2,
+                "weaponRotation" : 30,
+                "armRotation" : 25,
+                "aimAngle" : 0,
+                "weaponOffset" : [0, 0.5],
+                "frontArmFrame" : "swimIdle.2?scalenearest=1.13",
+                "backArmFrame" : "idle.4",
+                "animationStates" : {
+                    "animation" : "transition"
+                },
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : true
+
+            },
+            "reload5" : {
+                "duration" : 0.2,
+                "weaponRotation" : 30,
+                "armRotation" : 25,
+                "aimAngle" : 0,
+                "weaponOffset" : [0, 0.5],
+                "frontArmFrame" : "swimIdle.2?scalenearest=1.13",
+                "backArmFrame" : "rotation",
+                "animationStates" : {
+                    "animation" : "idle"
+                },
+                "playSounds" : ["close"],
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : true
+
+            }
+        },
+
+        "postFire" : true,
+        "ammoType" : "d8Weaponry_standardbullet",
+        "ammoName" : "Standard Bullet",
+        "ammoMaxName" : "cylinderCapacity",
+        "ammoCountName" : "cylinder",
+        "reloadType" : "full",
+        "ammoCost" : 1
+    },
+    "altAbilityType" : "d8Weaponry_switchammo",
+    "altAbility" : {
+        "changeWeaponryRender" : true,
+        "ammoSwap" : [
+            {
+                "d8Weaponry" : [
+                    {
+                        "ammoMaxName" : "cylinderCapacity",
+                        "ammoCountName" : "cylinder",
+                        "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
+                        "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png",
+                        "numberOnly" : true
+                    }
+                ],
+                "ability" : {
+                    "projectileType" : "standardbullet",
+                    "projectileParameters" : {
+                        "speed" : 200,
+                        "knockback" : 5,
+                        "actionOnReap" : [
+                            {
+                                "options" : [ "/sfx/projectiles/bullet_ricochet1.ogg", "/sfx/projectiles/bullet_ricochet3.ogg", "/sfx/projectiles/bullet_ricochet11.ogg", "/sfx/projectiles/bullet_ricochet12.ogg", "/sfx/projectiles/bullet_ricochet13.ogg" ],
+                                "action" : "sound"
+                            },
+                            {
+                                "action" : "loop",
+                                "count" : 7,
+                                "body" : [
+                                    {
+                                        "action" : "particle",
+                                        "specification" : {
+                                            "type" : "ember",
+                                            "size" : 0.8,
+                                            "color" : [20, 20, 20, 255],
+                                            "fade" : 0.5,
+                                            "initialVelocity" : [0, 1.5],
+                                            "finalVelocity" : [0, -2],
+                                            "approach" : [20, 20],
+                                            "destructionTime" : 0.2,
+                                            "layer" : "back",
+                                            "variance" : {
+                                                "initialVelocity" : [5, 5],
+                                                "finalVelocity" : [0, 1.5],
+                                                "size" : 0.5
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "action" : "particle",
+                                        "specification" : {
+                                            "type" : "ember",
+                                            "size" : 0.8,
+                                            "color" : [100, 100, 100, 255],
+                                            "fade" : 0.3,
+                                            "initialVelocity" : [0, 1.5],
+                                            "finalVelocity" : [0, -2],
+                                            "approach" : [20, 20],
+                                            "destructionTime" : 0.2,
+                                            "layer" : "back",
+                                            "variance" : {
+                                                "initialVelocity" : [5, 5],
+                                                "finalVelocity" : [0, 1.5],
+                                                "size" : 0.5
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "action" : "particle",
+                                        "specification" : {
+                                            "type" : "ember",
+                                            "size" : 0.5,
+                                            "color" : [50, 50, 50, 255],
+                                            "fade" : 0.3,
+                                            "initialVelocity" : [0, 1.5],
+                                            "finalVelocity" : [0, -2],
+                                            "approach" : [20, 20],
+                                            "destructionTime" : 0.2,
+                                            "layer" : "back",
+                                            "variance" : {
+                                                "initialVelocity" : [5, 5],
+                                                "finalVelocity" : [0, 1.5],
+                                                "size" : 0.5
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "fireTime" : 1.3,
+                    "baseDps" : 8.5,
+                    "energyUsage" : 17,
+                    "projectileCount" : 1,
+                    "inaccuracy" : 0.008,
+                    "baseDamageMultiplier" : 1,
+                    
+                    "ammoType" : "d8Weaponry_standardbullet",
+                    "ammoName" : "Standard Bullet",
+                    "ammoMaxName" : "cylinderCapacity",
+                    "ammoCountName" : "cylinder"
+                }
+            },
+            {
+                "d8Weaponry" : [
+                    {
+                        "ammoMaxName" : "piercingbulletCapacity",
+                        "ammoCountName" : "piercingbullet",
+                        "barText" : "/projectiles/guns/bullets/piercingbullet/icon.png",
+                        "ammoText" : "/projectiles/guns/bullets/piercingbullet/icon.png",
+                        "numberOnly" : true
+                    }
+                ],
+                "ability" : {
+                    "projectileType" : "piercingbullet",
+                    "projectileParameters" : {
+                        "speed" : 250,
+                        "actionOnReap" : [
+                            {
+                                "options" : [ "/sfx/projectiles/bullet_ricochet1.ogg", "/sfx/projectiles/bullet_ricochet3.ogg", "/sfx/projectiles/bullet_ricochet11.ogg", "/sfx/projectiles/bullet_ricochet12.ogg", "/sfx/projectiles/bullet_ricochet13.ogg" ],
+                                "action" : "sound"
+                            },
+                            {
+                                "action" : "loop",
+                                "count" : 7,
+                                "body" : [
+                                    {
+                                        "action" : "particle",
+                                        "specification" : {
+                                            "type" : "ember",
+                                            "size" : 0.8,
+                                            "color" : [20, 20, 20, 255],
+                                            "fade" : 0.5,
+                                            "initialVelocity" : [0, 1.5],
+                                            "finalVelocity" : [0, -2],
+                                            "approach" : [20, 20],
+                                            "destructionTime" : 0.2,
+                                            "layer" : "back",
+                                            "variance" : {
+                                                "initialVelocity" : [5, 5],
+                                                "finalVelocity" : [0, 1.5],
+                                                "size" : 0.5
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "action" : "particle",
+                                        "specification" : {
+                                            "type" : "ember",
+                                            "size" : 0.8,
+                                            "color" : [100, 100, 100, 255],
+                                            "fade" : 0.3,
+                                            "initialVelocity" : [0, 1.5],
+                                            "finalVelocity" : [0, -2],
+                                            "approach" : [20, 20],
+                                            "destructionTime" : 0.2,
+                                            "layer" : "back",
+                                            "variance" : {
+                                                "initialVelocity" : [5, 5],
+                                                "finalVelocity" : [0, 1.5],
+                                                "size" : 0.5
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "action" : "particle",
+                                        "specification" : {
+                                            "type" : "ember",
+                                            "size" : 0.5,
+                                            "color" : [50, 50, 50, 255],
+                                            "fade" : 0.3,
+                                            "initialVelocity" : [0, 1.5],
+                                            "finalVelocity" : [0, -2],
+                                            "approach" : [20, 20],
+                                            "destructionTime" : 0.2,
+                                            "layer" : "back",
+                                            "variance" : {
+                                                "initialVelocity" : [5, 5],
+                                                "finalVelocity" : [0, 1.5],
+                                                "size" : 0.5
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "fireTime" : 1.3,
+                    "baseDps" : 8.5,
+                    "energyUsage" : 25,
+                    "projectileCount" : 1,
+                    "inaccuracy" : 0.008,
+                    "baseDamageMultiplier" : 1.2,
+                    
+                    "ammoType" : "d8Weaponry_piercingbullet",
+                    "ammoName" : "Piercing Bullet",
+                    "ammoMaxName" : "piercingbulletCapacity",
+                    "ammoCountName" : "piercingbullet"
+                }
+            }
+        ]
+    },
+
+    "d8Weaponry" : [
+        {
+            "ammoMaxName" : "cylinderCapacity",
+            "ammoCountName" : "cylinder",
+            "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
+            "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png",
+            "numberOnly" : true
+        }
+    ],
+    "cylinderCapacity" : 4,
+    "cylinder" : 0,
+    "piercingbulletCapacity" : 4,
+    "piercingbullet" : 0,
+
+    "builder" : "/D8Weaponry/buildscripts/buildunrandrangedweapon.lua"
+}

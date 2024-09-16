@@ -1,0 +1,12 @@
+{
+    "itemName" : "d8Weaponry_shotgunshell",
+    "price" : 3,
+    "level" : 1,
+    "maxStack" : 5000,
+    "rarity" : "Common",
+    "category" : "Munition",
+    "description" : "a standard shotgun shell",
+    "shortdescription" : "Shotgun Shell",
+    "itemTags" : ["munition"],
+    "inventoryIcon" : "/D8Weaponry/item/munition/shotgunshell.png"
+}

@@ -1,0 +1,8 @@
+{
+  "input" : [
+    { "item" : "tungstenmagnum", "count" : 1 },
+    { "item" : "volatilepowder", "count" : 10 }
+  ],
+  "output" : { "item" : "d8Weaponry_tungstenmagnum", "count" : 1 },
+  "groups" : [ "d8Conversion_tungstenmagnum" ]
+}

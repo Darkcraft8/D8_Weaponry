@@ -1,0 +1,20 @@
+{
+    "d8Weaponry_giveAll" : [
+        "/spawnitem d8Weaponry_ironrevolver",
+        "/spawnitem d8Weaponry_tungstenmagnum",
+        "/spawnitem d8Weaponry_titaniummachinepistol",
+        "/spawnitem d8Weaponry_ironassaultrifle",
+        "/spawnitem d8Weaponry_tungstenshotgun",
+        "/spawnitem d8Weaponry_titaniumsniperrifle",
+
+        "/spawnitem d8Weaponry_doublebarrelshotgun",
+        "/spawnitem d8Weaponry_tommygun",
+
+        "/spawnitem d8Weaponry_standardbullet 5000",
+        "/spawnitem d8Weaponry_piercingbullet 5000",
+        "/spawnitem d8Weaponry_shotgunshell 5000"
+    ],
+    "d8Weaponry_testrenderer" : [
+        "/spawnitem d8Weaponry_ironrevolver"
+    ]
+}

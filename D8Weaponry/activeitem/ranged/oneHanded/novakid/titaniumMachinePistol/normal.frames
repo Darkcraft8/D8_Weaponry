@@ -1,0 +1,11 @@
+{
+  "frameGrid" : {
+    "size" : [21, 11],
+    "dimensions" : [3, 2],
+
+    "names" : [
+      [ "idle", "transition.1", "open" ],
+      [ "slider.1", "slider.2" ]
+    ]
+  }
+}

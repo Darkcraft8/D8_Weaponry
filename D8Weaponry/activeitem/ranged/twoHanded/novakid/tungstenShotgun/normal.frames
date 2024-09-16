@@ -1,0 +1,13 @@
+{
+	"frameGrid" : {
+		"size" : [33, 11],
+		"dimensions" : [3, 1],
+
+		"names" : [
+			[ "idle", "pump.1", "pump.2" ]
+		]
+	},
+	"aliases" : {
+		"pump.3" : "pump.1"
+	}
+}

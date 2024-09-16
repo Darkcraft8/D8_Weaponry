@@ -1,0 +1,108 @@
+{
+  "globalTagDefaults" : {
+    "directives" : "",
+    "color" : ""
+  },
+
+  "animatedParts" : {
+    "stateTypes" : {
+      "stage" : {
+        "default" : "stage1",
+        "states" : {
+          "stage1" : {  
+          },
+          "stage2" : {
+          },
+          "stage3" : {
+            "frames" : 12,
+            "cycle" : 1.5,
+            "mode" : "loop",
+            "properties" : {
+              "lightsOn" : [ "glow" ]
+            }
+          }
+        }
+      }
+    },
+
+    "parts" : {
+      "normal" : {
+        "properties" : {
+          "centered" : true
+        },
+        "partStates" : {
+          "stage" : {
+            "stage1" : {
+              "properties" : {
+                "image" : "normal.png:stage1<color><directives>"
+              }
+            },
+
+            "stage2" : {
+              "properties" : {
+                "image" : "normal.png:stage2<color><directives>"
+              }
+            },
+
+            "stage3" : {
+              "properties" : {
+                "image" : "normal.png:stage3.<frame><color><directives>"
+              }
+            }
+          }
+        }
+      },
+
+      "fullbright" : {
+        "properties" : {
+          "centered" : true,
+          "fullbright" : true,
+          "zLevel" : 1
+        },
+        "partStates" : {
+          "stage" : {
+            "stage1" : {
+              "properties" : {
+                "image" : "fullbright.png:stage1<directives>"
+              }
+            },
+
+            "stage2" : {
+              "properties" : {
+                "image" : "fullbright.png:stage2<color><directives>"
+              }
+            },
+
+            "stage3" : {
+              "properties" : {
+                "image" : "fullbright.png:stage3.<frame><color><directives>"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "sounds" : {
+    "fanfare" : ["/sfx/cinematics/mission_unlock_event.ogg"],
+    "fanfare2" : ["/sfx/cinematics/license_acquired_event.ogg"]
+  },
+
+  "lights" : {
+    "glow" : {
+      "active" : false,
+      "position" : [0, 1],
+      "color" : [96, 185, 255]
+    }
+  },
+  
+  "particleEmitters" : {
+    "dust" : {
+      "emissionRate" : 0.0,
+      "burstCount"  : 10,
+      "offsetRegion" : [-2, -2, 2, 2],
+      "particles" : [{ "particle" : "dust2"}]
+    }
+  }
+}

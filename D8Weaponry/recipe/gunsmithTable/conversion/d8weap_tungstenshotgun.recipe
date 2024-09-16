@@ -1,0 +1,8 @@
+{
+  "input" : [
+    { "item" : "d8Weaponry_tungstenshotgun", "count" : 1 },
+    { "item" : "volatilepowder", "count" : 10 }
+  ],
+  "output" : { "item" : "tungstenshotgun", "count" : 1 },
+  "groups" : [ "d8Conversion_tungstenshotgun" ]
+}

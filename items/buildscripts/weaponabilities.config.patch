@@ -1,0 +1,7 @@
+[
+    {
+        "op": "add",
+        "path": "/d8Weaponry_switchammo",
+        "value": "/D8Weaponry/activeitem/ranged/ability/ranged/switchAmmo/switchAmmo.weaponability"
+    }
+]

@@ -1,0 +1,11 @@
+{
+    "input" : [
+      { "item" : "copperbar", "count" : 3 },
+      { "item" : "paper", "count" : 6 },
+      { "item" : "titaniumbar", "count" : 1 },
+      { "item" : "volatilepowder", "count" : 3 }
+    ],
+    "output" : { "item" : "d8Weaponry_shotgunshell", "count" : 30 },
+    "groups" : [ "d8Weaponry_munition_level3" ]
+  }
+  
