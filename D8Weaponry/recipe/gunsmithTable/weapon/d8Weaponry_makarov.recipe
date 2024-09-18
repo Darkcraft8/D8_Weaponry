@@ -1,0 +1,10 @@
+{
+  "input" : [
+    { "item" : "ironbar", "count" : 6 },
+    { "item" : "tungstenbar", "count" : 3 },
+    { "item" : "darkwoodmaterial", "count" : 3 },
+    { "item" : "leather", "count" : 3 }
+  ],
+  "output" : { "item" : "d8Weaponry_makarov", "count" : 1 },
+  "groups" : [ "d8Weaponry_gunsmithing_lv2", "d8Weaponry_gunsmithing" ]
+}

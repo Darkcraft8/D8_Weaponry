@@ -251,6 +251,50 @@
                 "allowFlip" : true
             },
 
+            "emptyToReload1" : {
+                "duration" : 0.125,
+                "weaponRotation" : 30,
+                "armRotation" : 0,
+                "aimAngle" : 0,
+                "weaponOffset" : [-0.2, 0.4],
+                "frontArmFrame" : "swim.6",
+                "backArmFrame" : "run.4",
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : true
+
+            },
+            "emptyToReload2" : {
+                "duration" : 0.125,
+                "weaponRotation" : 30,
+                "armRotation" : 0,
+                "aimAngle" : 0,
+                "weaponOffset" : [-0.2, 0.4],
+                "frontArmFrame" : "swim.5",
+                "backArmFrame" : "run.4",
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : true
+
+            },
+            "emptyToReload3" : {
+                "duration" : 0.125,
+                "weaponRotation" : 30,
+                "armRotation" : 0,
+                "aimAngle" : 0,
+                "weaponOffset" : [-0.2, 0.4],
+                "frontArmFrame" : "swim.4",
+                "backArmFrame" : "run.4",
+                "playSounds" : ["cartridgeIn"],
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : true
+
+            },
+
             "reload1" : {
                 "duration" : 0.125,
                 "weaponRotation" : 30,
@@ -300,6 +344,7 @@
         },
 
         "postFire" : true,
+        "emptyToReloadAddAmmo" : true,
         "ammoType" : "d8Weaponry_shotgunshell",
         "ammoName" : "Shotgun Shell",
         "ammoMaxName" : "cylinderCapacity",

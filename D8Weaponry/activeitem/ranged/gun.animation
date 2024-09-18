@@ -1,7 +1,8 @@
 {
   "globalTagDefaults" : {
     "paletteSwaps" : "",
-    "weaponDirective" : ""
+    "weaponDirective" : "",
+    "temperature" : "0"
   },
 
   "animatedParts" : {

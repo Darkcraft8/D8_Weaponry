@@ -390,7 +390,7 @@
                 "allowRotate" : false,
                 "allowFlip" : false
             },
-            "reload6" : {
+            "reloadAfterEmpty1" : {
                 "duration" : 0.2,
                 "weaponRotation" : 45,
                 "armRotation" : 0,
@@ -405,7 +405,7 @@
                 "allowRotate" : false,
                 "allowFlip" : false
             },
-            "reload7" : {
+            "reloadAfterEmpty2" : {
                 "duration" : 0.2,
                 "weaponRotation" : 45,
                 "armRotation" : 0,

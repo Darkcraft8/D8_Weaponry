@@ -4,5 +4,5 @@
     { "item" : "darkwoodmaterial", "count" : 4 }
   ],
   "output" : { "item" : "d8Weaponry_ironassaultrifle", "count" : 1 },
-  "groups" : [ "d8Weaponry_gunsmithing_level1" ]
+  "groups" : [ "d8Weaponry_gunsmithing_lv1", "d8Weaponry_gunsmithing" ]
 }

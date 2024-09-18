@@ -90,6 +90,24 @@
       "value": {
         "item": "d8Weaponry_tungstenshotgun"
       }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_makarov"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item" : "volatilepowder",
+        "parameters" : {
+          "inventoryIcon" : "/items/generic/crafting/volatilepowder.png?saturation=-100?brightness=-95",
+          "shortdescription" : "Gunpowder"
+        } 
+      }
     }
   ]
 ]

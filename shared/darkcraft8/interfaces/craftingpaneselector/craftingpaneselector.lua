@@ -1,3 +1,4 @@
+require "/scripts/util.lua"
 local PaneScriptConfiguration
 local sourceEntity
 local playerEntityId
@@ -33,6 +34,12 @@ function init()
     end
     paneButton = PaneScriptConfiguration.compiledInteractData
     objectPos = PaneScriptConfiguration.objectPos
+    if not PaneScriptConfiguration.UpgradeRecipe then
+        widget.setVisible("btnUpgrade", false)
+    else
+        widget.setButtonEnabled("btnUpgrade", false)
+    end
+    autorefreshCooldown = 30
     sourceEntity = pane.sourceEntity()
     playerEntityId = player.id()
     self.playerTilesPosition = objectPos
@@ -120,6 +127,12 @@ function update(dt)
             if not world.entityExists(sourceEntity) and spawnedEntity then
                 uninit()
             end
+        end
+
+        autorefreshCooldown = autorefreshCooldown - (1 * dt)
+        if PaneScriptConfiguration.UpgradeRecipe and autorefreshCooldown > 0 then
+            autorefreshCooldown = 30
+            checkUpgradeCost()
         end
     end
 end
@@ -255,6 +268,7 @@ end
 function createTooltip(mousePosition)
     local part = {}
     local partId
+    local tooltip
 
     for n,w in pairs(config.getParameter("gui")) do
         if widget.inMember(n, mousePosition) then
@@ -270,22 +284,87 @@ function createTooltip(mousePosition)
         end
     end
 
-    if part["tooltip"] == nil then
-    return
+    if widget.inMember("btnUpgrade", mousePosition) then
+        local temptooltip = root.assetJson("/interface/craftingtooltip/craftingtooltip.config")
+        
+        template = temptooltip["itemList"]["schema"]["listTemplate"]
+        template.rarityIcon = {
+            type = "image",
+            file = "/interface/craftingtooltip/listitem.png",
+            position = {1, 0},
+            zlevel = 0
+        }
+        template.itemIcon = {
+            type = "image",
+            file = "/interface/craftingtooltip/listitem.png",
+            position = {1, 0},
+            zlevel = 1
+        }
+        
+        local tooltip = {
+            type = "layout",
+            layoutType = "basic",
+
+            rect = {0, 0, 3000, 3000},
+            children = {
+                
+            }
+        }
+        for index, item in ipairs(PaneScriptConfiguration.UpgradeRecipe) do
+            local itemCfg = root.itemConfig(item)
+            local itemCount = player.hasCountOfItem(item)
+            local tempTemplate = copy(template)
+            tooltip["children"][item.item] = {
+                type = "layout",
+                layoutType = "basic",
+
+                rect = {0, 0, 3000, 3000},
+                children = {
+                    
+                }
+            }
+            tooltip["children"][item.item]["rect"][1] = mousePosition[1]
+            tooltip["children"][item.item]["rect"][2] = mousePosition[2]
+
+            tooltip["children"][item.item]["children"]["background"] = template.background
+            tooltip["children"][item.item]["children"]["count"] = template.count
+            tooltip["children"][item.item]["children"]["itemName"] = template.itemName
+            tooltip["children"][item.item]["children"]["itemIcon"] = template.itemIcon
+            tooltip["children"][item.item]["children"]["rarityIcon"] = template.rarityIcon
+            
+            if itemCount < item.count then
+                tooltip["children"][item.item]["children"]["count"].value = string.format("^red;%s/%s", itemCount, item.count)
+            else
+                tooltip["children"][item.item]["children"]["count"].value = string.format("^green;%s/%s", itemCount, item.count)
+            end
+            tooltip["children"][item.item]["children"]["itemName"].value = itemCfg.parameters.shortdescription or itemCfg.config.shortdescription
+            tooltip["children"][item.item]["children"]["itemIcon"].file = itemCfg.parameters.inventoryIcon or itemCfg.directory .. itemCfg.config.inventoryIcon
+            tooltip["children"][item.item]["children"]["rarityIcon"].file = string.format("/interface/inventory/itemborder%s.png", string.lower(itemCfg.parameters.rartity or itemCfg.config.rarity))
+            
+        end
+
+        sb.logInfo("%s", sb.printJson(tooltip, 1))
+        pane.addWidget(tooltip, "tooltip")
+        return
+    else
+        if part["tooltip"] == nil then
+        return
+        end
+        
+        local inputs = part["tooltip"]
+        tooltip = config.getParameter("tooltipLayout")
+        if part["tooltip"] then
+            local descriptionText = string.gsub(inputs["description"], '^%s*(.-)%s*$', '%1')
+            local stringLength = string.len(descriptionText)
+            local imageLength = 60
+            local imageHeight = 14
+            local imageTexturePath = "/interface/rightBarTooltipBg.png?crop;1;1;2;13?scalenearest=%s;1?border=1;ffffff;ffffff"
+            tooltip["background"]["fileBody"] = string.format(imageTexturePath, (stringLength * 4) + 12)
+            tooltip.descriptionLabel.value = descriptionText
+            tooltip.descriptionLabel.position[1] = (( (stringLength * 4) + 15 ) / 2)
+        end
     end
-    
-    local inputs = part["tooltip"]
-    local tooltip = config.getParameter("tooltipLayout")
-    if part["tooltip"] then
-        local descriptionText = string.gsub(inputs["description"], '^%s*(.-)%s*$', '%1')
-        local stringLength = string.len(descriptionText)
-        local imageLength = 60
-        local imageHeight = 14
-        local imageTexturePath = "/interface/rightBarTooltipBg.png?crop;1;1;2;13?scalenearest=%s;1?border=1;ffffff;ffffff"
-        tooltip["background"]["fileBody"] = string.format(imageTexturePath, (stringLength * 4) + 12)
-        tooltip.descriptionLabel.value = descriptionText
-        tooltip.descriptionLabel.position[1] = (( (stringLength * 4) + 15 ) / 2)
-    end
+
     return tooltip
 end
 
@@ -302,4 +381,33 @@ function uninit()
         )
     end
     pane.dismiss()
+end
+
+function checkUpgradeCost()
+    local ready = true
+    if not player.isAdmin() then
+        for _, item in ipairs(PaneScriptConfiguration.UpgradeRecipe) do
+            if player.hasCountOfItem(item) == 0 then
+                ready = false
+            end
+        end
+    end
+    if ready then
+        widget.setButtonEnabled("btnUpgrade", true)
+    else
+        widget.setButtonEnabled("btnUpgrade", false)
+    end
+end
+
+function btnUpgrade()
+
+    if not player.isAdmin() then
+        for _, item in ipairs(PaneScriptConfiguration.UpgradeRecipe) do
+            player.consumeItem(item, false)
+        end
+    end
+
+    world.sendEntityMessage(sourceEntity, "requestUpgrade")
+    player.interact(self.interactAction, self.interactData, sourceEntity)
+    uninit()
 end

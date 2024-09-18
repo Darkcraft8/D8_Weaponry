@@ -16,148 +16,146 @@ if type(d8WeaponryUtils) ~= "table" then
     }
     getmetatable('').d8WeaponryUtils = d8WeaponryUtils
 end--For any external Drawable, draw before those of the weapons... currently disabled
-
-local config 
-local pixel = 0.125
-local time = 0
-
-local memory = {
-}
-local weapon = {
-    count = 1,
-    name = "don't think too much about why there a descriptor here",
-    parameters = {
-    }
-}
-local d8WeaponryDrawableList = {} 
-local weapParam
-local weapConf
-local primaryConf = {}
-local secondaryConf = {}
-
-local initTimer = 2
-local opacityMax = {8,5}
-local opacity = {0,0}
-local textOpacity = 0
-local barOffset = 0
-
-local prevPrimary = {
-    count = 1,
-    name = "don't think too much about why there a descriptor here",
-    parameters = {
-    }
-}
-local prevSecondary = {
-    count = 1,
-    name = "don't think too much about why there a descriptor here",
-    parameters = {
+local d8Weaponry_var = {
+    config = "replaceMe",
+    pixel = 0.125,
+    time = 0,
+    memory = {
+    },
+    weapon = {
+        count = 1,
+        name = "don't think too much about why there a descriptor here",
+        parameters = {
+        }
+    },
+    d8WeaponryDrawableList = {},
+    weapParam = "replaceMe",
+    weapConf = "replaceMe",
+    primaryConf = {},
+    secondaryConf = {},
+    initTimer = 2,
+    opacityMax = {8,5},
+    opacity = {0,0},
+    textOpacity = 0,
+    barOffset = 0,
+    prevPrimary = {
+        count = 1,
+        name = "don't think too much about why there a descriptor here",
+        parameters = {
+        }
+    },
+    prevSecondary = {
+        count = 1,
+        name = "don't think too much about why there a descriptor here",
+        parameters = {
+        }
     }
 }
 
 function init()
     vanillaInit()
-    config = root.assetJson("/D8Weaponry.config")
-    if config["opacityMax"] then
-        opacityMax = config["opacityMax"]
+    d8Weaponry_var.config = root.assetJson("/D8Weaponry.config")
+    if d8Weaponry_var.config["opacityMax"] then
+        d8Weaponry_var.opacityMax = d8Weaponry_var.config["opacityMax"]
     end
 end
 
 function update(dt)
     vanillaUpdate(dt)
-    if config["customAmmoRenderer"] then
-        if initTimer > 0 then
-            initTimer = initTimer - 1
+    if d8Weaponry_var.config["customAmmoRenderer"] then
+        if d8Weaponry_var.initTimer > 0 then
+            d8Weaponry_var.initTimer = d8Weaponry_var.initTimer - 1
         else
             if player.primaryHandItem() or player.altHandItem() then
                 local primary = player.primaryHandItem()
                 local secondary = player.altHandItem()
                 local same = true
-                local concatedParam = weaponAnalisis(primary, secondary)
-                weapon["parameters"] = concatedParam
+                local concatedParam = d8weaponry_weaponAnalisis(primary, secondary)
+                d8Weaponry_var.weapon["parameters"] = concatedParam
             end
             local renderIndex = 0
             --sb.logInfo("%s", d8WeaponryUtils)
             --if d8WeaponryUtils.drawableList then
             --    for pos, drawable in ipairs(d8WeaponryUtils.drawableList) do
-            --        drawableUpdate(drawable, pos)
+            --        d8weaponry_drawableUpdate(drawable, pos)
             --    end
             --end
             if pcall(function()
-                    local result = type(weapon["parameters"]["d8Weaponry"])
+                    local result = type(d8Weaponry_var.weapon["parameters"]["d8Weaponry"])
                     if result == "table" and (player.primaryHandItem() or player.altHandItem()) then
                         return result 
                     else error()
                     end 
                 end) then
-                if textOpacity < 185 then
-                    textOpacity = textOpacity + 14
-                    if textOpacity > 185 then
-                        textOpacity = 185
+                if d8Weaponry_var.textOpacity < 185 then
+                    d8Weaponry_var.textOpacity = d8Weaponry_var.textOpacity + 14
+                    if d8Weaponry_var.textOpacity > 185 then
+                        d8Weaponry_var.textOpacity = 185
                     end
                 end
-                barOffset = util.clamp(barOffset + (4*dt), 2, 3)
-                if opacity[1] < opacityMax[1] or opacity[2] < opacityMax[2] then
-                    if opacity[2] == 9 then
-                        opacity[1] = opacity[1] + 4
-                        opacity[2] = 0
+                d8Weaponry_var.barOffset = util.clamp(d8Weaponry_var.barOffset + (4*dt), 2, 3)
+                if d8Weaponry_var.opacity[1] < d8Weaponry_var.opacityMax[1] or d8Weaponry_var.opacity[2] < d8Weaponry_var.opacityMax[2] then
+                    if d8Weaponry_var.opacity[2] == 9 then
+                        d8Weaponry_var.opacity[1] = d8Weaponry_var.opacity[1] + 4
+                        d8Weaponry_var.opacity[2] = 0
                     else
-                        opacity[2] = opacity[2] + 4
+                        d8Weaponry_var.opacity[2] = d8Weaponry_var.opacity[2] + 4
                     end
-                    if opacity[1] > opacityMax[1] then
-                        opacity[1] = opacityMax[1]
+                    if d8Weaponry_var.opacity[1] > d8Weaponry_var.opacityMax[1] then
+                        d8Weaponry_var.opacity[1] = d8Weaponry_var.opacityMax[1]
                     end
-                    if (opacity[2] > opacityMax[2] and opacity[1] == opacityMax[1]) or opacity[2] > 9 then
-                        opacity[2] = opacityMax[2]
+                    if (d8Weaponry_var.opacity[2] > d8Weaponry_var.opacityMax[2] and d8Weaponry_var.opacity[1] == d8Weaponry_var.opacityMax[1]) or d8Weaponry_var.opacity[2] > 9 then
+                        d8Weaponry_var.opacity[2] = d8Weaponry_var.opacityMax[2]
                     end
                 end
 
-                weapParam = weapon["parameters"]
-                weapConf = weapon["parameters"]["d8Weaponry"]
-                for index, value in ipairs(weapConf) do
+                d8Weaponry_var.weapParam = d8Weaponry_var.weapon["parameters"]
+                d8Weaponry_var.weapConf = d8Weaponry_var.weapon["parameters"]["d8Weaponry"]
+                for index, value in ipairs(d8Weaponry_var.weapConf) do
                     local max = value[value["ammoMaxName"]]
                     local count = value[value["ammoCountName"]]
-                    if not memory[index] then
-                        memory[index] = {}
-                        memory[index]["ammoText"] = "/assetmissing.png"
-                        memory[index]["barText"] = "/assetmissing.png"
+                    if not d8Weaponry_var.memory[index] then
+                        d8Weaponry_var.memory[index] = {}
+                        d8Weaponry_var.memory[index]["ammoText"] = "/assetmissing.png"
+                        d8Weaponry_var.memory[index]["barText"] = "/assetmissing.png"
                     end
-                    renderBar(0, -barOffset-(1*(renderIndex)), max, count, index)
+                    d8weaponry_renderBar(0, -d8Weaponry_var.barOffset-(1*(renderIndex)), max, count, index)
                     renderIndex = renderIndex + 1
                 end
                 
-                time = ( (-175) + (time + (12*(dt))) ) % 175
+                d8Weaponry_var.time = ( (-175) + (d8Weaponry_var.time + (12*(dt))) ) % 175
             else
-                time = 0
-                if textOpacity > 0 then
-                    textOpacity = textOpacity - 9
-                    if textOpacity < 0 then
-                        textOpacity = 0
+                d8Weaponry_var.time = 0
+                if d8Weaponry_var.textOpacity > 0 then
+                    d8Weaponry_var.textOpacity = d8Weaponry_var.textOpacity - 9
+                    if d8Weaponry_var.textOpacity < 0 then
+                        d8Weaponry_var.textOpacity = 0
                     end
                 end
-                barOffset = util.clamp(barOffset - (1.5*dt), 2, 4)
-                if opacity[1] > 0 or opacity[2] > 0 then
-                    if opacity[2] == 0 then
-                        opacity[1] = opacity[1] - 2
-                        opacity[2] = 9
+                d8Weaponry_var.barOffset = util.clamp(d8Weaponry_var.barOffset - (1.5*dt), 2, 4)
+                if d8Weaponry_var.opacity[1] > 0 or d8Weaponry_var.opacity[2] > 0 then
+                    if d8Weaponry_var.opacity[2] == 0 then
+                        d8Weaponry_var.opacity[1] = d8Weaponry_var.opacity[1] - 2
+                        d8Weaponry_var.opacity[2] = 9
                     else
-                        opacity[2] = opacity[2] - 2
+                        d8Weaponry_var.opacity[2] = d8Weaponry_var.opacity[2] - 2
                     end
-                    if opacity[1] < 0 then
-                        opacity[1] = 0
+                    if d8Weaponry_var.opacity[1] < 0 then
+                        d8Weaponry_var.opacity[1] = 0
                     end
-                    if opacity[2] < 0 then
-                        opacity[2] = 0
+                    if d8Weaponry_var.opacity[2] < 0 then
+                        d8Weaponry_var.opacity[2] = 0
                     end
                     
-                    for index, value in ipairs(weapConf) do
+                    for index, value in ipairs(d8Weaponry_var.weapConf) do
                         local max = value[value["ammoMaxName"]]
                         local count = value[value["ammoCountName"]]
-                        if not memory[index] then
-                            memory[index] = {}
-                            memory[index]["ammoText"] = "/assetmissing.png"
-                            memory[index]["barText"] = "/assetmissing.png"
+                        if not d8Weaponry_var.memory[index] then
+                            d8Weaponry_var.memory[index] = {}
+                            d8Weaponry_var.memory[index]["ammoText"] = "/assetmissing.png"
+                            d8Weaponry_var.memory[index]["barText"] = "/assetmissing.png"
                         end
-                        renderBar(0,  -barOffset-(1*(renderIndex)), max, count, index)
+                        d8weaponry_renderBar(0,  -d8Weaponry_var.barOffset-(1*(renderIndex)), max, count, index)
                         renderIndex = renderIndex + 1
                     end
                 end
@@ -168,7 +166,6 @@ end
 
 function teleportOut()
     vanillaTeleportOut()
-
 end
 
 function uninit()
@@ -176,7 +173,7 @@ function uninit()
 
 end
 
-function drawableUpdate(drawable, pos)--Way less annoing to handles effect/stat script in the renderer instead of their own scripts... maybe it not a good idea
+function d8weaponry_drawableUpdate(drawable, pos)--Way less annoing to handles effect/stat script in the renderer instead of their own scripts... maybe it not a good idea
     local ressourceName = drawable.ressourceName
     local propertyName = drawable.propertyName
     local isBar = drawable.isBar
@@ -200,17 +197,17 @@ function drawableUpdate(drawable, pos)--Way less annoing to handles effect/stat 
             end
 
             if match then
-                table.remove(weapon["parameters"]["d8Weaponry"], index)
+                table.remove(d8Weaponry_var.weapon["parameters"]["d8Weaponry"], index)
             end
         end
-        table.insert(weapon["parameters"]["d8Weaponry"], pos, pendingRendering)
+        table.insert(d8Weaponry_var.weapon["parameters"]["d8Weaponry"], pos, pendingRendering)
     elseif propertyName and isBar then
 
     end
 
 end
 
-function weaponAnalisis(primary, secondary)
+function d8weaponry_weaponAnalisis(primary, secondary)
     local validprimary
     local validsecondary
     local concatedParam = {}
@@ -238,15 +235,9 @@ function weaponAnalisis(primary, secondary)
             pendingRendering[name or pendingRendering["ammoCountName"]]  = primaryConf["parameters"][value["ammoCountName"]]-- or primaryConf["config"][value["ammoCountName"]]
             
             if value.isRessource then
-                local cost = 0
-                if primaryConf["parameters"]["primaryAbility"] then
-                    cost = (primaryConf["parameters"]["primaryAbility"]["energyUsage"] * primaryConf["parameters"]["primaryAbility"]["fireTime"] * (primaryConf["parameters"]["primaryAbility"]["energyUsageMultiplier"] or 1.0) )
-                else
-                    --cost = (primaryConf["config"]["primaryAbility"]["energyUsage"] * primaryConf["config"]["primaryAbility"]["fireTime"] * (primaryConf["config"]["primaryAbility"]["energyUsageMultiplier"] or 1.0) )
-                end
+                local cost = (pendingRendering["cost"] or 1.0)
                 pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name or value["ammoMaxName"]) / cost)
-                pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost)
-                
+                pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost) 
             end
             table.insert(concatedParam["d8Weaponry"], pendingRendering)
             currentIndex = (currentIndex + 1)
@@ -261,12 +252,7 @@ function weaponAnalisis(primary, secondary)
             pendingRendering[name or pendingRendering["ammoMaxName"]]    = secondaryConf["parameters"][value["ammoMaxName"]]-- or secondaryConf["config"][value["ammoMaxName"]]
             pendingRendering[name or pendingRendering["ammoCountName"]]  = secondaryConf["parameters"][value["ammoCountName"]]-- or secondaryConf["config"][value["ammoCountName"]]
             if value.isRessource then
-                local cost = 0
-                if secondaryConf["parameters"]["primaryAbility"] then
-                    cost = (secondaryConf["parameters"]["primaryAbility"]["energyUsage"] * secondaryConf["parameters"]["primaryAbility"]["fireTime"] * (secondaryConf["parameters"]["primaryAbility"]["energyUsageMultiplier"] or 1.0) )
-                else
-                    --cost = (secondaryConf["config"]["primaryAbility"]["energyUsage"] * secondaryConf["config"]["primaryAbility"]["fireTime"] * (secondaryConf["config"]["primaryAbility"]["energyUsageMultiplier"] or 1.0) )
-                end
+                local cost = (pendingRendering["cost"] or 1.0)
                 pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name or value["ammoMaxName"]) / cost)
                 pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost)
             end
@@ -285,12 +271,7 @@ function weaponAnalisis(primary, secondary)
             pendingRendering[name or pendingRendering["ammoMaxName"]]    = primaryConf["parameters"][value["ammoMaxName"]]-- or primaryConf["config"][value["ammoMaxName"]]
             pendingRendering[name or pendingRendering["ammoCountName"]]  = primaryConf["parameters"][value["ammoCountName"]]-- or primaryConf["config"][value["ammoCountName"]]
             if value.isRessource then
-                local cost = 1
-                if primaryConf["parameters"]["primaryAbility"] then
-                    cost = (primaryConf["parameters"]["primaryAbility"]["energyUsage"] * primaryConf["parameters"]["primaryAbility"]["fireTime"] * (primaryConf["parameters"]["primaryAbility"]["energyUsageMultiplier"] or 1.0) )
-                else
-                    --cost = (primaryConf["config"]["primaryAbility"]["energyUsage"] * primaryConf["config"]["primaryAbility"]["fireTime"] * (primaryConf["config"]["primaryAbility"]["energyUsageMultiplier"] or 1.0) )
-                end
+                local cost = (pendingRendering["cost"] or 1.0)
                 pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name or value["ammoMaxName"]) / cost)
                 pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost)
             end
@@ -305,12 +286,7 @@ function weaponAnalisis(primary, secondary)
             pendingRendering[name or pendingRendering["ammoMaxName"]]    = secondaryConf["parameters"][value["ammoMaxName"]]-- or secondaryConf["config"][value["ammoMaxName"]]
             pendingRendering[name or pendingRendering["ammoCountName"]]  = secondaryConf["parameters"][value["ammoCountName"]]-- or secondaryConf["config"][value["ammoCountName"]]
             if value.isRessource then
-                local cost = 1
-                if secondaryConf["parameters"]["primaryAbility"] then
-                    cost = (secondaryConf["parameters"]["primaryAbility"]["energyUsage"] * secondaryConf["parameters"]["primaryAbility"]["fireTime"] * (secondaryConf["parameters"]["primaryAbility"]["energyUsageMultiplier"] or 1.0) )
-                else
-                    --cost = (secondaryConf["config"]["primaryAbility"]["energyUsage"] * secondaryConf["config"]["primaryAbility"]["fireTime"] * (secondaryConf["config"]["primaryAbility"]["energyUsageMultiplier"] or 1.0) )
-                end
+                local cost = (pendingRendering["cost"] or 1.0)
                 pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name or value["ammoMaxName"]) / cost)
                 pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost)
             end
@@ -322,41 +298,45 @@ function weaponAnalisis(primary, secondary)
     return concatedParam
 end
 
-function renderBar(barX, barY, amountMax, count, slot, ammoText, barText, RGB)
+function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barText, RGB)
     local renderConf = {}
+    local useSegmentedBar = false
     if not amountMax then
-        amountMax = 0
+        amountMax = 20
     end
     if not count then
         count = 0
     end
-    if weapon["parameters"]["d8Weaponry"] and type(weapon["parameters"]["d8Weaponry"]) == "table"  then
-        renderConf = weapon["parameters"]["d8Weaponry"][slot]
+    if d8Weaponry_var.weapon["parameters"]["d8Weaponry"] and type(d8Weaponry_var.weapon["parameters"]["d8Weaponry"]) == "table"  then
+        renderConf = d8Weaponry_var.weapon["parameters"]["d8Weaponry"][slot]
         if renderConf then
             if renderConf["ammoText"] then
-                memory[slot]["ammoText"] = renderConf["ammoText"]
+                d8Weaponry_var.memory[slot]["ammoText"] = renderConf["ammoText"]
                 ammoText = renderConf["ammoText"]
             end
             if renderConf["barText"] then
-                memory[slot]["barText"] = renderConf["barText"]
+                d8Weaponry_var.memory[slot]["barText"] = renderConf["barText"]
                 barText = renderConf["barText"]
             end
             if renderConf["RGB"] then
-                memory[slot]["RGB"] = renderConf["RGB"]
+                d8Weaponry_var.memory[slot]["RGB"] = renderConf["RGB"]
                 RGB = renderConf["RGB"]
             end
             if renderConf["Rotate"] then
-                memory[slot]["Rotate"] = renderConf["Rotate"]
+                d8Weaponry_var.memory[slot]["Rotate"] = renderConf["Rotate"]
                 Rotate = renderConf["Rotate"]
             end
             if renderConf["invertRender"] then
                 count = amountMax - count
             end
+            if renderConf["useSegmentedBar"] then
+                useSegmentedBar = renderConf["useSegmentedBar"]
+            end
         else
             return
         end
     end
-    local numberOnly = config["numberOnly"]
+    local numberOnly = d8Weaponry_var.config["numberOnly"]
     if renderConf["numberOnly"] ~= nil then
         numberOnly = renderConf["numberOnly"]
     end
@@ -369,7 +349,7 @@ function renderBar(barX, barY, amountMax, count, slot, ammoText, barText, RGB)
         barY
     }
     if numberOnly then
-        local amountMax = 1 + (1.34 / pixel)
+        local amountMax = 1 + (1.34 / d8Weaponry_var.pixel)
         ammoPos[1] = barX - ((util.clamp(amountMax, 1, 20) - (util.clamp(amountMax, 1, 20)/2)) * (sizeNumberThing/4))
     end
     local windowSize
@@ -381,23 +361,23 @@ function renderBar(barX, barY, amountMax, count, slot, ammoText, barText, RGB)
     if config["sideLeaning"] ~= "center" then
         ammoPos[1] = barX
     end
-    local ammoText = memory[slot]["ammoText"]
-    local barText = memory[slot]["barText"]
-    local RGB = memory[slot]["RGB"]
-    local Rotate = memory[slot]["Rotate"] or 0
-    local posOffset = config["posOffset"]
+    local ammoText = d8Weaponry_var.memory[slot]["ammoText"]
+    local barText = d8Weaponry_var.memory[slot]["barText"]
+    local RGB = d8Weaponry_var.memory[slot]["RGB"]
+    local Rotate = d8Weaponry_var.memory[slot]["Rotate"] or 0
+    local posOffset = d8Weaponry_var.config["posOffset"]
     ammoPos[1] = ammoPos[1] + posOffset[1]
     ammoPos[2] = ammoPos[2] + posOffset[2]
 
     local segmentSize = (1/(amountMax/(amountMax/sizeNumberThing)))
     if numberOnly then
-        outpostSignNumber(count, ammoPos, opacity, 0.5, true, numberOnly)
+        d8weaponry_outpostSignNumber(count, ammoPos, d8Weaponry_var.opacity, 0.5, true, numberOnly)
     else
         local segmentNum = util.clamp(math.ceil(amountMax), 0, 20)
         
         while segmentNum > 0 do
             local drawable = {
-                image = string.format("%s:?scalenearest=%s;1?multiply=7F7F7F%s%s", barText, segmentSize, opacity[1], opacity[2]),
+                image = string.format("%s:?scalenearest=%s;1?multiply=7F7F7F%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2]),
                 position = {
                     (ammoPos[1] + 0.45) + (segmentSize*segmentNum),
                     ammoPos[2]
@@ -410,13 +390,13 @@ function renderBar(barX, barY, amountMax, count, slot, ammoText, barText, RGB)
                 drawable["position"][1] = (ammoPos[1] - 0.45) - (segmentSize*segmentNum)
             end
             if RGB then
-                drawable["image"] = string.format("%s:?scalenearest=%s;1?hueshift=%s?multiply=7F7F7F%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, opacity[1], opacity[2])
+                drawable["image"] = string.format("%s:?scalenearest=%s;1?hueshift=%s?multiply=7F7F7F%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
             end
             if string.find(barText, ":") then
                 if RGB then
-                    drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=7F7F7F%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, opacity[1], opacity[2])
+                    drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=7F7F7F%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
                 else
-                    drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=7F7F7F%s%s", barText, segmentSize, opacity[1], opacity[2])
+                    drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=7F7F7F%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
                 end
             end
             if not starExtensions or not config["starExtensions"]["useUiAnimator"] then
@@ -492,113 +472,166 @@ function renderBar(barX, barY, amountMax, count, slot, ammoText, barText, RGB)
             end
         end
         local highestSegmentNum = segmentNum
-        while segmentNum > 0 do
-            local staticPos = (ammoPos[1] + 0.45) + (segmentSize*(segmentNum))
-            local slided = staticPos
-            if renderConf["animateBar"] then
-                --slided = (ammoPos[1] + (0.45 / (segmentSize/slideTimer))) + (segmentSize*(segmentNum))
-                if memory[slot]["invertSlide"] then
-                    if segmentNum == highestSegmentNum then
-                        local math = (segmentSize*slideTimer)
-                        slided = (staticPos + math)
+        if useSegmentedBar then
+            while segmentNum > 0 do
+                local staticPos = (ammoPos[1] + 0.45) + (segmentSize*(segmentNum))
+                local slided = staticPos
+                if renderConf["animateBar"] then
+                    --slided = (ammoPos[1] + (0.45 / (segmentSize/slideTimer))) + (segmentSize*(segmentNum))
+                    if memory[slot]["invertSlide"] then
+                        if segmentNum == highestSegmentNum then
+                            local math = (segmentSize*slideTimer)
+                            slided = (staticPos + math)
+                        else
+                            slided = staticPos
+                        end
                     else
-                        slided = staticPos
-                    end
-                else
-                    if segmentNum == highestSegmentNum then
-                        local math = (segmentSize*slideTimer)
-                        slided = (staticPos + math)
-                        
-                    else
-                        slided = staticPos
+                        if segmentNum == highestSegmentNum then
+                            local math = (segmentSize*slideTimer)
+                            slided = (staticPos + math)
+                            
+                        else
+                            slided = staticPos
+                        end
                     end
                 end
+                local drawable = {
+                    image = string.format("%s:?scalenearest=%s;1?multiply=FFFFFF%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2]),
+                    position = {
+                        util.clamp(slided, staticPos, slided),
+                        ammoPos[2]
+                    },
+                    color = {255,255,255},
+                    fullbright = true,
+                    rotation = 0
+                }
+                if config["sideLeaning"] == "left" then
+                    drawable["position"][1] = (ammoPos[1] - 0.45) - (segmentSize*segmentNum)
+                end
+                if RGB then
+                    drawable["image"] = string.format("%s:?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                end
+                if string.find(barText, ":") then
+                    if RGB then
+                        drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                    else
+                        drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=FFFFFF%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                    end
+                end
+                if not starExtensions or not config["starExtensions"]["useUiAnimator"] then
+                    localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
+                elseif not starExtensions then
+                    localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
+                elseif config["starExtensions"]["posAnchor"] == "player" then
+                    localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
+                else
+                    local drawX = drawable["position"][1]
+                    local drawY = drawable["position"][2]
+                    local anchor = config["starExtensions"]["posAnchor"]
+                    -- default is bottomLeft
+                    drawY = drawable["position"][2] + 8
+                    if anchor == "bottomRight" then
+                        drawX = drawable["position"][1] + windowSize[1]
+                        drawY = drawable["position"][2] + 8
+                    elseif anchor == "topRight" then
+                        drawX = drawable["position"][1] + windowSize[1]
+                        drawY = drawable["position"][2] + windowSize[2]
+                    elseif anchor == "middleTop" then
+                        drawX = drawable["position"][1] + (windowSize[1]/2)
+                        drawY = drawable["position"][2] + windowSize[2]
+                    elseif anchor == "center" then
+                        drawX = drawable["position"][1] + (windowSize[1]/2)
+                        drawY = drawable["position"][2] + (windowSize[2]/2) + 2
+                    elseif anchor == "middleBottom" then
+                        drawX = drawable["position"][1] + (windowSize[1]/2)
+                        drawY = drawable["position"][2] + 8
+                    elseif anchor == "middleRight" then
+                        drawX = drawable["position"][1] + windowSize[1]
+                        drawY = drawable["position"][2] + (windowSize[2]/2) + 2
+                    elseif anchor == "middleLeft" then
+                        drawY = drawable["position"][2] + (windowSize[2]/2) + 2
+                    elseif anchor == "topLeft" then
+                        drawY = drawable["position"][2] + windowSize[2]
+                    end
+        
+                    interface.drawDrawable(drawable, {((posOffset[1] + 1) + drawX) * posMultiply, (posOffset[2] + drawY) * posMultiply}, 2, {255,255,255})
+                end
+                segmentNum = segmentNum - 1
             end
+        else
+            local size = util.clamp(math.ceil(amountMax), 0, 20)*4
+            local cull = (util.clamp(math.ceil(count), 0, 20))*4
+            local lastCullPercent = memory[slot]["lastCullPercent"] or cull
+            if lastCullPercent ~= cull then
+                local multiply = lastCullPercent
+
+                if lastCullPercent == 0 then
+                    multiply = 1
+                end
+
+                if lastCullPercent > cull then
+                    lastCullPercent = util.clamp(lastCullPercent - ( (math.ceil(4 * (lastCullPercent))) * script.updateDt()), 0.1, size)
+                else
+                    lastCullPercent = util.clamp(lastCullPercent + ( (math.ceil(4 * (lastCullPercent))) * script.updateDt()), 0.1, size)
+                end
+            end
+            local staticPos = ((ammoPos[1] + 0.2) + (segmentSize))
+            local slided = staticPos
             local drawable = {
-                image = string.format("%s:?scalenearest=%s;1?multiply=FFFFFF%s%s", barText, segmentSize, opacity[1], opacity[2]),
+                image = string.format("%s:?crop;0;0;1;7?scalenearest=%s;1?multiply=FFFFFF%s%s?crop;0;0;%s;7", barText, size, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2], lastCullPercent),
                 position = {
-                    util.clamp(slided, staticPos, slided),
-                    ammoPos[2]
+                    staticPos,
+                    ammoPos[2]-0.4
                 },
                 color = {255,255,255},
                 fullbright = true,
+                centered = false,
                 rotation = 0
             }
             if config["sideLeaning"] == "left" then
-                drawable["position"][1] = (ammoPos[1] - 0.45) - (segmentSize*segmentNum)
+                drawable["position"][1] = (ammoPos[1] - 0.2) - (segmentSize)
             end
             if RGB then
-                drawable["image"] = string.format("%s:?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, opacity[1], opacity[2])
+                drawable["image"] = string.format("%s:?crop;0;0;1;7?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s?crop;0;0;%s;7", barText, size, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2], lastCullPercent)
             end
             if string.find(barText, ":") then
                 if RGB then
-                    drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, opacity[1], opacity[2])
+                    drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
                 else
-                    drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=FFFFFF%s%s", barText, segmentSize, opacity[1], opacity[2])
+                    drawable["image"] = string.format("%s?crop;0;0;1;7?scalenearest=%s;1?multiply=FFFFFF%s%s?crop;0;0;%s;7", barText, size, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2], lastCullPercent)
                 end
             end
-            if not starExtensions or not config["starExtensions"]["useUiAnimator"] then
-                localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
-            elseif not starExtensions then
-                localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
-            elseif config["starExtensions"]["posAnchor"] == "player" then
-                localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
-            else
-                local drawX = drawable["position"][1]
-                local drawY = drawable["position"][2]
-                local anchor = config["starExtensions"]["posAnchor"]
-                -- default is bottomLeft
-                drawY = drawable["position"][2] + 8
-                if anchor == "bottomRight" then
-                    drawX = drawable["position"][1] + windowSize[1]
-                    drawY = drawable["position"][2] + 8
-                elseif anchor == "topRight" then
-                    drawX = drawable["position"][1] + windowSize[1]
-                    drawY = drawable["position"][2] + windowSize[2]
-                elseif anchor == "middleTop" then
-                    drawX = drawable["position"][1] + (windowSize[1]/2)
-                    drawY = drawable["position"][2] + windowSize[2]
-                elseif anchor == "center" then
-                    drawX = drawable["position"][1] + (windowSize[1]/2)
-                    drawY = drawable["position"][2] + (windowSize[2]/2) + 2
-                elseif anchor == "middleBottom" then
-                    drawX = drawable["position"][1] + (windowSize[1]/2)
-                    drawY = drawable["position"][2] + 8
-                elseif anchor == "middleRight" then
-                    drawX = drawable["position"][1] + windowSize[1]
-                    drawY = drawable["position"][2] + (windowSize[2]/2) + 2
-                elseif anchor == "middleLeft" then
-                    drawY = drawable["position"][2] + (windowSize[2]/2) + 2
-                elseif anchor == "topLeft" then
-                    drawY = drawable["position"][2] + windowSize[2]
-                end
+            localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
 
-                interface.drawDrawable(drawable, {((posOffset[1] + 1) + drawX) * posMultiply, (posOffset[2] + drawY) * posMultiply}, 2, {255,255,255})
+            if lastCullPercent <= (cull + 0.2) and lastCullPercent >= (cull - 0.2) then
+                memory[slot]["lastCullPercent"] = cull
+            else
+                memory[slot]["lastCullPercent"] = lastCullPercent
             end
-            segmentNum = segmentNum - 1
         end
+        
     end
     
     local drawable = {
-        image = string.format("%s:?multiply=FFFFFF%s%s", ammoText, opacity[1], opacity[2]),
+        image = string.format("%s:?multiply=FFFFFF%s%s", ammoText, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2]),
         position = ammoPos,
         color = {255,255,255},
         fullbright = true,
         rotation = ((math.pi/180) * Rotate)
     }
     if string.find(ammoText, ":") then
-        drawable["image"] = string.format("%s?multiply=FFFFFF%s%s", ammoText, opacity[1], opacity[2])
+        drawable["image"] = string.format("%s?multiply=FFFFFF%s%s", ammoText, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
     end
-    if not starExtensions or not config["starExtensions"]["useUiAnimator"] then
+    if not starExtensions or not d8Weaponry_var.config["starExtensions"]["useUiAnimator"] then
         localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     elseif not starExtensions then
         localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
-    elseif config["starExtensions"]["posAnchor"] == "player" then
+    elseif d8Weaponry_var.config["starExtensions"]["posAnchor"] == "player" then
         localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     else
         local drawX = drawable["position"][1]
         local drawY = drawable["position"][2]
-        local anchor = config["starExtensions"]["posAnchor"]
+        local anchor = d8Weaponry_var.config["starExtensions"]["posAnchor"]
         -- default is bottomLeft
         drawY = drawable["position"][2] + 8
         if anchor == "bottomRight" then
@@ -630,14 +663,14 @@ function renderBar(barX, barY, amountMax, count, slot, ammoText, barText, RGB)
     end
 
     if count > 20 and not numberOnly then
-        outpostSignNumber(count, ammoPos, opacity, segmentSize)
-        --particleNumber(textOpacity, count, ammoPos, segmentSize)
+        d8weaponry_outpostSignNumber(count, ammoPos, d8Weaponry_var.opacity, segmentSize)
+        --d8weaponry_particleNumber(textOpacity, count, ammoPos, segmentSize)
     end
     
-    memory[slot]["lastAmmoCount"] = util.clamp(count, 0, 20)
+    d8Weaponry_var.memory[slot]["lastAmmoCount"] = util.clamp(count, 0, 20)
 end
 
-function outpostSignNumber(count, ammoPos, opacity, segmentSize, complete, numberOnly)
+function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, complete, numberOnly)
     local number = math.ceil(count-20)
     if complete then
         number = math.ceil(count)
@@ -660,7 +693,7 @@ function outpostSignNumber(count, ammoPos, opacity, segmentSize, complete, numbe
     local drawable = {
         image = string.format("/objects/outpost/number%s/icon.png:?multiply=FFFFFF%s%s?brightness=100", thousand, opacity[1], opacity[2]),
         position = {
-            (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*pixel),
+            (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*d8Weaponry_var.pixel),
             ammoPos[2]
         },
         color = {255,255,255},
@@ -673,7 +706,7 @@ function outpostSignNumber(count, ammoPos, opacity, segmentSize, complete, numbe
     drawable = {
         image = string.format("/objects/outpost/number%s/icon.png:?multiply=FFFFFF%s%s?brightness=100", hundred, opacity[1], opacity[2]),
         position = {
-            (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*pixel),
+            (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*d8Weaponry_var.pixel),
             ammoPos[2]
         },
         color = {255,255,255},
@@ -686,7 +719,7 @@ function outpostSignNumber(count, ammoPos, opacity, segmentSize, complete, numbe
     drawable = {
         image = string.format("/objects/outpost/number%s/icon.png:?multiply=FFFFFF%s%s?brightness=100", ten, opacity[1], opacity[2]),
         position = {
-            (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*pixel),
+            (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*d8Weaponry_var.pixel),
             ammoPos[2]
         },
         color = {255,255,255},
@@ -699,7 +732,7 @@ function outpostSignNumber(count, ammoPos, opacity, segmentSize, complete, numbe
     drawable = {
         image = string.format("/objects/outpost/number%s/icon.png:?multiply=FFFFFF%s%s?brightness=100", digit, opacity[1], opacity[2]),
         position = {
-            (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*pixel),
+            (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*d8Weaponry_var.pixel),
             ammoPos[2]
         },
         color = {255,255,255},
@@ -710,7 +743,7 @@ function outpostSignNumber(count, ammoPos, opacity, segmentSize, complete, numbe
     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
 end
 
-function particleNumber(textOpacity, count, ammoPos, segmentSize)
+function d8weaponry_particleNumber(textOpacity, count, ammoPos, segmentSize)
     local particle = {
         type = "text",
         size = 0.5,

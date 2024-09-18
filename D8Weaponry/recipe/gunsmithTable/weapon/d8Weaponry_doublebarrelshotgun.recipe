@@ -5,5 +5,5 @@
     { "item" : "darkwoodmaterial", "count" : 3 }
   ],
   "output" : { "item" : "d8Weaponry_doublebarrelshotgun", "count" : 1 },
-  "groups" : [ "d8Weaponry_gunsmithing_level2" ]
+  "groups" : [ "d8Weaponry_gunsmithing_lv2", "d8Weaponry_gunsmithing" ]
 }

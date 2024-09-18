@@ -1,0 +1,26 @@
+[
+	{
+		"op": "add",
+		"path": "/default/-",
+		"value": {
+			"interactAction": "OpenCraftingInterface",
+			"interactData": {
+				
+				"paneLayoutOverride" : {
+					"windowtitle" : {
+						"title" : " Gunsmithing",
+						"subtitle" : " ^#b9b5b2;Powder and Casings",
+						"icon" : {
+							"file" : "/interface/crafting/craftinganvil.png"
+						}
+					}
+				},
+				"config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
+			
+				"filter" : [
+					"d8Weaponry_munition_lv1"
+				]
+			}
+		}
+	}
+]

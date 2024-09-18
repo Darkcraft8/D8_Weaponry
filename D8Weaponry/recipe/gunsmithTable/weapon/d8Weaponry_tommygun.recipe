@@ -6,5 +6,5 @@
     { "item" : "volatilepowder", "count" : 2 }
   ],
   "output" : { "item" : "d8Weaponry_tommygun", "count" : 1 },
-  "groups" : [ "d8Weaponry_gunsmithing_level2" ]
+  "groups" : [ "d8Weaponry_gunsmithing_lv2", "d8Weaponry_gunsmithing" ]
 }
