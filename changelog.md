@@ -14,7 +14,8 @@
 ## Change : 
     Gunsmithing Pane now has three category "weapon", "munition" and "conversion"
     Gunsmith Table no longer use the complex mode of the script and now use the basic one
-    Tungsten Shotgun *Physical Variant* updated to use the new "emptyToReload" stances and weaponDirective globalTag for better animation
+    Tungsten Shotgun *Physical Variant* updated to use the new "emptyToReload" stances and weaponDirective
+        globalTag for better animation
     Iron Assault Rifle *Physical Variant* converted the two last "reload" stances to "reloadAfterEmpty" stances
 
 ## Buff :
