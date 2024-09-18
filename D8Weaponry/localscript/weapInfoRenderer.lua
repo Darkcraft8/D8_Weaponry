@@ -358,7 +358,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
         windowSize = window.size()
         windowSize = {windowSize[1] / (posMultiply * 1.015), windowSize[2] / (posMultiply / 1.07)}
     end
-    if config["sideLeaning"] ~= "center" then
+    if d8Weaponry_var.config["sideLeaning"] ~= "center" then
         ammoPos[1] = barX
     end
     local ammoText = d8Weaponry_var.memory[slot]["ammoText"]
@@ -386,7 +386,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                 fullbright = true,
                 rotation = 0
             }
-            if config["sideLeaning"] == "left" then
+            if d8Weaponry_var.config["sideLeaning"] == "left" then
                 drawable["position"][1] = (ammoPos[1] - 0.45) - (segmentSize*segmentNum)
             end
             if RGB then
@@ -399,16 +399,16 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                     drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=7F7F7F%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
                 end
             end
-            if not starExtensions or not config["starExtensions"]["useUiAnimator"] then
+            if not starExtensions or not d8Weaponry_var.config["starExtensions"]["useUiAnimator"] then
                 localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
             elseif not starExtensions then
                 localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
-            elseif config["starExtensions"]["posAnchor"] == "player" then
+            elseif d8Weaponry_var.config["starExtensions"]["posAnchor"] == "player" then
                 localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
             else
                 local drawX = drawable["position"][1]
                 local drawY = drawable["position"][2]
-                local anchor = config["starExtensions"]["posAnchor"]
+                local anchor = d8Weaponry_var.config["starExtensions"]["posAnchor"]
                 -- default is bottomLeft
                 drawY = drawable["position"][2] + 8
                 if anchor == "bottomRight" then
@@ -505,7 +505,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                     fullbright = true,
                     rotation = 0
                 }
-                if config["sideLeaning"] == "left" then
+                if d8Weaponry_var.config["sideLeaning"] == "left" then
                     drawable["position"][1] = (ammoPos[1] - 0.45) - (segmentSize*segmentNum)
                 end
                 if RGB then
@@ -518,16 +518,16 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                         drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=FFFFFF%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
                     end
                 end
-                if not starExtensions or not config["starExtensions"]["useUiAnimator"] then
+                if not starExtensions or not d8Weaponry_var.config["starExtensions"]["useUiAnimator"] then
                     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
                 elseif not starExtensions then
                     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
-                elseif config["starExtensions"]["posAnchor"] == "player" then
+                elseif d8Weaponry_var.config["starExtensions"]["posAnchor"] == "player" then
                     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
                 else
                     local drawX = drawable["position"][1]
                     local drawY = drawable["position"][2]
-                    local anchor = config["starExtensions"]["posAnchor"]
+                    local anchor = d8Weaponry_var.config["starExtensions"]["posAnchor"]
                     -- default is bottomLeft
                     drawY = drawable["position"][2] + 8
                     if anchor == "bottomRight" then
@@ -588,7 +588,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                 centered = false,
                 rotation = 0
             }
-            if config["sideLeaning"] == "left" then
+            if d8Weaponry_var.config["sideLeaning"] == "left" then
                 drawable["position"][1] = (ammoPos[1] - 0.2) - (segmentSize)
             end
             if RGB then
