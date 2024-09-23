@@ -18,6 +18,8 @@ idea for next updates :
 --> Grenade Launcher
 --> Basicaly more weapons
 
+-+> Weapons Quality/Level Upgrade
+-+> Weapons Attachment through new bench or item that open a pane to change attachment
 --> New Bow
 --> Crossbows
 

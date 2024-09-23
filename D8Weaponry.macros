@@ -21,6 +21,7 @@
 
     "d8Weaponry_testT1" : [
         "/spawnitem d8Weaponry_ironrevolver",
+        "/spawnitem d8Weaponry_glock",
         "/spawnitem d8Weaponry_ironassaultrifle",
         "/spawnitem d8Weaponry_standardbullet 5000"
     ],

@@ -441,34 +441,34 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
         end
         
         local segmentNum = util.clamp(math.ceil(count), 0, 20)
-        memory[slot]["slideTimer"] = memory[slot]["slideTimer"] or 0
-        memory[slot]["invertSlide"] = memory[slot]["invertSlide"] or false
+        d8Weaponry_var.memory[slot]["slideTimer"] = d8Weaponry_var.memory[slot]["slideTimer"] or 0
+        d8Weaponry_var.memory[slot]["invertSlide"] = d8Weaponry_var.memory[slot]["invertSlide"] or false
         local slideTimer = 0
-        if memory[slot]["lastAmmoCount"] and memory[slot]["lastAmmoCount"] > segmentNum then
-            local min = memory[slot]["lastAmmoCount"]
+        if d8Weaponry_var.memory[slot]["lastAmmoCount"] and d8Weaponry_var.memory[slot]["lastAmmoCount"] > segmentNum then
+            local min = d8Weaponry_var.memory[slot]["lastAmmoCount"]
             if min <= 0 then
                 min = 1
             end
-            memory[slot]["slideTimer"] = 0.25--segmentNum / (min / segmentSize)
-            memory[slot]["invertSlide"] = false
-        elseif memory[slot]["lastAmmoCount"] and memory[slot]["lastAmmoCount"] < segmentNum  then
-            local min = memory[slot]["lastAmmoCount"]
+            d8Weaponry_var.memory[slot]["slideTimer"] = 0.25--segmentNum / (min / segmentSize)
+            d8Weaponry_var.memory[slot]["invertSlide"] = false
+        elseif d8Weaponry_var.memory[slot]["lastAmmoCount"] and d8Weaponry_var.memory[slot]["lastAmmoCount"] < segmentNum  then
+            local min = d8Weaponry_var.memory[slot]["lastAmmoCount"]
             if min <= 0 then
                 min = 1
             end
-            memory[slot]["slideTimer"] = 0.25--segmentNum / (min / segmentSize)
-            memory[slot]["invertSlide"] = true
+            d8Weaponry_var.memory[slot]["slideTimer"] = 0.25--segmentNum / (min / segmentSize)
+            d8Weaponry_var.memory[slot]["invertSlide"] = true
         end
 
-        if memory[slot]["slideTimer"] > 0 then
-            local diff = memory[slot]["lastAmmoCount"] - segmentNum
-            slideTimer = 1 * memory[slot]["slideTimer"] --util.clamp(diff, 2.7, diff) * memory[slot]["slideTimer"]
-            if memory[slot]["invertSlide"] then
-                slideTimer = 1 * memory[slot]["slideTimer"]
+        if d8Weaponry_var.memory[slot]["slideTimer"] > 0 then
+            local diff = d8Weaponry_var.memory[slot]["lastAmmoCount"] - segmentNum
+            slideTimer = 1 * d8Weaponry_var.memory[slot]["slideTimer"] --util.clamp(diff, 2.7, diff) * d8Weaponry_var.memory[slot]["slideTimer"]
+            if d8Weaponry_var.memory[slot]["invertSlide"] then
+                slideTimer = 1 * d8Weaponry_var.memory[slot]["slideTimer"]
             end
-            memory[slot]["slideTimer"] = memory[slot]["slideTimer"] - (script.updateDt() * (2))
-            if memory[slot]["slideTimer"] < 0 then
-                memory[slot]["slideTimer"] = 0
+            d8Weaponry_var.memory[slot]["slideTimer"] = d8Weaponry_var.memory[slot]["slideTimer"] - (script.updateDt() * (2))
+            if d8Weaponry_var.memory[slot]["slideTimer"] < 0 then
+                d8Weaponry_var.memory[slot]["slideTimer"] = 0
             end
         end
         local highestSegmentNum = segmentNum
@@ -478,7 +478,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                 local slided = staticPos
                 if renderConf["animateBar"] then
                     --slided = (ammoPos[1] + (0.45 / (segmentSize/slideTimer))) + (segmentSize*(segmentNum))
-                    if memory[slot]["invertSlide"] then
+                    if d8Weaponry_var.memory[slot]["invertSlide"] then
                         if segmentNum == highestSegmentNum then
                             local math = (segmentSize*slideTimer)
                             slided = (staticPos + math)
@@ -561,7 +561,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
         else
             local size = util.clamp(math.ceil(amountMax), 0, 20)*4
             local cull = (util.clamp(math.ceil(count), 0, 20))*4
-            local lastCullPercent = memory[slot]["lastCullPercent"] or cull
+            local lastCullPercent = d8Weaponry_var.memory[slot]["lastCullPercent"] or cull
             if lastCullPercent ~= cull then
                 local multiply = lastCullPercent
 
@@ -604,9 +604,9 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
             localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
 
             if lastCullPercent <= (cull + 0.2) and lastCullPercent >= (cull - 0.2) then
-                memory[slot]["lastCullPercent"] = cull
+                d8Weaponry_var.memory[slot]["lastCullPercent"] = cull
             else
-                memory[slot]["lastCullPercent"] = lastCullPercent
+                d8Weaponry_var.memory[slot]["lastCullPercent"] = lastCullPercent
             end
         end
         
