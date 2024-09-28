@@ -1,0 +1,14 @@
+{
+  "input" : [
+    { "item" : "darkwoodmaterial", "count" : 8 },
+    { "item" : "paper", "count" : 15 },
+    { "item" : "ironbar", "count" : 2},
+    { "item" : "coalore", "count" : 10}
+  ],
+  "output" : {
+    "item" : "d8Weaponry_gunsmithrefinementworkbench",
+    "count" : 1
+  },
+  "duration" : 2.5,
+  "groups" : [ "inventorstable", "craftingstations", "all" ]
+}

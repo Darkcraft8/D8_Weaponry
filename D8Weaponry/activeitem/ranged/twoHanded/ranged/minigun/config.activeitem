@@ -1,0 +1,540 @@
+{
+  "itemName" : "d8Weaponry_minigun",
+  "price" : 3250,
+  "maxStack" : 1,
+  "rarity" : "Legendary",
+  "description" : "All of you will fear my giant new gun.",
+  "shortdescription" : "Minigun",
+  "category" : "Gatling Gun",
+  "tooltipKind" : "d8Weaponry_gun",
+  "twoHanded" : true,
+  "itemTags" : ["weapon","ranged","gatlinggun", "d8Weaponry_gun"],
+	"level" : 6,
+    
+    "inventoryIcon" : [
+        { "image" : "normal.png:idle" }
+    ],
+    "animation" : "/D8Weaponry/activeitem/ranged/gun.animation",
+    "animationParts" : {
+        "middle" : "normal-body.png",
+        "clip" : "normal-clip.png",
+        "muzzle" : "normal-muzzle.png",
+        "ammo" : "normal-ammo.png",
+        "muzzleFlash" : "/items/active/weapons/ranged/muzzleflash.png"
+    },
+    "animationCustom" : {
+            "sounds" : {
+                "fire" : {
+                    "rangeMultiplier" : 1,
+                    "pitchMultiplier" : 0.75,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/mech_gatling1.ogg"]
+                },
+                "open" : {
+                    "rangeMultiplier" : 1,
+                    "pitchMultiplier" : 0.8,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/reload/pistol_reload_clip1.ogg"]
+                },
+                "reload" : {
+                    "rangeMultiplier" : 1,
+                    "pitchMultiplier" : 0.75,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/reload/pistol_reload_clip2.ogg"]
+                },
+                "close" : {
+                    "rangeMultiplier" : 1,
+                    "pitchMultiplier" : 0.75,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/reload/shotgun_reload_clip2.ogg"]
+                },
+                "slide" : {
+                    "rangeMultiplier" : 1.25,
+                    "pitchMultiplier" : 1,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/reload/pistol_reload_clip3.ogg"]
+                }
+            },
+            "animatedParts" : {
+              "stateTypes" : {
+                  "animation" : {
+                    "default" : "idle",
+                    "states" : {
+                      "idle" : {},
+                      "reload1" : {},
+                      "reload2" : {},
+                      "reload3" : {},
+                      "fire" : {
+                        "frames" : 2,
+                        "cycle" : 0.15,
+                        "mode" : "transition",
+                        "transition" : "idle"
+                      },
+                      "slide" : {
+                        "frames" : 1,
+                        "cycle" : 0.25,
+                        "mode" : "transition",
+                        "transition" : "fire"
+                      }
+                    }
+                  }
+                },
+              "parts" : {
+                "middle" : {
+                  "properties" : {
+                    "centered" : true,
+                    "offset" : [0, 0],
+                    "zLevel" : -1,
+                    "transformationGroups" : ["weapon"]
+                  },
+
+                  "partStates" : {
+                    "animation" : {
+                      "idle" : {
+                        "properties" : {
+                        "image" : "<partImage>:idle"
+                        }
+                      },
+                      "reload1" : {
+                        "properties" : {
+                        "image" : "<partImage>:idle"
+                        }
+                      },
+                      "reload2" : {
+                        "properties" : {
+                        "image" : "<partImage>:idle"
+                        }
+                      },
+                      "reload3" : {
+                        "properties" : {
+                        "image" : "<partImage>:idle"
+                        }
+                      },
+                      "fire" : {
+                        "properties" : {
+                        "image" : "<partImage>:idle"
+                        }
+                      }
+                    }
+                  }
+                },
+                
+                "clip" : {
+                    "properties" : {
+                      "centered" : true,
+                      "offset" : [0, 0],
+                      "zLevel" : -2,
+                      "transformationGroups" : ["weapon"]
+                    },
+  
+                    "partStates" : {
+                      "animation" : {
+                        "idle" : {
+                          "properties" : {
+                          "image" : "<partImage>:idle"
+                          }
+                        },
+                        "reload1" : {
+                          "properties" : {
+                          "image" : "<partImage>:reload1"
+                          }
+                        },
+                        "reload2" : {
+                          "properties" : {
+                          "image" : "<partImage>:reload2"
+                          }
+                        },
+                        "reload3" : {
+                          "properties" : {
+                          "image" : "<partImage>:idle"
+                          }
+                        },
+                        "fire" : {
+                          "properties" : {
+                          "image" : "<partImage>:idle"
+                          }
+                        }
+                      }
+                    }
+                },
+
+                "muzzle" : {
+                    "properties" : {
+                      "centered" : true,
+                      "offset" : [0, 0],
+                      "transformationGroups" : ["weapon"]
+                    },
+  
+                    "partStates" : {
+                      "animation" : {
+                        "idle" : {
+                          "properties" : {
+                          "image" : "<partImage>:idle?saturation=<temperature>?brightness=<temperature>"
+                          }
+                        },
+                        "reload1" : {
+                          "properties" : {
+                          "image" : "<partImage>:reload1?saturation=<temperature>?brightness=<temperature>"
+                          }
+                        },
+                        "reload2" : {
+                          "properties" : {
+                          "image" : "<partImage>:reload2?saturation=<temperature>?brightness=<temperature>"
+                          }
+                        },
+                        "reload3" : {
+                          "properties" : {
+                          "image" : "<partImage>:idle?saturation=<temperature>?brightness=<temperature>"
+                          }
+                        },
+                        "fire" : {
+                          "properties" : {
+                          "image" : "<partImage>:fire.<frame>?saturation=<temperature>?brightness=<temperature>"
+                          }
+                        }
+                      }
+                    }
+                },
+
+                "ammo" : {
+                    "properties" : {
+                      "centered" : true,
+                      "offset" : [0, 0],
+                      "transformationGroups" : ["weapon"]
+                    },
+  
+                    "partStates" : {
+                      "animation" : {
+                        "idle" : {
+                          "properties" : {
+                          "image" : "<partImage>:ammo.1"
+                          }
+                        },
+                        "reload1" : {
+                          "properties" : {
+                          "image" : "<partImage>:null"
+                          }
+                        },
+                        "reload2" : {
+                          "properties" : {
+                          "image" : "<partImage>:null"
+                          }
+                        },
+                        "reload3" : {
+                          "properties" : {
+                          "image" : "<partImage>:ammo_reload.0"
+                          }
+                        },
+                        "fire" : {
+                          "properties" : {
+                          "image" : "<partImage>:ammo.<frame>"
+                          }
+                        }
+                      }
+                    }
+                }
+              }
+            },
+            "particleEmitters" : {
+                "bulletShell" : {
+                    "active" : false,
+                    "transformationGroups" : ["weapon"],
+                    "emissionRate" : 1,
+                    "burstCount" : 1,
+                    "particles" : [
+                        {
+                            "particle" : {
+                                "type" : "textured",
+                                "image" : "/projectiles/throwable/throwinggnomes/throwinggnome1.png?saturation=-100?multiply=968e4b",
+                                "position" : [0, 0],
+                                "initialVelocity" : [-10, 2.0],
+                                "finalVelocity" : [0, -30.0],
+                                "approach" : [0.25, 50],
+                                "angularVelocity" : -3600,
+                                "fade" : 1,
+                                "destructionAction" : "fade",
+                                "destructionTime" : 1,
+                                "size" : 1,
+                                "timeToLive" : 1.25,
+                                "fullbright" : false,
+                                "layer" : "back",
+                                "collidesForeground" : true,
+                                "color" : [255, 255, 255, 255],
+                                "variance" : {
+                                    "position" : [0.25, 0.25],
+                                    "initialVelocity" : [0, 5]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        
+    },
+    
+    "baseOffset" : [0, 0],
+    "muzzleOffset" : [3.25, -0.15],
+    "aimOffset" : -1,
+    
+    "scripts" : ["/items/active/weapons/ranged/gun.lua"],
+    
+    "elementalType" : "physical",
+    
+    "primaryAbility" : {
+        "scripts" : ["/D8Weaponry/activeitem/ranged/d8weap_gunfire_fork.lua"],
+        "class" : "GunFire",
+        
+        "fireTime" : 0.05,
+        "baseDps" : 150.0,
+        "energyUsage" : 10,
+        "projectileCount" : 1,
+        "inaccuracy" : 0.03,
+        "baseDamageMultiplier" : 1.25,
+        "fireType" : "auto",
+        
+        "projectileType" : "standardbullet",
+        "projectileParameters" : {
+          "knockback" : 8,
+          "actionOnReap" : [
+              {
+                  "options" : [ "/sfx/projectiles/bullet_ricochet1.ogg", "/sfx/projectiles/bullet_ricochet3.ogg", "/sfx/projectiles/bullet_ricochet11.ogg", "/sfx/projectiles/bullet_ricochet12.ogg", "/sfx/projectiles/bullet_ricochet13.ogg" ],
+                  "action" : "sound"
+              },
+              {
+                  "action" : "loop",
+                  "count" : 7,
+                  "body" : [
+                      {
+                          "action" : "particle",
+                          "specification" : {
+                              "type" : "ember",
+                              "size" : 0.8,
+                              "color" : [20, 20, 20, 255],
+                              "fade" : 0.5,
+                              "initialVelocity" : [0, 1.5],
+                              "finalVelocity" : [0, -2],
+                              "approach" : [20, 20],
+                              "destructionTime" : 0.2,
+                              "layer" : "back",
+                              "variance" : {
+                                  "initialVelocity" : [5, 5],
+                                  "finalVelocity" : [0, 1.5],
+                                  "size" : 0.5
+                              }
+                          }
+                      },
+                      {
+                          "action" : "particle",
+                          "specification" : {
+                              "type" : "ember",
+                              "size" : 0.8,
+                              "color" : [100, 100, 100, 255],
+                              "fade" : 0.3,
+                              "initialVelocity" : [0, 1.5],
+                              "finalVelocity" : [0, -2],
+                              "approach" : [20, 20],
+                              "destructionTime" : 0.2,
+                              "layer" : "back",
+                              "variance" : {
+                                  "initialVelocity" : [5, 5],
+                                  "finalVelocity" : [0, 1.5],
+                                  "size" : 0.5
+                              }
+                          }
+                      },
+                      {
+                          "action" : "particle",
+                          "specification" : {
+                              "type" : "ember",
+                              "size" : 0.5,
+                              "color" : [50, 50, 50, 255],
+                              "fade" : 0.3,
+                              "initialVelocity" : [0, 1.5],
+                              "finalVelocity" : [0, -2],
+                              "approach" : [20, 20],
+                              "destructionTime" : 0.2,
+                              "layer" : "back",
+                              "variance" : {
+                                  "initialVelocity" : [5, 5],
+                                  "finalVelocity" : [0, 1.5],
+                                  "size" : 0.5
+                              }
+                          }
+                      }
+                  ]
+              }
+          ]
+        },
+        "projectileOffset" : [0, 0.6],
+        "muzzleFlashVariants" : 1,
+        
+        "stances" : {
+            "idle" : {
+                "weaponRotation" : 15,
+                "armRotation" : -15,
+                "armAngularVelocity" : 0,
+                "weaponOffset" : [-0.35, -0.3],
+                "weaponAngularVelocity" : 0,
+                "frontArmFrame" : "run.5",
+                "weaponRotationCenter" : [0, 0],
+                "backArmFrame" : "rotation",
+
+                "twoHanded" : true,
+                "allowRotate" : true,
+                "allowFlip" : true
+            },
+            "fire" : {
+                "duration" : 0,
+                "weaponRotation" : 15,
+                "armRotation" : -15,
+                "armAngularVelocity" : 0,
+                "weaponOffset" : [-0.35, -0.3],
+                "weaponAngularVelocity" : 0,
+                "frontArmFrame" : "run.5",
+                "weaponRotationCenter" : [0, 0],
+                "backArmFrame" : "rotation",
+                "burstParticleEmitters" : ["bulletShell"],
+                "animationStates" : {
+                    "animation" : "fire"
+                },
+
+                "twoHanded" : true,
+                "allowRotate" : false,
+                "allowFlip" : false,
+
+                "temp" : 25
+            },
+            "cooldown" : {
+                "duration" : 0.010,
+                "weaponRotation" : 15,
+                "armRotation" : -15,
+                "armAngularVelocity" : 0,
+                "weaponOffset" : [-0.35, -0.3],
+                "weaponAngularVelocity" : 0,
+                "frontArmFrame" : "run.5",
+                "weaponRotationCenter" : [0, 0],
+                "backArmFrame" : "rotation",
+
+                "twoHanded" : true,
+                "allowRotate" : false,
+                "allowFlip" : false
+            },
+            "reload1" : {
+                "duration" : 0.3,
+                "allowFlip" : true,
+                "weaponRotation" : 125,
+                "armRotation" : 0,
+                "aimAngle" : 0,
+                "weaponOffset" : [0.3, 0.4],
+                "frontArmFrame" : "run.2",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "backArmFrame" : "fall.2"
+            },
+            "reload2" : {
+                "duration" : 0.25,
+                "allowFlip" : true,
+                "weaponRotation" : 125,
+                "armRotation" : 0,
+                "aimAngle" : 0,
+                "weaponOffset" : [0.3, 0.4],
+                "frontArmFrame" : "run.2",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "animationStates" : {
+                    "animation" : "reload1"
+                },
+                "playSounds" : ["open"],
+                "backArmFrame" : "fall.1"
+            },
+            "reload3" : {
+                "duration" : 0.25,
+                "allowFlip" : true,
+                "weaponRotation" : 125,
+                "armRotation" : 0,
+                "aimAngle" : 0,
+                "weaponOffset" : [0.3, 0.4],
+                "frontArmFrame" : "run.2",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "animationStates" : {
+                    "animation" : "reload2"
+                },
+                "backArmFrame" : "fall.1"
+            },
+
+            "reload4" : {
+                "duration" : 0.25,
+                "allowFlip" : true,
+                "weaponRotation" : 125,
+                "armRotation" : 0,
+                "aimAngle" : 0,
+                "weaponOffset" : [0.3, 0.4],
+                "frontArmFrame" : "run.2",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "animationStates" : {
+                    "animation" : "reload1"
+                },
+                "backArmFrame" : "fall.1"
+            },
+            "reload5" : {
+                "duration" : 0.3,
+                "allowFlip" : true,
+                "weaponRotation" : 125,
+                "armRotation" : 0,
+                "aimAngle" : 0,
+                "weaponOffset" : [0.3, 0.4],
+                "frontArmFrame" : "run.2",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "animationStates" : {
+                    "animation" : "reload3"
+                },
+                "playSounds" : ["reload"],
+                "backArmFrame" : "fall.2"
+            },
+
+            "reload6" : {
+                "duration" : 0.25,
+                "allowFlip" : true,
+                "weaponRotation" : 25,
+                "armRotation" : 0,
+                "aimAngle" : 0,
+                "weaponOffset" : [-0.3, 0.25],
+                "animationStates" : {
+                 "animation" : "idle"
+                },
+                "frontArmFrame" : "rotation",
+                "playSounds" : ["close"],
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "backArmFrame" : "rotation"
+            }
+        },
+
+        "reloadwithattack" : false,
+        "ammoType" : "d8Weaponry_standardbullet",
+        "ammoName" : "Standard Bullet",
+        "ammoMaxName" : "magasinCapacity",
+        "ammoCountName" : "magasin",
+        "reloadType" : "most",
+        "ammoCost" : 1
+    },
+
+    "d8Weaponry" : [
+        {
+          "isBar" : true,
+          "ammoMaxName" : "magasinCapacity",
+          "ammoCountName" : "magasin",
+          "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
+          "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png",
+		      "rotation" : -90,
+          "numberOnly" : true
+        }
+    ],
+    "magasinCapacity" : 300,
+    "magasin" : 0,
+
+    "builder" : "/D8Weaponry/buildscripts/buildunrandrangedweapon.lua"
+}

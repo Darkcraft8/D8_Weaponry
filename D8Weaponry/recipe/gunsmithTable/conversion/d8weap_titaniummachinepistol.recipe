@@ -4,5 +4,5 @@
     { "item" : "volatilepowder", "count" : 10 }
   ],
   "output" : { "item" : "titaniummachinepistol", "count" : 1 },
-  "groups" : [ "d8Conversion_titaniummachinepistol" ]
+  "groups" : [ "d8Conversion_gunsmith_lv2", "d8Conversion" ]
 }

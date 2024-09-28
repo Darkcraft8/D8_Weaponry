@@ -3,6 +3,21 @@
     { "item" : "d8Weaponry_ironassaultrifle", "count" : 1 },
     { "item" : "volatilepowder", "count" : 10 }
   ],
-  "output" : { "item" : "ironassaultrifle", "count" : 1 },
-  "groups" : [ "d8Conversion_ironassaultrifle" ]
+  "output" : { 
+    "item" : "ironassaultrifle",
+    "count" : 1,
+    "parameters" : {
+      "d8Weaponry" : [
+        {
+          "cost" : 3.5,
+          "isRessource" : true,
+          "barText" : "/interface/fillbarpiece.png:?hueshift=100",
+          "numberOnly" : false,
+          "ressourceName" : "energy",
+          "ammoText" : "/interface/stats/maxenergy.png:?crop;0;0;15;15"
+        }
+      ]
+    } 
+  },
+  "groups" : [ "d8Conversion_gunsmith_lv1", "d8Conversion" ]
 }

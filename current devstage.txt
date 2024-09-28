@@ -1,0 +1,33 @@
+Current Dev Stage of Weaponry : Finished for first release
+
+-- > reload check if there an reload stance with an higher index before setting that it completed (if no reload[index + 1] then finish = true)
+
+-- > ammo bar is rendered on the local client + durability bar is tricked to show up to give a small indicator on the ammount of primary ability ammo that the weapon has
+
+-- > allow the players to add an offset for the general rendering position of the ammo bar
+
+-- > add postFire (pump/lever action for exemple) to allow creation of non auto refill weapon...
+	maybe also allow the weapon to have persistance on if the postFire has been played and if it automaticaly played or not.
+
+-- > make weapons
+
+todo :
+--> config screen for the renderer
+
+idea for next updates : 
+
+--> Rocket Launcher
+--> Grenade Launcher
+--> Basicaly more weapons
+
+-+> Weapons Quality/Level Upgrade
+-+> Weapons Attachment through new bench or item that open a pane to change attachment
+--> New Bow
+--> Crossbows... just disguising a gun should be enough
+
+postPone :
+
+-- > allow to override the projectile action with hitscan for insanely fast projectile representation (a laser or sniper round for exemple)...
+	possibly with "isHitscan" : true has parameters... maybe make so that the projectile spawn one or two block distance from destination so that it easier to 
+	create and/or convert weapons
+	

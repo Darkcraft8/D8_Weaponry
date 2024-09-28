@@ -4,5 +4,5 @@
     { "item" : "volatilepowder", "count" : 10 }
   ],
   "output" : { "item" : "d8Weaponry_tungstenmagnum", "count" : 1 },
-  "groups" : [ "d8Conversion_tungstenmagnum" ]
+  "groups" : [ "d8Conversion_gunsmith_lv1", "d8Conversion" ]
 }

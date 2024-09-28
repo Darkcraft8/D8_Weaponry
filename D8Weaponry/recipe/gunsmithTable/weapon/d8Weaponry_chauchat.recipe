@@ -1,0 +1,11 @@
+{
+  "input" : [
+    { "item" : "darkwoodmaterial", "count" : 10 },
+    { "item" : "ironbar", "count" : 3 },
+    { "item" : "silverbar", "count" : 5 }
+  ],
+
+  "duration" : 2,
+  "output" : { "item" : "d8Weaponry_chauchat", "count" : 1 },
+  "groups" : [ "d8Weaponry_gunsmithing_lv1", "d8Weaponry_gunsmithing" ]
+}

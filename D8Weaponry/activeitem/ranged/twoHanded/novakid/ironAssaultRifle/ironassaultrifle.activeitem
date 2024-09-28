@@ -278,8 +278,7 @@
                 "backArmFrame" : "run.5",
                 "burstParticleEmitters" : ["bulletShell"],
                 "animationStates" : {
-                    "animation" : "fire",
-                    "barrelSmoke" : "on"
+                    "animation" : "fire"
                 },
                 "twoHanded" : true,
                 
@@ -390,7 +389,7 @@
                 "allowRotate" : false,
                 "allowFlip" : false
             },
-            "reload6" : {
+            "reloadAfterEmpty1" : {
                 "duration" : 0.2,
                 "weaponRotation" : 45,
                 "armRotation" : 0,
@@ -405,7 +404,7 @@
                 "allowRotate" : false,
                 "allowFlip" : false
             },
-            "reload7" : {
+            "reloadAfterEmpty2" : {
                 "duration" : 0.2,
                 "weaponRotation" : 45,
                 "armRotation" : 0,
@@ -546,8 +545,7 @@
                 "backArmFrame" : "run.5",
                 "burstParticleEmitters" : ["bulletShell"],
                 "animationStates" : {
-                    "animation" : "fire",
-                    "barrelSmoke" : "on"
+                    "animation" : "fire"
                 },
                 "twoHanded" : true,
                 
@@ -705,6 +703,7 @@
 
     "d8Weaponry" : [
         {
+            "isBar" : true,
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",

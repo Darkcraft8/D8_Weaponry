@@ -13,10 +13,11 @@ function build(directory, config, parameters, level, seed)
       return defaultValue
     end
   end
-
-  if level and not configParameter("fixedLevel", true) then
-    parameters.level = level
+  
+  if (level or configParameter("level", 1)) and not configParameter("fixedLevel", false) then
+    parameters.level = (level or configParameter("level", 1))
   end
+  parameters.d8Weaponry_resetTooltipOnUpgrade = configParameter("d8Weaponry_resetTooltipOnUpgrade", true)
 
   setupAbility(config, parameters, "primary")
   setupAbility(config, parameters, "alt")
@@ -60,26 +61,29 @@ function build(directory, config, parameters, level, seed)
 
   -- populate tooltip fields
   if config.tooltipKind ~= "base" then
-    config.tooltipFields = {}
-    if not parameters.tooltipFields then
-      parameters.tooltipFields = {}
-    end
-    config.tooltipFields.levelLabel = util.round(configParameter("level", 1), 1)
+    config.tooltipFields = config.tooltipFields or {}
+    config.tooltipFields.levelLabel = string.format("Level: %s", math.floor(util.round(configParameter("level", 1), 1)))
+    local ammoCost = ((config[config.primaryAbility.ammoMaxName] or 2) - (config.primaryAbility.stances.ammoCost or 1))
     config.tooltipFields.dpsLabel = util.round((config.primaryAbility.baseDps or 0) * config.damageLevelMultiplier, 1)
     config.tooltipFields.speedLabel = util.round(1 / (config.primaryAbility.fireTime or 1.0), 1)
-    config.tooltipFields.damagePerShotLabel = util.round((config.primaryAbility.baseDps or 0) * (config.primaryAbility.fireTime or 1.0) * config.damageLevelMultiplier, 1)
-    config.tooltipFields.energyPerShotLabel = util.round((config.primaryAbility.energyUsage or 0) * (config.primaryAbility.fireTime or 1.0), 1)
-
-    if not parameters.tooltipFields.rarityLabel then
-      if string.lower(config.rarity) == "uncommon" then
-        parameters.tooltipFields.rarityLabel = "^green;Uncommon^reset;"
-      elseif string.lower(config.rarity) == "rare" then
-        parameters.tooltipFields.rarityLabel = "^Cyan;Rare^reset;"
-      elseif  string.lower(config.rarity) == "legendary" then
-        parameters.tooltipFields.rarityLabel = "^magenta;Legendary^reset;"
-      elseif  string.lower(config.rarity) == "essential" then
-        parameters.tooltipFields.rarityLabel = "^orange;Essential^reset;"
+    local reloadTime = 0
+    for stancesName, value in pairs(config.primaryAbility.stances) do 
+      if string.find(stancesName, "reload") and value.duration then
+        reloadTime = reloadTime + value.duration
       end
+    end
+    config.tooltipFields.reloadLabel = string.format("Reload: ~%s", reloadTime)
+    config.tooltipFields.damagePerShotLabel = util.round((config.primaryAbility.baseDamage or (config.primaryAbility.baseDps / (ammoCost / (ammoCost*(8/ammoCost) ) ) ) ) * (config.primaryAbility.baseDamageMultiplier or 1.0) * (config.primaryAbility.damageLevelMultiplier or 1.0) / (config.primaryAbility.projectileCount or 1), 1)
+    config.tooltipFields.energyPerShotLabel = util.round((config.primaryAbility.energyUsage or 0) * (config.primaryAbility.fireTime or 1.0), 1)
+    
+    if string.lower(config.rarity) == "uncommon" then
+      config.tooltipFields.rarityLabel = "^green;Uncommon^reset;"
+    elseif string.lower(config.rarity) == "rare" then
+      config.tooltipFields.rarityLabel = "^Cyan;Rare^reset;"
+    elseif  string.lower(config.rarity) == "legendary" then
+      config.tooltipFields.rarityLabel = "^magenta;Legendary^reset;"
+    elseif  string.lower(config.rarity) == "essential" then
+      config.tooltipFields.rarityLabel = "^orange;Essential^reset;"
     end
 
     if elementalType ~= "physical" then
@@ -88,29 +92,41 @@ function build(directory, config, parameters, level, seed)
     if config.primaryAbility then
       config.tooltipFields.primaryAbilityTitleLabel = "Primary:"
       config.tooltipFields.primaryAbilityLabel = config.primaryAbility.name or "unknown"
-
-      tooltipAmmo1(directory, config, parameters, level, seed)
+      
+      config.tooltipFields.ammo1NameLabel = config.primaryAbility.ammoName or config.primaryAbility.ammoType
+      if type(config.primaryAbility.ammoType) ~= "string" then
+        config.tooltipFields.ammo1NameLabel = config.primaryAbility.ammoType.name
+      end
+      config.tooltipFields.ammo1CapacityTitleLabel = "Primary Capacity:"
+      config.tooltipFields.ammo1TitleLabel = "Primary Amount:"
+      config.tooltipFields.ammo1CapacityLabel = config[config.primaryAbility.ammoMaxName] or "unknown"
+      config.tooltipFields.ammo1Label = config[config.primaryAbility.ammoCountName] or "unknown"
     end
 
     if config.altAbility then
       config.tooltipFields.altAbilityTitleLabel = "Special:"
       config.tooltipFields.altAbilityLabel = config.altAbility.name or "unknown"
-
-      tooltipAmmo2(directory, config, parameters, level, seed)
+      
+      if   config.primaryAbility.ammoCountName ~= config.altAbility.ammoCountName
+      and config.primaryAbility.ammoMaxName ~= config.altAbility.ammoMaxName
+      and config.altAbility.ammoMaxName
+      and config.altAbility.ammoCountName then
+   
+        config.tooltipFields.ammo2NameLabel = config.altAbility.ammoName or config.altAbility.ammoType
+        if type(config.altAbility.ammoType) ~= "string" then
+          config.tooltipFields.ammo2NameLabel = config.altAbility.ammoType.name
+        end
+        config.tooltipFields.ammo2CapacityTitleLabel = "Alt Capacity:"
+        config.tooltipFields.ammo2TitleLabel = "Alt Amount:"
+        config.tooltipFields.ammo2CapacityLabel = config[config.altAbility.ammoMaxName] or "unknown"
+        config.tooltipFields.ammo2Label = config[config.altAbility.ammoCountName] or "unknown"
+      end
+     
     end
   end
-  -- populate d8Weaponry
+  -- populate parameters d8Weaponry 
   if config.d8Weaponry then
-    parameters.d8Weaponry = parameters.d8Weaponry or config.d8Weaponry
-  end
-  -- setUp ammo count
-  if config.primaryAbility.ammoCountName then
-    parameters[config.primaryAbility.ammoCountName] = parameters[config.primaryAbility.ammoCountName] or config[config.primaryAbility.ammoCountName] or config[config.primaryAbility.ammoMaxName]
-  end
-  if config.altAbility then
-    if config.altAbility.ammoCountName then
-      parameters[config.altAbility.ammoCountName] = parameters[config.altAbility.ammoCountName] or config[config.altAbility.ammoCountName] or config[config.altAbility.ammoMaxName]
-    end
+    parameters.d8Weaponry = config.d8Weaponry
   end
 
   -- set price
@@ -118,37 +134,4 @@ function build(directory, config, parameters, level, seed)
   config.price = (config.price or 0) * root.evalFunction("itemLevelPriceMultiplier", configParameter("level", 1))
 
   return config, parameters
-end
-
-function tooltipAmmo1(directory, config, parameters, level, seed)
-  config.tooltipFields.ammo1NameLabel = config.primaryAbility.ammoName or config.primaryAbility.ammoType
-  if type(config.primaryAbility.ammoType) ~= "string" then
-    config.tooltipFields.ammo1NameLabel = config.primaryAbility.ammoType.name
-  end
-  config.tooltipFields.ammo1CapacityTitleLabel = "Primary Capacity :"
-  config.tooltipFields.ammo1TitleLabel = "Primary Amount :"
-  config.tooltipFields.ammo1CapacityLabel = config[config.primaryAbility.ammoMaxName] or "unknown"
-  config.tooltipFields.ammo1Label = parameters[config.primaryAbility.ammoCountName] or config[config.primaryAbility.ammoCountName] or "unknown"
-end
-
-function tooltipAmmo2(directory, config, parameters, level, seed)
-  if   config.primaryAbility.ammoCountName ~= config.altAbility.ammoCountName
-   and config.primaryAbility.ammoMaxName ~= config.altAbility.ammoMaxName
-   and config.altAbility.ammoMaxName
-   and config.altAbility.ammoCountName then
-
-    config.tooltipFields.ammo2NameLabel = config.altAbility.ammoName or config.altAbility.ammoType
-    if type(config.altAbility.ammoType) ~= "string" then
-      config.tooltipFields.ammo2NameLabel = config.altAbility.ammoType.name
-    end
-    config.tooltipFields.ammo2CapacityTitleLabel = "Alt Capacity :"
-    config.tooltipFields.ammo2TitleLabel = "Alt Amount :"
-    config.tooltipFields.ammo2CapacityLabel = config[config.altAbility.ammoMaxName] or "unknown"
-    config.tooltipFields.ammo2Label = parameters[config.altAbility.ammoCountName] or config[config.altAbility.ammoCountName] or "unknown"
-
-    if not parameters.tooltipFields.ammo2Label then
-      parameters.tooltipFields.ammo2Label = config.tooltipFields.ammo2Label
-    end
-
-  end
 end

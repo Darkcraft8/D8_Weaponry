@@ -1,10 +1,11 @@
 {
-    "input" : [
-      { "item" : "copperbar", "count" : 2 },
-      { "item" : "tungstenbar", "count" : 1 },
-      { "item" : "volatilepowder", "count" : 2 }
-    ],
-    "output" : { "item" : "d8Weaponry_standardbullet", "count" : 20 },
-    "groups" : [ "d8Weaponry_munition_level2" ]
-  }
-  
+  "input" : [
+    { "item" : "copperbar", "count" : 1 },
+    { "item" : "ironbar", "count" : 1 },
+    { "item" : "volatilepowder", "count" : 1 }
+  ],
+
+  "duration" : 0.25,
+  "output" : { "item" : "d8Weaponry_standardbullet", "count" : 20 },
+  "groups" : [ "d8Weaponry_munition_lv2",  "d8Weaponry_munition", "all" ]
+}

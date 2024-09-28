@@ -6,8 +6,8 @@ GunFire = WeaponAbility:new()
 
 function GunFire:init()
   self.weapon:setStance(self.stances.idle)
-
   self.cooldownTimer = self.fireTime
+  self.temperature = 0
 
   self.weapon.onLeaveAbility = function()
     self.weapon:setStance(self.stances.idle)
@@ -27,6 +27,11 @@ function GunFire:update(dt, fireMode, shiftHeld)
 
   if animator.animationState("firing") ~= "fire" then
     animator.setLightActive("muzzleFlash", false)
+    if self.temperature > 0 then
+      self.temperature = self.temperature - (5 * dt)
+    elseif self.temperature < 0 then
+      self.temperature = 0
+    end
   end
   
   if not config.getParameter("tooltipFields") then
@@ -35,6 +40,23 @@ function GunFire:update(dt, fireMode, shiftHeld)
   local tooltipFields = config.getParameter("tooltipFields")
   tooltipFields.ammo1Label = config.getParameter(self.ammoCountName)
   activeItem.setInstanceValue("tooltipFields", tooltipFields)
+  
+  animator.setGlobalTag("temperature", self.temperature)
+  if self.stances.fire.animationStates then
+    if ((self.temperature > 15) or animator.animationState("firing") == "fire") and not self.stances.fire.animationStates.barrelSmoke then
+      animator.burstParticleEmitter("barrelSmoke")
+    end
+  elseif ((self.temperature > 15) or animator.animationState("firing") == "fire") then
+    animator.burstParticleEmitter("barrelSmoke")
+  end
+
+  if config.getParameter(self.ammoCountName) and not self.weapon.currentAbility and self.cooldownTimer == 0 then
+    if self.emptyAnimationStates and config.getParameter(self.ammoCountName) <= 0 then
+      for stateTypes, state in pairs(self.emptyAnimationStates) do 
+        animator.setAnimationState(stateTypes, state)
+      end
+    end
+  end
 
   if self.fireMode == (self.activatingFireMode or self.abilitySlot)
     and not self.weapon.currentAbility
@@ -45,7 +67,7 @@ function GunFire:update(dt, fireMode, shiftHeld)
       activeItem.setInstanceValue(self.ammoCountName, config.getParameter(self.ammoMaxName))
     end
     if self.reloadType ~= "passive" then
-      if config.getParameter(self.ammoCountName) <= 0 and self.reloadwithattack or shiftHeld then
+      if config.getParameter(self.ammoCountName) <= 0 and ( world.entityType(activeItem.ownerEntityId()) ~= "player" or self.reloadwithattack ) or shiftHeld then
         if self.reloadType == "single" and config.getParameter(self.ammoCountName) < config.getParameter(self.ammoMaxName) or self.infMag then
           self:setState(self.reloadSingle)
         elseif self.reloadType == "most" and config.getParameter(self.ammoCountName) < config.getParameter(self.ammoMaxName) then
@@ -68,7 +90,7 @@ function GunFire:update(dt, fireMode, shiftHeld)
     and not world.lineTileCollision(mcontroller.position(), self:firePosition()) then
     
 
-    if config.getParameter(self.ammoCountName) <= 0 and self.reloadwithattack or shiftHeld then elseif config.getParameter(self.ammoCountName) >= (0 + self.ammoCost) then
+    if config.getParameter(self.ammoCountName) <= 0 and ( world.entityType(activeItem.ownerEntityId()) ~= "player" or self.reloadwithattack ) or shiftHeld then elseif config.getParameter(self.ammoCountName) >= (0 + self.ammoCost) then
       if self.fireType == "auto" and status.overConsumeResource("energy", self:energyPerShot()) then
         self:setState(self.auto)
       elseif self.fireType == "burst" then
@@ -210,6 +232,12 @@ function GunFire:fireProjectile(projectileType, projectileParams, inaccuracy, fi
       )
   end
   self:changeAmmoCount((self.stances.ammoCost or self.ammoCost or 1), "remove", self.ammoMaxName, self.ammoCountName)
+  if not (self.temperature >= 50) then
+    self.temperature = self.temperature + ((self.stances.fire.temp or 250) * script.updateDt())
+  else
+    self.temperature = self.temperature - ( (1 * params.power) )
+  end
+
   return projectileId
 end
 
@@ -231,7 +259,7 @@ function GunFire:energyPerShot()
 end
 
 function GunFire:damagePerShot()
-  local ammoCost = (config.getParameter(self.ammoMaxName, 1) - (self.stances.ammoCost or 1))
+  local ammoCost = (config.getParameter(self.ammoMaxName, 2) - (self.stances.ammoCost or 1))
   return (self.baseDamage or (self.baseDps / (ammoCost / (ammoCost*(8/ammoCost) ) ) ) ) * (self.baseDamageMultiplier or 1.0) * config.getParameter("damageLevelMultiplier") / self.projectileCount
 end
 
@@ -241,12 +269,158 @@ function GunFire:reload()
       status.setResource("energy", status.resource("energy")-1)
     end
     status.setResourceLocked("energy", true)
+    local wasEmpty = false
+    if config.getParameter(self.ammoCountName) == 0 then
+      wasEmpty = true
+    end
     local finish = false
     local currentStep = 0
-    if not self.stances["reload1"] then
-      finish = true
+    
+    if self.stances["emptyToReload1"] and wasEmpty then
+      finish = false
+      currentStep = 0
+      while not finish do
+        currentStep = currentStep + 1
+        self.weapon:setStance(self.stances[string.format("emptyToReload%s", currentStep)])
+
+        if self.stances[string.format("emptyToReload%s", currentStep)].weaponDirective then
+          animator.setGlobalTag("weaponDirective", self.stances[string.format("emptyToReload%s", currentStep)].weaponDirective)
+        else
+          animator.setGlobalTag("weaponDirective", "")
+        end
+
+        self.weapon:updateAim()
+        if self.stances[string.format("emptyToReload%s", currentStep)] then
+            if self.stances[string.format("emptyToReload%s", currentStep)].duration then
+                util.wait(self.stances[string.format("emptyToReload%s", currentStep)].duration)
+            end
+        end
+
+        if not self.stances[string.format("emptyToReload%s", currentStep + 1)] then
+          finish = true
+        end
+      end
     end
 
+    if self.stances["reload1"] then
+      finish = false
+      currentStep = 0
+      while not finish do
+          currentStep = currentStep + 1
+          self.weapon:setStance(self.stances[string.format("reload%s", currentStep)])
+
+          if self.stances[string.format("reload%s", currentStep)].weaponDirective then
+            animator.setGlobalTag("weaponDirective", self.stances[string.format("reload%s", currentStep)].weaponDirective)
+          else
+            animator.setGlobalTag("weaponDirective", "")
+          end
+
+          self.weapon:updateAim()
+          if self.stances[string.format("reload%s", currentStep)] then
+              if self.stances[string.format("reload%s", currentStep)].duration then
+                  util.wait(self.stances[string.format("reload%s", currentStep)].duration)
+              end
+          end
+
+          if not self.stances[string.format("reload%s", currentStep + 1)] then
+            finish = true
+          end
+      end
+    end
+
+    if world.entityType(activeItem.ownerEntityId()) == "player" then
+        if self.ammoType and not player.isAdmin() then
+            local ammoDescriptor = {
+                name = self.ammoType,
+                parameters = self.ammoParam or {},
+                count = config.getParameter(self.ammoMaxName)
+            }
+            if player.consumeItem(ammoDescriptor,false,true) then
+                self:changeAmmoCount(config.getParameter(self.ammoMaxName), "set", self.ammoMaxName, self.ammoCountName)
+            end
+        else
+          self:changeAmmoCount(config.getParameter(self.ammoMaxName), "set", self.ammoMaxName, self.ammoCountName)
+        end
+    else
+      self:changeAmmoCount(config.getParameter(self.ammoMaxName), "set", self.ammoMaxName, self.ammoCountName)
+    end
+    
+    if self.stances["reloadAfterEmpty1"] and wasEmpty then
+      finish = false
+      currentStep = 0
+      while not finish do
+        currentStep = currentStep + 1
+        self.weapon:setStance(self.stances[string.format("reloadAfterEmpty%s", currentStep)])
+
+        if self.stances[string.format("reloadAfterEmpty%s", currentStep)].weaponDirective then
+          animator.setGlobalTag("weaponDirective", self.stances[string.format("reloadAfterEmpty%s", currentStep)].weaponDirective)
+        else
+          animator.setGlobalTag("weaponDirective", "")
+        end
+
+        self.weapon:updateAim()
+        if self.stances[string.format("reloadAfterEmpty%s", currentStep)] then
+            if self.stances[string.format("reloadAfterEmpty%s", currentStep)].duration then
+                util.wait(self.stances[string.format("reloadAfterEmpty%s", currentStep)].duration)
+            end
+        end
+
+        if not self.stances[string.format("reloadAfterEmpty%s", currentStep + 1)] then
+          finish = true
+        end
+      end
+    end
+
+    if config.getParameter("postFireOnReload") then
+      self:setState(self.postFireState)
+    end
+    status.setResourcePercentage("energyRegenBlock", 0.0)
+    status.setResourceLocked("energy", false)
+    animator.setGlobalTag("weaponDirective", "")
+end
+
+function GunFire:reloadMost()
+  status.setResourcePercentage("energyRegenBlock", 1.0)
+  if status.resource("energy") == status.resourceMax("energy") then
+    status.setResource("energy", status.resource("energy")-1)
+  end
+  status.setResourceLocked("energy", true)
+  
+  local wasEmpty = false
+  if config.getParameter(self.ammoCountName) == 0 then
+    wasEmpty = true
+  end
+  local finish = false
+  local currentStep = 0
+  if self.stances["emptyToReload1"] and wasEmpty then
+    finish = false
+    currentStep = 0
+    while not finish do
+      currentStep = currentStep + 1
+      self.weapon:setStance(self.stances[string.format("emptyToReload%s", currentStep)])
+
+      if self.stances[string.format("emptyToReload%s", currentStep)].weaponDirective then
+        animator.setGlobalTag("weaponDirective", self.stances[string.format("emptyToReload%s", currentStep)].weaponDirective)
+      else
+        animator.setGlobalTag("weaponDirective", "")
+      end
+
+      self.weapon:updateAim()
+      if self.stances[string.format("emptyToReload%s", currentStep)] then
+          if self.stances[string.format("emptyToReload%s", currentStep)].duration then
+              util.wait(self.stances[string.format("emptyToReload%s", currentStep)].duration)
+          end
+      end
+
+      if not self.stances[string.format("emptyToReload%s", currentStep + 1)] then
+        finish = true
+      end
+    end
+  end
+
+  if self.stances["reload1"] then
+    finish = false
+    currentStep = 0
     while not finish do
         currentStep = currentStep + 1
         self.weapon:setStance(self.stances[string.format("reload%s", currentStep)])
@@ -268,66 +442,6 @@ function GunFire:reload()
           finish = true
         end
     end
-
-    if world.entityType(activeItem.ownerEntityId()) == "player" then
-        if self.ammoType and not player.isAdmin() then
-            local ammoDescriptor = {
-                name = self.ammoType,
-                parameters = self.ammoParam or {},
-                count = config.getParameter(self.ammoMaxName)
-            }
-            if player.consumeItem(ammoDescriptor,false,true) then
-                self:changeAmmoCount(config.getParameter(self.ammoMaxName), "set", self.ammoMaxName, self.ammoCountName)
-            end
-        else
-          self:changeAmmoCount(config.getParameter(self.ammoMaxName), "set", self.ammoMaxName, self.ammoCountName)
-        end
-    else
-      self:changeAmmoCount(config.getParameter(self.ammoMaxName), "set", self.ammoMaxName, self.ammoCountName)
-    end
-
-    if config.getParameter("postFireOnReload") then
-      self:setState(self.postFireState)
-    end
-    status.setResourcePercentage("energyRegenBlock", 0.0)
-    status.setResourceLocked("energy", false)
-
-    animator.setGlobalTag("flipx", "")
-    animator.setGlobalTag("flipy", "")
-end
-
-function GunFire:reloadMost()
-  status.setResourcePercentage("energyRegenBlock", 1.0)
-  if status.resource("energy") == status.resourceMax("energy") then
-    status.setResource("energy", status.resource("energy")-1)
-  end
-  status.setResourceLocked("energy", true)
-  local finish = false
-  local currentStep = 0
-  if not self.stances["reload1"] then
-    finish = true
-  end
-
-  while not finish do
-      currentStep = currentStep + 1
-      self.weapon:setStance(self.stances[string.format("reload%s", currentStep)])
-      self.weapon:updateAim()
-
-      if self.stances[string.format("reload%s", currentStep)].weaponDirective then
-        animator.setGlobalTag("weaponDirective", self.stances[string.format("reload%s", currentStep)].weaponDirective)
-      else
-        animator.setGlobalTag("weaponDirective", "")
-      end
-
-      if self.stances[string.format("reload%s", currentStep)] then
-          if self.stances[string.format("reload%s", currentStep)].duration then
-              util.wait(self.stances[string.format("reload%s", currentStep)].duration)
-          end
-      end
-
-      if not self.stances[string.format("reload%s", currentStep + 1)] then
-        finish = true
-      end
   end
 
   if world.entityType(activeItem.ownerEntityId()) == "player" then
@@ -354,6 +468,32 @@ function GunFire:reloadMost()
   if config.getParameter("postFireOnReload") then
     self:setState(self.postFireState)
   end
+  
+  if self.stances["reloadAfterEmpty1"] and wasEmpty then
+    finish = false
+    currentStep = 0
+    while not finish do
+      currentStep = currentStep + 1
+      self.weapon:setStance(self.stances[string.format("reloadAfterEmpty%s", currentStep)])
+
+      if self.stances[string.format("reloadAfterEmpty%s", currentStep)].weaponDirective then
+        animator.setGlobalTag("weaponDirective", self.stances[string.format("reloadAfterEmpty%s", currentStep)].weaponDirective)
+      else
+        animator.setGlobalTag("weaponDirective", "")
+      end
+
+      self.weapon:updateAim()
+      if self.stances[string.format("reloadAfterEmpty%s", currentStep)] then
+          if self.stances[string.format("reloadAfterEmpty%s", currentStep)].duration then
+              util.wait(self.stances[string.format("reloadAfterEmpty%s", currentStep)].duration)
+          end
+      end
+
+      if not self.stances[string.format("reloadAfterEmpty%s", currentStep + 1)] then
+        finish = true
+      end
+    end
+  end
   status.setResourcePercentage("energyRegenBlock", 0.0)
   status.setResourceLocked("energy", false)
 end
@@ -364,56 +504,133 @@ function GunFire:reloadSingle()
     status.setResource("energy", status.resource("energy")-1)
   end
   status.setResourceLocked("energy", true)
+  local wasEmpty = false
+  if config.getParameter(self.ammoCountName) == 0 then
+    wasEmpty = true
+  end
   local finish = false
   local currentStep = 0
-  if not self.stances["reload1"] then
-    finish = true
-  end
+  
+  if self.stances["emptyToReload1"] and wasEmpty then
+    while not finish do
+      currentStep = currentStep + 1
+      self.weapon:setStance(self.stances[string.format("emptyToReload%s", currentStep)])
 
-  while not finish do
-    currentStep = currentStep + 1
-    self.weapon:setStance(self.stances[string.format("reload%s", currentStep)])
-    self.weapon:updateAim()
-    
-    if self.stances[string.format("reload%s", currentStep)].weaponDirective then
-      animator.setGlobalTag("weaponDirective", self.stances[string.format("reload%s", currentStep)].weaponDirective)
-    else
-      animator.setGlobalTag("weaponDirective", "")
-    end
-
-    if self.stances[string.format("reload%s", currentStep)] then
-      if self.stances[string.format("reload%s", currentStep)].duration then
-        util.wait(self.stances[string.format("reload%s", currentStep)].duration)
+      if self.stances[string.format("emptyToReload%s", currentStep)].weaponDirective then
+        animator.setGlobalTag("weaponDirective", self.stances[string.format("emptyToReload%s", currentStep)].weaponDirective)
+      else
+        animator.setGlobalTag("weaponDirective", "")
       end
-    end
 
-    if not self.stances[string.format("reload%s", currentStep + 1)] then
-      status.setResourcePercentage("energyRegenBlock", 0.25)
-      if world.entityType(activeItem.ownerEntityId()) == "player" then
-        if self.ammoType and not player.isAdmin() then
-            local ammoDescriptor = {
-                name = self.ammoType,
-                parameters = self.ammoParam or {},
-                count = 1
-            }
-            if player.consumeItem(ammoDescriptor,false,true) then
+      self.weapon:updateAim()
+      if self.stances[string.format("emptyToReload%s", currentStep)] then
+          if self.stances[string.format("emptyToReload%s", currentStep)].duration then
+              util.wait(self.stances[string.format("emptyToReload%s", currentStep)].duration)
+          end
+      end
+
+      if not self.stances[string.format("emptyToReload%s", currentStep + 1)] then
+        if self.emptyToReloadAddAmmo then
+          if world.entityType(activeItem.ownerEntityId()) == "player" then
+            if self.ammoType and not player.isAdmin() then
+                local ammoDescriptor = {
+                    name = self.ammoType,
+                    parameters = self.ammoParam or {},
+                    count = 1
+                }
+                if player.consumeItem(ammoDescriptor,false,true) then
+                  self:changeAmmoCount(1, "add", self.ammoMaxName, self.ammoCountName)
+                end
+            else
               self:changeAmmoCount(1, "add", self.ammoMaxName, self.ammoCountName)
             end
-        else
-          self:changeAmmoCount(1, "add", self.ammoMaxName, self.ammoCountName)
+          else
+            self:changeAmmoCount(1, "add", self.ammoMaxName, self.ammoCountName)
+          end
         end
-      else
-        self:changeAmmoCount(1, "add", self.ammoMaxName, self.ammoCountName)
-      end
 
-      if self.fireMode == (self.activatingFireMode or self.abilitySlot) and (config.getParameter(self.ammoCountName) < config.getParameter(self.ammoMaxName) or self.infMag) then
-        currentStep = 0
-      else
         finish = true
       end
     end
   end
 
+  if wasEmpty then
+    if self.fireMode == (self.activatingFireMode or self.abilitySlot) and (config.getParameter(self.ammoCountName) < config.getParameter(self.ammoMaxName) or self.infMag) then
+      finish = false
+    end
+  end
+  if self.stances["reload1"] then
+    currentStep = 0
+    while not finish do
+      currentStep = currentStep + 1
+      self.weapon:setStance(self.stances[string.format("reload%s", currentStep)])
+      self.weapon:updateAim()
+      
+      if self.stances[string.format("reload%s", currentStep)].weaponDirective then
+        animator.setGlobalTag("weaponDirective", self.stances[string.format("reload%s", currentStep)].weaponDirective)
+      else
+        animator.setGlobalTag("weaponDirective", "")
+      end
+
+      if self.stances[string.format("reload%s", currentStep)] then
+        if self.stances[string.format("reload%s", currentStep)].duration then
+          util.wait(self.stances[string.format("reload%s", currentStep)].duration)
+        end
+      end
+
+      if not self.stances[string.format("reload%s", currentStep + 1)] then
+        status.setResourcePercentage("energyRegenBlock", 0.25)
+        if world.entityType(activeItem.ownerEntityId()) == "player" then
+          if self.ammoType and not player.isAdmin() then
+              local ammoDescriptor = {
+                  name = self.ammoType,
+                  parameters = self.ammoParam or {},
+                  count = 1
+              }
+              if player.consumeItem(ammoDescriptor,false,true) then
+                self:changeAmmoCount(1, "add", self.ammoMaxName, self.ammoCountName)
+              end
+          else
+            self:changeAmmoCount(1, "add", self.ammoMaxName, self.ammoCountName)
+          end
+        else
+          self:changeAmmoCount(1, "add", self.ammoMaxName, self.ammoCountName)
+        end
+
+        if self.fireMode == (self.activatingFireMode or self.abilitySlot) and (config.getParameter(self.ammoCountName) < config.getParameter(self.ammoMaxName) or self.infMag) then
+          currentStep = 0
+        else
+          finish = true
+        end
+      end
+    end
+  end
+
+  if self.stances["reloadAfterEmpty1"] and wasEmpty then
+    finish = false
+    currentStep = 0
+    while not finish do
+      currentStep = currentStep + 1
+      self.weapon:setStance(self.stances[string.format("reloadAfterEmpty%s", currentStep)])
+
+      if self.stances[string.format("reloadAfterEmpty%s", currentStep)].weaponDirective then
+        animator.setGlobalTag("weaponDirective", self.stances[string.format("reloadAfterEmpty%s", currentStep)].weaponDirective)
+      else
+        animator.setGlobalTag("weaponDirective", "")
+      end
+
+      self.weapon:updateAim()
+      if self.stances[string.format("reloadAfterEmpty%s", currentStep)] then
+          if self.stances[string.format("reloadAfterEmpty%s", currentStep)].duration then
+              util.wait(self.stances[string.format("reloadAfterEmpty%s", currentStep)].duration)
+          end
+      end
+
+      if not self.stances[string.format("reloadAfterEmpty%s", currentStep + 1)] then
+        finish = true
+      end
+    end
+  end
   status.setResourcePercentage("energyRegenBlock", 0.0)
   status.setResourceLocked("energy", false)
 end

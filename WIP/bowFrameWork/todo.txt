@@ -1,0 +1,11 @@
+animation file : 
+
+transform groups
+    2 for the limbs
+    1 for the string
+    1 for the whole bow
+
+lua : 
+
+draw system
+arrow type selection ... kinda already exist in vanilla

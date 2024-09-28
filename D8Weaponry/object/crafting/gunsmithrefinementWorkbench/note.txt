@@ -1,0 +1,13 @@
+WIP
+
+description :
+A workbench used to level up firearms at the cost of materials from the next tier
+allowing player's to use their favorite weapons an any tier :D
+
+todo : 
+Find better name
+
+dev note :
+Darkcraft8
+    im also going foreward going to separate into their own scripts file
+    function that i think could be usefull in more place than one

@@ -2,6 +2,7 @@
     "itemName" : "d8Weaponry_tungstenshotgun",
     "price" : 960,
     "maxStack" : 1,
+    "level" : 2,
     "rarity" : "Common",
     "description" : "Fires a spread that's lethal at close range.",
     "shortdescription" : "Tungsten Shotgun",
@@ -251,6 +252,50 @@
                 "allowFlip" : true
             },
 
+            "emptyToReload1" : {
+                "duration" : 0.125,
+                "weaponRotation" : 30,
+                "armRotation" : 0,
+                "aimAngle" : 0,
+                "weaponOffset" : [-0.2, 0.4],
+                "frontArmFrame" : "swim.6",
+                "backArmFrame" : "run.4",
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : true
+
+            },
+            "emptyToReload2" : {
+                "duration" : 0.125,
+                "weaponRotation" : 30,
+                "armRotation" : 0,
+                "aimAngle" : 0,
+                "weaponOffset" : [-0.2, 0.4],
+                "frontArmFrame" : "swim.5",
+                "backArmFrame" : "run.4",
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : true
+
+            },
+            "emptyToReload3" : {
+                "duration" : 0.125,
+                "weaponRotation" : 30,
+                "armRotation" : 0,
+                "aimAngle" : 0,
+                "weaponOffset" : [-0.2, 0.4],
+                "frontArmFrame" : "swim.4",
+                "backArmFrame" : "run.4",
+                "playSounds" : ["cartridgeIn"],
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : true
+
+            },
+
             "reload1" : {
                 "duration" : 0.125,
                 "weaponRotation" : 30,
@@ -300,6 +345,7 @@
         },
 
         "postFire" : true,
+        "emptyToReloadAddAmmo" : true,
         "ammoType" : "d8Weaponry_shotgunshell",
         "ammoName" : "Shotgun Shell",
         "ammoMaxName" : "cylinderCapacity",
@@ -555,6 +601,7 @@
 
     "d8Weaponry" : [
         {
+            "isBar" : true,
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/D8Weaponry/item/munition/shotgunshell.png",

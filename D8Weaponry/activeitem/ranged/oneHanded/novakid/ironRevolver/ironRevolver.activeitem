@@ -293,6 +293,7 @@
 
     "d8Weaponry" : [
         {
+            "isBar" : true,
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",

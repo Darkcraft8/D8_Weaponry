@@ -6,6 +6,7 @@
       "value" : "/D8Weaponry/localscript/weapInfoRenderer.lua"
     }
   ],
+ 
   [
     {
       "op": "add",
@@ -14,6 +15,15 @@
         "item": "d8Weaponry_gunsmithTable"
       }
     },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item" : "d8Weaponry_gunsmithrefinementworkbench"
+      }
+    },
+
+    
     {
       "op": "add",
       "path": "/defaultBlueprints/tier1/-",
@@ -35,13 +45,7 @@
         "item": "d8Weaponry_shotgunshell"
       }
     },
-    {
-      "op": "add",
-      "path": "/defaultBlueprints/tier1/-",
-      "value": {
-        "item": "d8Weaponry_doublebarrelshotgun"
-      }
-    },
+
     {
       "op": "add",
       "path": "/defaultBlueprints/tier1/-",
@@ -74,13 +78,6 @@
       "op": "add",
       "path": "/defaultBlueprints/tier1/-",
       "value": {
-        "item": "d8Weaponry_tommygun"
-      }
-    },
-    {
-      "op": "add",
-      "path": "/defaultBlueprints/tier1/-",
-      "value": {
         "item": "d8Weaponry_tungstenmagnum"
       }
     },
@@ -89,6 +86,54 @@
       "path": "/defaultBlueprints/tier1/-",
       "value": {
         "item": "d8Weaponry_tungstenshotgun"
+      }
+    },
+
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_makarov"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_tommygun"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_doublebarrelshotgun"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_glock"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_chauchat"
+      }
+    },
+
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item" : "volatilepowder",
+        "parameters" : {
+          "inventoryIcon" : "/items/generic/crafting/volatilepowder.png?saturation=-100?brightness=-95",
+          "shortdescription" : "Gunpowder"
+        } 
       }
     }
   ]

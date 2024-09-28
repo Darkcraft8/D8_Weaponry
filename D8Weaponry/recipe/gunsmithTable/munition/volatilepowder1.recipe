@@ -1,0 +1,16 @@
+{
+  "input" : [
+    { "item" : "coalore", "count" : 15 }
+  ],
+
+  "duration" : 0.45,
+  "output" : {
+    "item" : "volatilepowder",
+    "count" : 1,
+    "parameters" : {
+      "inventoryIcon" : "/items/generic/crafting/volatilepowder.png?saturation=-100?brightness=-95",
+      "shortdescription" : "Gunpowder"
+    } 
+  },
+  "groups" : [ "d8Weaponry_munition_lv1",  "d8Weaponry_munition", "all" ]
+}

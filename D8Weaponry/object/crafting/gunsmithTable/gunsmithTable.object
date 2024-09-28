@@ -1,6 +1,6 @@
 {
   "objectName" : "d8Weaponry_gunsmithTable",
-  "colonyTags" : [],
+  "colonyTags" : ["crafting"],
   "printable" : false,
   "rarity" : "Uncommon",
   "description" : "A table make for the production of ranged weapon and munitions.",
@@ -25,7 +25,8 @@
   "animation" : "object.animation",
   "animationPosition" : [0, 24],
   "placementImage" : "normal.png:stage1",
-  "placementImagePosition" : [-28, 0],  
+  "placementImagePosition" : [-28, 0],
+
   "color" : "",
   "orientations" : [
     {
@@ -65,205 +66,6 @@
   
   "scripts" : [ "/shared/darkcraft8/object/intelligentInteraction.lua"],
 
-  "interactOverride" : {
-    "interactAction" : "ScriptPane",
-    "interactData" : "/shared/darkcraft8/interfaces/craftingpaneselector/craftingpaneselector.config",
-    "panes" : [
-      {
-        "interactAction" : "OpenCraftingInterface",
-        "interactData" : [
-          {
-            "tooltipText" : "Weapon",
-            "paneLayoutOverride" : {
-              "windowtitle" : {
-                "title" : " Gunsmithing",
-                "subtitle" : " ^#b9b5b2;Powder and Casings",
-                "icon" : {
-                  "file" : "/interface/crafting/craftinganvil.png"
-                }
-              }
-            },
-            "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
-            "filter" : ["d8Weaponry_gunsmithing_level1"],
-            "initialRecipeUnlocks" : [],
-            "upgradeMaterials" : [
-              { "item" : "tungstenbar", "count" : 2 },
-              { "item" : "darkwoodmaterial", "count" : 4 },
-              { "item" : "paper", "count" : 5 },
-              { "item" : "volatilepowder", "count" : 5 }
-            ]
-          },
-          {
-            "tooltipText" : "Weapon",
-            "paneLayoutOverride" : {
-              "windowtitle" : {
-                "title" : " Gunsmithing",
-                "subtitle" : " ^#b9b5b2;Powder and Casings",
-                "icon" : {
-                  "file" : "/interface/crafting/craftinganvil.png"
-                }
-              }
-            },
-            "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
-            "filter" : ["d8Weaponry_gunsmithing_level1", "d8Weaponry_gunsmithing_level2"],
-            "initialRecipeUnlocks" : [],
-            "upgradeMaterials" : [
-              { "item" : "durasteelbar", "count" : 3 },
-              { "item" : "siliconboard", "count" : 6 },
-              { "item" : "wire", "count" : 2 },
-              { "item" : "battery", "count" : 3 },
-              { "item" : "corefragmentore", "count" : 12 }
-            ]
-          },
-          {
-            "tooltipText" : "Weapon",
-            "paneLayoutOverride" : {
-              "windowtitle" : {
-                "title" : " Gunsmithing",
-                "subtitle" : " ^#b9b5b2;Powder and Casings",
-                "icon" : {
-                  "file" : "/interface/crafting/craftinganvil.png"
-                }
-              }
-            },
-            "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
-            "filter" : ["d8Weaponry_gunsmithing_level1", "d8Weaponry_gunsmithing_level2", "d8Weaponry_gunsmithing_level3"],
-            "initialRecipeUnlocks" : []
-          }
-        ]
-      },
-      {
-        "interactAction" : "OpenCraftingInterface",
-        "interactData" : [
-          {
-            "tooltipText" : "Munition",
-            "paneLayoutOverride" : {
-              "windowtitle" : {
-                "title" : " Gunsmithing",
-                "subtitle" : " ^#b9b5b2;Powder and Casings",
-                "icon" : {
-                  "file" : "/shared/darkcraft8/interfaces/craftingpaneselector/Icons/munition.png"
-                }
-              }
-            },
-            "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
-            "filter" : ["d8Weaponry_munition_level1"],
-            "initialRecipeUnlocks" : [],
-            "upgradeMaterials" : [
-              { "item" : "tungstenbar", "count" : 2 },
-              { "item" : "darkwoodmaterial", "count" : 4 },
-              { "item" : "paper", "count" : 5 },
-              { "item" : "volatilepowder", "count" : 5 }
-            ]
-          },
-          {
-            "tooltipText" : "Munition",
-            "paneLayoutOverride" : {
-              "windowtitle" : {
-                "title" : " Gunsmithing",
-                "subtitle" : " ^#b9b5b2;Powder and Casings",
-                "icon" : {
-                  "file" : "/shared/darkcraft8/interfaces/craftingpaneselector/Icons/munition.png"
-                }
-              }
-            },
-            "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
-            "filter" : ["d8Weaponry_munition_level1", "d8Weaponry_munition_level2"],
-            "initialRecipeUnlocks" : [],
-            "upgradeMaterials" : [
-              { "item" : "durasteelbar", "count" : 3 },
-              { "item" : "siliconboard", "count" : 6 },
-              { "item" : "wire", "count" : 2 },
-              { "item" : "battery", "count" : 3 },
-              { "item" : "corefragmentore", "count" : 12 }
-            ]
-          },
-          {
-            "tooltipText" : "Munition",
-            "paneLayoutOverride" : {
-              "windowtitle" : {
-                "title" : " Gunsmithing",
-                "subtitle" : " ^#b9b5b2;Powder and Casings",
-                "icon" : {
-                  "file" : "/shared/darkcraft8/interfaces/craftingpaneselector/Icons/munition.png"
-                }
-              }
-            },
-            "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
-            "filter" : ["d8Weaponry_munition_level1", "d8Weaponry_munition_level2", "d8Weaponry_munition_level3"],
-            "initialRecipeUnlocks" : []
-          }
-        ]
-      },
-      {
-        "interactAction" : "OpenCraftingInterface",
-        "interactData" : [
-          {
-            "tooltipText" : "Conversion",
-            "paneLayoutOverride" : {
-              "windowtitle" : {
-                "title" : " Gunsmithing",
-                "subtitle" : " ^#b9b5b2;Powder and Casings",
-                "icon" : {
-                  "file" : "/shared/darkcraft8/interfaces/craftingpaneselector/Icons/conversion.png"
-                }
-              }
-            },
-            "convertionList" : "/D8Weaponry/object/crafting/gunsmithTable/convertionList.json",
-            "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
-            "filter" : [],
-            "initialRecipeUnlocks" : [],
-            "upgradeMaterials" : [
-              { "item" : "tungstenbar", "count" : 2 },
-              { "item" : "darkwoodmaterial", "count" : 4 },
-              { "item" : "paper", "count" : 5 },
-              { "item" : "volatilepowder", "count" : 5 }
-            ]
-          },
-          {
-            "tooltipText" : "Conversion",
-            "paneLayoutOverride" : {
-              "windowtitle" : {
-                "title" : " Gunsmithing",
-                "subtitle" : " ^#b9b5b2;Powder and Casings",
-                "icon" : {
-                  "file" : "/shared/darkcraft8/interfaces/craftingpaneselector/Icons/conversion.png"
-                }
-              }
-            },
-            "convertionList" : "/D8Weaponry/object/crafting/gunsmithTable/convertionList.json",
-            "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
-            "filter" : [],
-            "initialRecipeUnlocks" : [],
-            "upgradeMaterials" : [
-              { "item" : "durasteelbar", "count" : 3 },
-              { "item" : "siliconboard", "count" : 6 },
-              { "item" : "wire", "count" : 2 },
-              { "item" : "battery", "count" : 3 },
-              { "item" : "corefragmentore", "count" : 12 }
-            ]
-          },
-          {
-            "tooltipText" : "Conversion",
-            "paneLayoutOverride" : {
-              "windowtitle" : {
-                "title" : " Gunsmithing",
-                "subtitle" : " ^#b9b5b2;Powder and Casings",
-                "icon" : {
-                  "file" : "/shared/darkcraft8/interfaces/craftingpaneselector/Icons/conversion.png"
-                }
-              }
-            },
-            "convertionList" : "/D8Weaponry/object/crafting/gunsmithTable/convertionList.json",
-            "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
-            "filter" : [],
-            "initialRecipeUnlocks" : []
-          }
-        ]
-      }
-    ]
-  },
-  
   "startingUpgradeStage" : 1,
   "maxUpgradeStage" : 3,
 
@@ -272,19 +74,6 @@
       "animationState" : "stage1",
       
       "itemSpawnParameters" : {
-        "inventoryIcon" : "icon1.png",
-        "placementImage" : "normal.png:stage1",
-        "placementImagePosition" : [-28, 0],    
-
-        "description" : "A table make for the production of ranged weapon and munitions.",
-        "shortdescription" : "^orange;Gunsmith Table^white;",
-
-        "apexDescription" : "The miniknog prefer to use plasma based weaponry...",
-        "floranDescription" : "Floran ussse table to ssshot ssstaby needle.",
-        "glitchDescription" : "Proud! With this here table i shall be able to expend my ranged capability.",
-        "humanDescription" : "I can make firearms and other ranged weapon on this table.",
-        "hylotlDescription" : "While not great, this table shall do.",
-        "novakidDescription" : "A perfect place to dust of this o'l six shooter!"
       },
 
       "learnBlueprintsOnPickup" : [],
@@ -363,7 +152,78 @@
         }
       },
       "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
-      "filter" : ["d8Weaponry_gunsmithing_level1"]
+
+      "filter" : [
+        "d8Weaponry_gunsmithing_lv1", 
+
+        "d8Weaponry_munition_lv1", 
+        
+        "d8Conversion_gunsmith_lv1"
+      ],
+      "initialRecipeUnlocks" : [],
+      "upgradeMaterials" : [
+        { "item" : "tungstenbar", "count" : 2 },
+        { "item" : "darkwoodmaterial", "count" : 4 },
+        { "item" : "paper", "count" : 5 },
+        { "item" : "volatilepowder", "count" : 5 }
+      ]
+    },
+    {
+      "paneLayoutOverride" : {
+        "windowtitle" : {
+          "title" : " Gunsmithing",
+          "subtitle" : " ^#b9b5b2;Powder and Casings",
+          "icon" : {
+            "file" : "/interface/crafting/craftinganvil.png"
+          }
+        }
+      },
+      "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
+
+      "filter" : [
+        "d8Weaponry_gunsmithing_lv1",        
+        "d8Weaponry_gunsmithing_lv2",
+
+        "d8Weaponry_munition_lv1", 
+        "d8Weaponry_munition_lv2", 
+        
+        "d8Conversion_gunsmith_lv1",
+        "d8Conversion_gunsmith_lv2"
+      ],
+      "initialRecipeUnlocks" : [],
+      "upgradeMaterials" : [
+        { "item" : "durasteelbar", "count" : 3 },
+        { "item" : "siliconboard", "count" : 6 },
+        { "item" : "wire", "count" : 2 },
+        { "item" : "battery", "count" : 3 },
+        { "item" : "corefragmentore", "count" : 12 }
+      ]
+    },
+    {
+      "paneLayoutOverride" : {
+        "windowtitle" : {
+          "title" : " Gunsmithing",
+          "subtitle" : " ^#b9b5b2;Powder and Casings",
+          "icon" : {
+            "file" : "/interface/crafting/craftinganvil.png"
+          }
+        }
+      },
+      "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
+
+      "filter" : [
+        "d8Weaponry_gunsmithing_lv1",
+        "d8Weaponry_gunsmithing_lv2", 
+        "d8Weaponry_gunsmithing_lv3", 
+
+        "d8Weaponry_munition_lv1", 
+        "d8Weaponry_munition_lv2", 
+        "d8Weaponry_munition_lv3", 
+        
+        "d8Conversion_gunsmith_lv1",
+        "d8Conversion_gunsmith_lv2",
+        "d8Conversion_gunsmith_lv3"
+      ]
     }
   ]
   

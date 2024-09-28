@@ -1,0 +1,48 @@
+{
+  "objectName" : "d8Weaponry_gunsmithrefinementworkbench",
+  "colonyTags" : ["crafting"],
+  "printable" : false,
+  "rarity" : "Uncommon",
+  "shortdescription" : "^orange;Refinement Workbench",
+  "description" : "Enhance your weapons by refining their part with better materials",
+  "category" : "crafting",
+  "price" : 15,
+
+  "tooltipFields" : {
+    "rarityLabel" : "^green;Uncommon"
+  },
+  
+  "apexDescription" : "I can enhance some of my weapon's here.",
+  "avianDescription" : "I can enhance some of my weapon's here.",
+  "floranDescription" : "I can enhance sssome of my weapon'sss here.",
+  "glitchDescription" : "Proud! I can enhance some of my weapon's here... be they blade or otherwise.",
+  "humanDescription" : "I can enhance some of my weapon's here.",
+  "hylotlDescription" : "I can enhance some of my weapon's here.",
+  "novakidDescription" : "I can enhance the o'l parts of m'y gun's here... there even some o'l metal polish!",
+
+
+  "interactAction" : "ScriptPane",
+  "interactData" : "/D8Weaponry/object/crafting/gunsmithrefinementWorkbench/interfaces.config",
+
+  "inventoryIcon" : "icon.png",
+  "orientations" : [
+    {
+      "imageLayers" : [ { "image" : "normal.png" } ],
+      "imagePosition" : [-16, 0],
+      "direction" : "left",
+      "flipImages" : true,
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ]
+    },
+    {
+      "imageLayers" : [ { "image" : "normal.png" } ],
+      "imagePosition" : [-16, 0],
+      "direction" : "right",
+      "flipImages" : false,
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ]
+    }
+  ]
+}

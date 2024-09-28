@@ -1,15 +1,17 @@
-[
-    "ironassaultrifle",
-    "ironrevolver",
-    "titaniummachinepistol",
-    "titaniumsniperrifle",
-    "tungstenmagnum",
-    "tungstenshotgun",
+{
+    "prefix" : "d8Weaponry_gunsmith_upgrade",
+    "item" : [
+        "d8Weaponry_ironassaultrifle",
+        "d8Weaponry_ironrevolver",
+        "d8Weaponry_titaniummachinepistol",
+        "d8Weaponry_titaniumsniperrifle",
+        "d8Weaponry_tungstenmagnum",
+        "d8Weaponry_tungstenshotgun",
 
-    { "d8Weaponry_ironassaultrifle" : ["ironassaultrifle"] },
-    { "d8Weaponry_ironrevolver" : ["ironrevolver"] },
-    { "d8Weaponry_titaniummachinepistol" : ["titaniummachinepistol"] },
-    { "d8Weaponry_titaniumsniperrifle" : ["titaniumsniperrifle"] },
-    { "d8Weaponry_tungstenmagnum" : ["tungstenmagnum"] },
-    { "d8Weaponry_tungstenshotgun" : ["tungstenshotgun"] }
-]
+        "d8Weaponry_glock",
+        "d8Weaponry_makarov",
+        "d8Weaponry_tommygun",
+        "d8Weaponry_minigun",
+        "d8Weaponry_chauchat"
+    ]
+}

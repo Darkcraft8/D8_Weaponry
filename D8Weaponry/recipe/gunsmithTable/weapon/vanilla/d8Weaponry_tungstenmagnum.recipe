@@ -4,5 +4,6 @@
     { "item" : "copperbar", "count" : 1 }
   ],
   "output" : { "item" : "d8Weaponry_tungstenmagnum", "count" : 1 },
-  "groups" : [ "d8Weaponry_gunsmithing_level1" ]
+  "groups" : [ "disabled" ],
+  "disabledgroups" : [ "d8Weaponry_gunsmithing_lv1", "d8Weaponry_gunsmithing" ]
 }

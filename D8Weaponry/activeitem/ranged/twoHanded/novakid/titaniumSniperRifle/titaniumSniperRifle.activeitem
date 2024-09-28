@@ -2,6 +2,7 @@
     "itemName" : "d8Weaponry_titaniumsniperrifle",
     "price" : 960,
     "maxStack" : 1,
+	"level" : 3,
     "rarity" : "Uncommon",
     "description" : "Powerfully strong to cover long distances.",
     "shortdescription" : "Titanium Sniper Rifle",
@@ -398,6 +399,7 @@
             {
                 "d8Weaponry" : [
                     {
+                        "isBar" : true,
                         "ammoMaxName" : "cylinderCapacity",
                         "ammoCountName" : "cylinder",
                         "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
@@ -496,6 +498,7 @@
             {
                 "d8Weaponry" : [
                     {
+                        "isBar" : true,
                         "ammoMaxName" : "piercingbulletCapacity",
                         "ammoCountName" : "piercingbullet",
                         "barText" : "/projectiles/guns/bullets/piercingbullet/icon.png",
@@ -595,6 +598,7 @@
 
     "d8Weaponry" : [
         {
+            "isBar" : true,
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
