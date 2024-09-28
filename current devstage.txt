@@ -11,18 +11,19 @@ Current Dev Stage of Weaponry : Finished for first release
 
 -- > make weapons
 
+todo :
+--> config screen for the renderer
+
 idea for next updates : 
 
 --> Rocket Launcher
---> Gatling Gun/Mini gun
 --> Grenade Launcher
 --> Basicaly more weapons
 
 -+> Weapons Quality/Level Upgrade
 -+> Weapons Attachment through new bench or item that open a pane to change attachment
 --> New Bow
---> Crossbows
-
+--> Crossbows... just disguising a gun should be enough
 
 postPone :
 

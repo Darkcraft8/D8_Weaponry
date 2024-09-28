@@ -8,7 +8,7 @@
     "category" : "Submachine Gun",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : true,
-    "itemTags" : ["weapon","ranged","assaultrifle", "upgradeableWeapon"],
+    "itemTags" : ["weapon","ranged","assaultrifle", "upgradeableWeapon", "d8Weaponry_gun"],
     
     "inventoryIcon" : [
         { "image" : "normal.png:idle" }
@@ -307,8 +307,7 @@
                 "frontArmFrame" : "run.1?crop;4;0;43;43",
                 "burstParticleEmitters" : ["bulletShell"],
                 "animationStates" : {
-                    "animation" : "fire",
-                    "barrelSmoke" : "on"
+                    "animation" : "fire"
                 },
                 "allowRotate" : false,
                 "twoHanded" : true,
@@ -398,6 +397,7 @@
 
     "d8Weaponry" : [
         {
+            "isBar" : true,
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",

@@ -150,5 +150,20 @@
     "position" : [180, 84],
     "hAnchor" : "right",
     "wrapWidth" : 126
+  },
+  
+  "levelLabel" : {
+    "type" : "label",
+    "position" : [135, 163],
+    "hAnchor" : "left",
+    "centered" : true,
+    "wrapWidth" : 122
+  },
+  "reloadLabel" : {
+    "type" : "label",
+    "position" : [135, 153],
+    "hAnchor" : "left",
+    "centered" : true,
+    "wrapWidth" : 122
   }
 }

@@ -8,7 +8,7 @@
     "category" : "pistol",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : false,
-    "itemTags" : ["weapon","ranged","pistol"],
+    "itemTags" : ["weapon","ranged","pistol", "d8Weaponry_gun"],
 	"level" : 3,
     
     "inventoryIcon" : [
@@ -399,6 +399,7 @@
 
     "d8Weaponry" : [
         {
+            "isBar" : true,
             "ammoMaxName" : "magasinCapacity",
             "ammoCountName" : "magasin",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",

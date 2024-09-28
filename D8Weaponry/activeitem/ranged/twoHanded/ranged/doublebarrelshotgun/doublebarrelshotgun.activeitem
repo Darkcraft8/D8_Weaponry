@@ -8,7 +8,7 @@
     "category" : "shotgun",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : true,
-    "itemTags" : ["weapon","ranged","shotgun"],
+    "itemTags" : ["weapon","ranged","shotgun", "d8Weaponry_gun"],
 
     "inventoryIcon" : [
         { "image" : "normal.png:idle?replace;0a0a0a=404040;1c1914=666666;383228=b0b0b0;706450=e8e8e8" }
@@ -387,6 +387,7 @@
 
     "d8Weaponry" : [
         {
+            "isBar" : true,
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/D8Weaponry/item/munition/shotgunshell.png",

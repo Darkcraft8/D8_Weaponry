@@ -10,6 +10,20 @@
     "hAnchor" : "right",
     "value" : "tree"
   },
+  "levelLabel" : {
+    "type" : "label",
+    "position" : [135, 179],
+    "hAnchor" : "left",
+    "centered" : true,
+    "wrapWidth" : 122
+  },
+  "reloadLabel" : {
+    "type" : "label",
+    "position" : [135, 169],
+    "hAnchor" : "left",
+    "centered" : true,
+    "wrapWidth" : 122
+  },
   "speedTitleLabel" : {
     "type" : "label",
     "position" : [16, 74],

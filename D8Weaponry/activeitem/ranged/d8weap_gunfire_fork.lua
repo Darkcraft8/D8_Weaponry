@@ -50,6 +50,14 @@ function GunFire:update(dt, fireMode, shiftHeld)
     animator.burstParticleEmitter("barrelSmoke")
   end
 
+  if config.getParameter(self.ammoCountName) and not self.weapon.currentAbility and self.cooldownTimer == 0 then
+    if self.emptyAnimationStates and config.getParameter(self.ammoCountName) <= 0 then
+      for stateTypes, state in pairs(self.emptyAnimationStates) do 
+        animator.setAnimationState(stateTypes, state)
+      end
+    end
+  end
+
   if self.fireMode == (self.activatingFireMode or self.abilitySlot)
     and not self.weapon.currentAbility
     and self.cooldownTimer == 0
@@ -225,7 +233,7 @@ function GunFire:fireProjectile(projectileType, projectileParams, inaccuracy, fi
   end
   self:changeAmmoCount((self.stances.ammoCost or self.ammoCost or 1), "remove", self.ammoMaxName, self.ammoCountName)
   if not (self.temperature >= 50) then
-    self.temperature = self.temperature + ((self.stances.fire.temp or 25) * script.updateDt())
+    self.temperature = self.temperature + ((self.stances.fire.temp or 250) * script.updateDt())
   else
     self.temperature = self.temperature - ( (1 * params.power) )
   end
@@ -251,7 +259,7 @@ function GunFire:energyPerShot()
 end
 
 function GunFire:damagePerShot()
-  local ammoCost = (config.getParameter(self.ammoMaxName, 1) - (self.stances.ammoCost or 1))
+  local ammoCost = (config.getParameter(self.ammoMaxName, 2) - (self.stances.ammoCost or 1))
   return (self.baseDamage or (self.baseDps / (ammoCost / (ammoCost*(8/ammoCost) ) ) ) ) * (self.baseDamageMultiplier or 1.0) * config.getParameter("damageLevelMultiplier") / self.projectileCount
 end
 

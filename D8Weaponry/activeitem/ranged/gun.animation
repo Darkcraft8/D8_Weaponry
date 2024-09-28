@@ -29,7 +29,8 @@
             "mode" : "transition",
             "transition" : "open"
           },
-          "open" : {}
+          "open" : {},
+          "empty" : {}
         }
       },
       "barrelSmoke" : {
@@ -42,7 +43,7 @@
            },
            "on" : {
             "frames" : 1,
-            "cycle" : 2.5,
+            "cycle" : 0.5,
             "mode" : "transition",
             "transition" : "off",
             "properties" : {

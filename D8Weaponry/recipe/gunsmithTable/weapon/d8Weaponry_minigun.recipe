@@ -1,0 +1,10 @@
+{
+  "input" : [
+    { "item" : "refinedaegisalt", "count" : 6 },
+    { "item" : "solariumstar", "count" : 10 },
+    { "item" : "ironbar", "count" : 25 },
+    { "item" : "cryonicextract", "count" : 5 }
+  ],
+  "output" : { "item" : "d8Weaponry_minigun", "count" : 1 },
+  "groups" : [ "d8Weaponry_gunsmithing_lv3", "d8Weaponry_gunsmithing" ]
+}

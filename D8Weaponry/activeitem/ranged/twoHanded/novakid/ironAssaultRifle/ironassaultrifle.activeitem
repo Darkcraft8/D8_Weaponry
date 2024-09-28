@@ -278,8 +278,7 @@
                 "backArmFrame" : "run.5",
                 "burstParticleEmitters" : ["bulletShell"],
                 "animationStates" : {
-                    "animation" : "fire",
-                    "barrelSmoke" : "on"
+                    "animation" : "fire"
                 },
                 "twoHanded" : true,
                 
@@ -546,8 +545,7 @@
                 "backArmFrame" : "run.5",
                 "burstParticleEmitters" : ["bulletShell"],
                 "animationStates" : {
-                    "animation" : "fire",
-                    "barrelSmoke" : "on"
+                    "animation" : "fire"
                 },
                 "twoHanded" : true,
                 
@@ -705,6 +703,7 @@
 
     "d8Weaponry" : [
         {
+            "isBar" : true,
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",

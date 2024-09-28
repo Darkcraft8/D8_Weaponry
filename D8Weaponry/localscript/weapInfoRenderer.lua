@@ -15,11 +15,12 @@ if type(d8WeaponryUtils) ~= "table" then
         }
     }
     getmetatable('').d8WeaponryUtils = d8WeaponryUtils
-end--For any external Drawable, draw before those of the weapons... currently disabled
+end--For any external Drawable, draw before those of the weapons...
 local d8Weaponry_var = {
     config = "replaceMe",
     pixel = 0.125,
     time = 0,
+    memoryClearTimer = 0,
     memory = {
     },
     weapon = {
@@ -55,6 +56,15 @@ local d8Weaponry_var = {
 function init()
     vanillaInit()
     d8Weaponry_var.config = root.assetJson("/D8Weaponry.config")
+    if player.getProperty("d8Weaponry") then
+        d8Weaponry_var.config = util.mergeTable(d8Weaponry_var.config, player.getProperty("d8Weaponry")["renderConfig"])
+    end
+    message.setHandler("d8Weaponry_updateRenderConfig", function(_, isLocal)
+        if player.getProperty("d8Weaponry") then
+            d8Weaponry_var.config = util.mergeTable(d8Weaponry_var.config, player.getProperty("d8Weaponry")["renderConfig"])
+        end
+    end)
+
     if d8Weaponry_var.config["opacityMax"] then
         d8Weaponry_var.opacityMax = d8Weaponry_var.config["opacityMax"]
     end
@@ -73,13 +83,13 @@ function update(dt)
                 local concatedParam = d8weaponry_weaponAnalisis(primary, secondary)
                 d8Weaponry_var.weapon["parameters"] = concatedParam
             end
-            local renderIndex = 0
-            --sb.logInfo("%s", d8WeaponryUtils)
-            --if d8WeaponryUtils.drawableList then
-            --    for pos, drawable in ipairs(d8WeaponryUtils.drawableList) do
-            --        d8weaponry_drawableUpdate(drawable, pos)
-            --    end
-            --end
+            d8Weaponry_var.renderIndex = 0
+            d8Weaponry_var.rendereredAmount = 0
+            if d8WeaponryUtils.drawableList then
+                for name, drawable in pairs(d8WeaponryUtils.drawableList) do
+                    d8weaponry_drawableUpdate(drawable, name, d8Weaponry_var.renderIndex)
+                end
+            end
             if pcall(function()
                     local result = type(d8Weaponry_var.weapon["parameters"]["d8Weaponry"])
                     if result == "table" and (player.primaryHandItem() or player.altHandItem()) then
@@ -87,6 +97,53 @@ function update(dt)
                     else error()
                     end 
                 end) then
+                d8Weaponry_var.memoryClearTimer = 1
+                d8Weaponry_var.weapParam = d8Weaponry_var.weapon["parameters"]
+                d8Weaponry_var.weapConf = d8Weaponry_var.weapon["parameters"]["d8Weaponry"]
+                for index, value in ipairs(d8Weaponry_var.weapConf) do
+                    local max = value[value["ammoMaxName"]]
+                    local count = value[value["ammoCountName"]]
+                    if not d8Weaponry_var.memory[index] then
+                        d8Weaponry_var.memory[index] = {}
+                        d8Weaponry_var.memory[index]["ammoText"] = "/assetmissing.png"
+                        d8Weaponry_var.memory[index]["barText"] = "/assetmissing.png"
+                    end
+                    local size = d8Weaponry_var.barOffset + value.size[2]
+                    
+					d8weaponry_renderBar(0,  -size-(1*(d8Weaponry_var.renderIndex)), max, count, index)
+                    d8Weaponry_var.renderIndex = d8Weaponry_var.rendereredAmount + 1
+                    d8Weaponry_var.rendereredAmount = d8Weaponry_var.rendereredAmount + 1
+                end
+                
+                d8Weaponry_var.time = ( (-175) + (d8Weaponry_var.time + (12*(dt))) ) % 175
+            else
+                d8Weaponry_var.time = 0
+                if d8Weaponry_var.opacity[1] > 0 or d8Weaponry_var.opacity[2] > 0 then
+                    for index, value in ipairs(d8Weaponry_var.weapConf) do
+                        local max = value[value["ammoMaxName"]]
+                        local count = value[value["ammoCountName"]]
+                        if not d8Weaponry_var.memory[index] then
+                            d8Weaponry_var.memory[index] = {}
+                            d8Weaponry_var.memory[index]["ammoText"] = "/assetmissing.png"
+                            d8Weaponry_var.memory[index]["barText"] = "/assetmissing.png"
+                        end
+                        local size = d8Weaponry_var.barOffset + value.size[2]
+						
+                        d8weaponry_renderBar(0,  -size-(1*(d8Weaponry_var.rendereredAmount)), max, count, index)
+                        d8Weaponry_var.rendereredAmount = d8Weaponry_var.rendereredAmount + 1
+                    end
+                    if not (player.primaryHandItem() or player.altHandItem()) then
+                        if d8Weaponry_var.memoryClearTimer < 0 and type(d8Weaponry_var.weapConf) == "table" then
+                            d8weaponry_clearMemory()
+                        else
+                            d8Weaponry_var.memoryClearTimer = d8Weaponry_var.memoryClearTimer - dt
+                        end
+                    end
+                else
+                    d8weaponry_clearMemory()
+                end
+            end
+            if d8Weaponry_var.renderIndex > 0 then
                 if d8Weaponry_var.textOpacity < 185 then
                     d8Weaponry_var.textOpacity = d8Weaponry_var.textOpacity + 14
                     if d8Weaponry_var.textOpacity > 185 then
@@ -108,102 +165,41 @@ function update(dt)
                         d8Weaponry_var.opacity[2] = d8Weaponry_var.opacityMax[2]
                     end
                 end
-
-                d8Weaponry_var.weapParam = d8Weaponry_var.weapon["parameters"]
-                d8Weaponry_var.weapConf = d8Weaponry_var.weapon["parameters"]["d8Weaponry"]
-                for index, value in ipairs(d8Weaponry_var.weapConf) do
-                    local max = value[value["ammoMaxName"]]
-                    local count = value[value["ammoCountName"]]
-                    if not d8Weaponry_var.memory[index] then
-                        d8Weaponry_var.memory[index] = {}
-                        d8Weaponry_var.memory[index]["ammoText"] = "/assetmissing.png"
-                        d8Weaponry_var.memory[index]["barText"] = "/assetmissing.png"
-                    end
-                    d8weaponry_renderBar(0, -d8Weaponry_var.barOffset-(1*(renderIndex)), max, count, index)
-                    renderIndex = renderIndex + 1
-                end
-                
-                d8Weaponry_var.time = ( (-175) + (d8Weaponry_var.time + (12*(dt))) ) % 175
             else
-                d8Weaponry_var.time = 0
                 if d8Weaponry_var.textOpacity > 0 then
                     d8Weaponry_var.textOpacity = d8Weaponry_var.textOpacity - 9
                     if d8Weaponry_var.textOpacity < 0 then
                         d8Weaponry_var.textOpacity = 0
                     end
                 end
-                d8Weaponry_var.barOffset = util.clamp(d8Weaponry_var.barOffset - (1.5*dt), 2, 4)
-                if d8Weaponry_var.opacity[1] > 0 or d8Weaponry_var.opacity[2] > 0 then
-                    if d8Weaponry_var.opacity[2] == 0 then
-                        d8Weaponry_var.opacity[1] = d8Weaponry_var.opacity[1] - 2
-                        d8Weaponry_var.opacity[2] = 9
-                    else
-                        d8Weaponry_var.opacity[2] = d8Weaponry_var.opacity[2] - 2
-                    end
-                    if d8Weaponry_var.opacity[1] < 0 then
-                        d8Weaponry_var.opacity[1] = 0
-                    end
-                    if d8Weaponry_var.opacity[2] < 0 then
-                        d8Weaponry_var.opacity[2] = 0
-                    end
-                    
-                    for index, value in ipairs(d8Weaponry_var.weapConf) do
-                        local max = value[value["ammoMaxName"]]
-                        local count = value[value["ammoCountName"]]
-                        if not d8Weaponry_var.memory[index] then
-                            d8Weaponry_var.memory[index] = {}
-                            d8Weaponry_var.memory[index]["ammoText"] = "/assetmissing.png"
-                            d8Weaponry_var.memory[index]["barText"] = "/assetmissing.png"
-                        end
-                        d8weaponry_renderBar(0,  -d8Weaponry_var.barOffset-(1*(renderIndex)), max, count, index)
-                        renderIndex = renderIndex + 1
-                    end
+                if d8Weaponry_var.opacity[2] == 0 then
+                    d8Weaponry_var.opacity[1] = d8Weaponry_var.opacity[1] - 2
+                    d8Weaponry_var.opacity[2] = 9
+                else
+                    d8Weaponry_var.opacity[2] = d8Weaponry_var.opacity[2] - 2
                 end
+                if d8Weaponry_var.opacity[1] < 0 then
+                    d8Weaponry_var.opacity[1] = 0
+                end
+                if d8Weaponry_var.opacity[2] < 0 then
+                    d8Weaponry_var.opacity[2] = 0
+                end
+                d8Weaponry_var.barOffset = util.clamp(d8Weaponry_var.barOffset - (1.5*dt), 2, 4)
             end
         end
     end
 end
-
+function d8weaponry_clearMemory() -- Cleaning Scripts Memory of weapons parameters
+    d8Weaponry_var.weapon["parameters"]["d8Weaponry"] = {}
+    d8Weaponry_var.memory = {}
+    d8Weaponry_var.weapConf = "replaceMe"
+end
 function teleportOut()
     vanillaTeleportOut()
 end
 
 function uninit()
     vanillaUninit()
-
-end
-
-function d8weaponry_drawableUpdate(drawable, pos)--Way less annoing to handles effect/stat script in the renderer instead of their own scripts... maybe it not a good idea
-    local ressourceName = drawable.ressourceName
-    local propertyName = drawable.propertyName
-    local isBar = drawable.isBar
-    local skip = false
-
-    if ressourceName and isBar then
-        local pendingRendering = copy(drawable)
-        local name = ressourceName
-
-        pendingRendering["ammoMaxName"] = string.format("Max-%s", name)
-        pendingRendering["ammoCountName"] = string.format("%s", name)
-        pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name))
-        pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name))
-        
-        for index, value in ipairs(weapon["parameters"]["d8Weaponry"]) do
-            local match = true
-            for a,b in pairs(value) do
-                if pendingRendering[a] ~= b then
-                    match = false
-                end
-            end
-
-            if match then
-                table.remove(d8Weaponry_var.weapon["parameters"]["d8Weaponry"], index)
-            end
-        end
-        table.insert(d8Weaponry_var.weapon["parameters"]["d8Weaponry"], pos, pendingRendering)
-    elseif propertyName and isBar then
-
-    end
 
 end
 
@@ -227,36 +223,44 @@ function d8weaponry_weaponAnalisis(primary, secondary)
     if validprimary and not validsecondary then
         concatedParam["d8Weaponry"] = {}
         for index, value in ipairs(primaryConf["parameters"]["d8Weaponry"]) do
-            local pendingRendering = copy(value)
-            local name = value.ressourceName
-            pendingRendering["ammoMaxName"] = string.format("%sMax-%s", currentIndex, name or pendingRendering["ammoMaxName"])
-            pendingRendering["ammoCountName"] = string.format("%s-%s", currentIndex, name or pendingRendering["ammoCountName"])
-            pendingRendering[name or pendingRendering["ammoMaxName"]]    = primaryConf["parameters"][value["ammoMaxName"]]-- or primaryConf["config"][value["ammoMaxName"]]
-            pendingRendering[name or pendingRendering["ammoCountName"]]  = primaryConf["parameters"][value["ammoCountName"]]-- or primaryConf["config"][value["ammoCountName"]]
-            
-            if value.isRessource then
-                local cost = (pendingRendering["cost"] or 1.0)
-                pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name or value["ammoMaxName"]) / cost)
-                pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost) 
+            if value.isBar then
+                local pendingRendering = copy(value)
+                local name = value.ressourceName
+                pendingRendering.isBar = true
+                pendingRendering.size = {0,0}
+                pendingRendering["ammoMaxName"] = string.format("%sMax-%s", currentIndex, name or pendingRendering["ammoMaxName"])
+                pendingRendering["ammoCountName"] = string.format("%s-%s", currentIndex, name or pendingRendering["ammoCountName"])
+                pendingRendering[name or pendingRendering["ammoMaxName"]]    = primaryConf["parameters"][value["ammoMaxName"]]-- or primaryConf["config"][value["ammoMaxName"]]
+                pendingRendering[name or pendingRendering["ammoCountName"]]  = primaryConf["parameters"][value["ammoCountName"]]-- or primaryConf["config"][value["ammoCountName"]]
+                
+                if value.isRessource then
+                    local cost = (pendingRendering["cost"] or 1.0)
+                    pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name or value["ammoMaxName"]) / cost)
+                    pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost) 
+                end
+                table.insert(concatedParam["d8Weaponry"], pendingRendering)
             end
-            table.insert(concatedParam["d8Weaponry"], pendingRendering)
             currentIndex = (currentIndex + 1)
         end
     elseif not validprimary and validsecondary then
         concatedParam["d8Weaponry"] = {}
         for index, value in ipairs(secondaryConf["parameters"]["d8Weaponry"]) do
-            local pendingRendering = copy(value)
-            local name = value.ressourceName
-            pendingRendering["ammoMaxName"] = string.format("%sMax-%s", currentIndex, name or pendingRendering["ammoMaxName"])
-            pendingRendering["ammoCountName"] = string.format("%s-%s", currentIndex, name or pendingRendering["ammoCountName"])
-            pendingRendering[name or pendingRendering["ammoMaxName"]]    = secondaryConf["parameters"][value["ammoMaxName"]]-- or secondaryConf["config"][value["ammoMaxName"]]
-            pendingRendering[name or pendingRendering["ammoCountName"]]  = secondaryConf["parameters"][value["ammoCountName"]]-- or secondaryConf["config"][value["ammoCountName"]]
-            if value.isRessource then
-                local cost = (pendingRendering["cost"] or 1.0)
-                pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name or value["ammoMaxName"]) / cost)
-                pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost)
+            if value.isBar then
+                local pendingRendering = copy(value)
+                local name = value.ressourceName
+                pendingRendering.isBar = true
+                pendingRendering.size = {0,0}
+                pendingRendering["ammoMaxName"] = string.format("%sMax-%s", currentIndex, name or pendingRendering["ammoMaxName"])
+                pendingRendering["ammoCountName"] = string.format("%s-%s", currentIndex, name or pendingRendering["ammoCountName"])
+                pendingRendering[name or pendingRendering["ammoMaxName"]]    = secondaryConf["parameters"][value["ammoMaxName"]]-- or secondaryConf["config"][value["ammoMaxName"]]
+                pendingRendering[name or pendingRendering["ammoCountName"]]  = secondaryConf["parameters"][value["ammoCountName"]]-- or secondaryConf["config"][value["ammoCountName"]]
+                if value.isRessource then
+                    local cost = (pendingRendering["cost"] or 1.0)
+                    pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name or value["ammoMaxName"]) / cost)
+                    pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost)
+                end
+                table.insert(concatedParam["d8Weaponry"], pendingRendering)
             end
-            table.insert(concatedParam["d8Weaponry"], pendingRendering)
             currentIndex = (currentIndex + 1)
         end
     elseif validprimary and validsecondary then
@@ -264,33 +268,41 @@ function d8weaponry_weaponAnalisis(primary, secondary)
         concatedParam["d8Weaponry"] = {}
         --concatedParam = oldConcatParam(concatedParam)
         for index, value in ipairs(primaryConf["parameters"]["d8Weaponry"]) do
-            local pendingRendering = copy(value)
-            local name = value.ressourceName
-            pendingRendering["ammoMaxName"] = string.format("%sMax-%s", currentIndex, name or pendingRendering["ammoMaxName"])
-            pendingRendering["ammoCountName"] = string.format("%s-%s", currentIndex, name or pendingRendering["ammoCountName"])
-            pendingRendering[name or pendingRendering["ammoMaxName"]]    = primaryConf["parameters"][value["ammoMaxName"]]-- or primaryConf["config"][value["ammoMaxName"]]
-            pendingRendering[name or pendingRendering["ammoCountName"]]  = primaryConf["parameters"][value["ammoCountName"]]-- or primaryConf["config"][value["ammoCountName"]]
-            if value.isRessource then
-                local cost = (pendingRendering["cost"] or 1.0)
-                pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name or value["ammoMaxName"]) / cost)
-                pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost)
+            if value.isBar then
+                local pendingRendering = copy(value)
+                local name = value.ressourceName
+                pendingRendering.isBar = true
+                pendingRendering.size = {0,0}
+                pendingRendering["ammoMaxName"] = string.format("%sMax-%s", currentIndex, name or pendingRendering["ammoMaxName"])
+                pendingRendering["ammoCountName"] = string.format("%s-%s", currentIndex, name or pendingRendering["ammoCountName"])
+                pendingRendering[name or pendingRendering["ammoMaxName"]]    = primaryConf["parameters"][value["ammoMaxName"]]-- or primaryConf["config"][value["ammoMaxName"]]
+                pendingRendering[name or pendingRendering["ammoCountName"]]  = primaryConf["parameters"][value["ammoCountName"]]-- or primaryConf["config"][value["ammoCountName"]]
+                if value.isRessource then
+                    local cost = (pendingRendering["cost"] or 1.0)
+                    pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name or value["ammoMaxName"]) / cost)
+                    pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost)
+                end
+                table.insert(concatedParam["d8Weaponry"], pendingRendering)
             end
-            table.insert(concatedParam["d8Weaponry"], pendingRendering)
             currentIndex = (currentIndex + 1)
         end
         for index, value in ipairs(secondaryConf["parameters"]["d8Weaponry"]) do
-            local pendingRendering = copy(value)
-            local name = value.ressourceName
-            pendingRendering["ammoMaxName"] = string.format("%sMax-%s", currentIndex, name or pendingRendering["ammoMaxName"])
-            pendingRendering["ammoCountName"] = string.format("%s-%s", currentIndex, name or pendingRendering["ammoCountName"])
-            pendingRendering[name or pendingRendering["ammoMaxName"]]    = secondaryConf["parameters"][value["ammoMaxName"]]-- or secondaryConf["config"][value["ammoMaxName"]]
-            pendingRendering[name or pendingRendering["ammoCountName"]]  = secondaryConf["parameters"][value["ammoCountName"]]-- or secondaryConf["config"][value["ammoCountName"]]
-            if value.isRessource then
-                local cost = (pendingRendering["cost"] or 1.0)
-                pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name or value["ammoMaxName"]) / cost)
-                pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost)
+            if value.isBar then
+                local pendingRendering = copy(value)
+                local name = value.ressourceName
+                pendingRendering.isBar = true
+                pendingRendering.size = {0,0}
+                pendingRendering["ammoMaxName"] = string.format("%sMax-%s", currentIndex, name or pendingRendering["ammoMaxName"])
+                pendingRendering["ammoCountName"] = string.format("%s-%s", currentIndex, name or pendingRendering["ammoCountName"])
+                pendingRendering[name or pendingRendering["ammoMaxName"]]    = secondaryConf["parameters"][value["ammoMaxName"]]-- or secondaryConf["config"][value["ammoMaxName"]]
+                pendingRendering[name or pendingRendering["ammoCountName"]]  = secondaryConf["parameters"][value["ammoCountName"]]-- or secondaryConf["config"][value["ammoCountName"]]
+                if value.isRessource then
+                    local cost = (pendingRendering["cost"] or 1.0)
+                    pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name or value["ammoMaxName"]) / cost)
+                    pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name or value["ammoCountName"]) / cost)
+                end
+                table.insert(concatedParam["d8Weaponry"], pendingRendering)
             end
-            table.insert(concatedParam["d8Weaponry"], pendingRendering)
             currentIndex = (currentIndex + 1)
         end
     end
@@ -767,4 +779,65 @@ function d8weaponry_particleNumber(textOpacity, count, ammoPos, segmentSize)
         playerPos[1] + (ammoPos[1] + 0.45) + (segmentSize*23),
         playerPos[2] + ammoPos[2]
     })
+end
+
+function d8weaponry_drawableUpdate(drawable, name, pos)--Way less annoing to handles effect/stat script in the renderer instead of their own scripts... maybe it not a good idea
+    local ressourceName = drawable.ressourceName
+    local propertyName = drawable.propertyName
+    local isBar = drawable.isBar
+    local skip = false
+
+    if ressourceName and isBar then
+        local pendingRendering = copy(drawable)
+        local name = ressourceName
+
+        pendingRendering["ammoMaxName"] = string.format("Max-%s", name)
+        pendingRendering["ammoCountName"] = string.format("%s", name)
+        pendingRendering[pendingRendering["ammoMaxName"]] = (status.resourceMax(name))
+        pendingRendering[pendingRendering["ammoCountName"]] = (status.resource(name))
+        
+        for index, value in ipairs(weapon["parameters"]["d8Weaponry"]) do
+            local match = true
+            for a,b in pairs(value) do
+                if pendingRendering[a] ~= b then
+                    match = false
+                end
+            end
+
+            if match then
+                table.remove(d8Weaponry_var.weapon["parameters"]["d8Weaponry"], index)
+            end
+        end
+        table.insert(d8Weaponry_var.weapon["parameters"]["d8Weaponry"], pos, pendingRendering)
+    end
+    if drawable.isBuilt then
+        local size = d8Weaponry_var.barOffset + drawable.size[2]
+        drawable.position[2] = drawable.position[2] -size-(1*(d8Weaponry_var.renderIndex))
+        localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
+        d8Weaponry_var.renderIndex = d8Weaponry_var.renderIndex + 1
+        d8Weaponry_var.rendereredAmount = d8Weaponry_var.rendereredAmount + 1
+    end
+end
+
+function d8WeaponryUtils:add(drawable)
+    if type(drawable) ~= "table" then sb.logError("[d8WeaponryUtils:add] Following Drawable isn't a table\n"..sb.printJson(drawable, 1)) return end
+    if not drawable.name then sb.logError("[d8WeaponryUtils:remove] Following Drawable lack a name"..sb.printJson(drawable, 1)) return end
+    d8WeaponryUtils.drawableList[drawable.name] = drawable
+end
+
+function d8WeaponryUtils:remove(drawable)
+    if type(drawable) ~= "table" then sb.logError("[d8WeaponryUtils:remove] Following Drawable isn't a table\n"..sb.printJson(drawable, 1)) return end
+    if not drawable.name then sb.logError("[d8WeaponryUtils:remove] Following Drawable lack a name"..sb.printJson(drawable, 1)) return end
+    local newList = {}
+    for name, drawable in pairs(d8WeaponryUtils.drawableList) do
+        if name ~= drawable.name then
+            newList[name] = drawable
+        end
+    end
+    d8WeaponryUtils.drawableList = newList
+end
+
+function d8WeaponryUtils:update(drawable)
+    self:remove(drawable)
+    self:add(drawable)
 end

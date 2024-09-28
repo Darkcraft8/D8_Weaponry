@@ -1,6 +1,6 @@
 {
   "objectName" : "d8Weaponry_gunsmithTable",
-  "colonyTags" : [],
+  "colonyTags" : ["crafting"],
   "printable" : false,
   "rarity" : "Uncommon",
   "description" : "A table make for the production of ranged weapon and munitions.",
@@ -179,8 +179,6 @@
         }
       },
       "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
-      "convertionList" : "/D8Weaponry/object/crafting/gunsmithTable/convertionList.json",
-      "conversionTabIndex" : 3,
 
       "filter" : [
         "d8Weaponry_gunsmithing_lv1",        
@@ -212,9 +210,7 @@
         }
       },
       "config" : "/D8Weaponry/interfaces/windowConfig/gunsmithing.config",
-      "convertionList" : "/D8Weaponry/object/crafting/gunsmithTable/convertionList.json",
-      "conversionTabIndex" : 3,
-      
+
       "filter" : [
         "d8Weaponry_gunsmithing_lv1",
         "d8Weaponry_gunsmithing_lv2", 

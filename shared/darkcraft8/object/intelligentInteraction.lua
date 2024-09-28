@@ -92,29 +92,31 @@ function intelligentInteraction:complexAnalyseIntData(interactedEntity, currentS
         end
 
         if currentPaneConfig["interactData"]["convertionList"] then
-            local list = root.assetJson(currentPaneConfig["interactData"]["convertionList"])
-            for index, item in ipairs(list) do 
-                local itemConv
-                if type(item) ~= "string" then
-                    itemConv = item
-                    for itemDescriptor, _ in pairs(item) do
-                        item = itemDescriptor
-                    end
-                end
-
-                local hasItem = world.entityHasCountOfItem(interactedEntity, item)
-                if hasItem > 0 then
-                    --sb.logInfo("[intelligentInteraction] :\nitem : %s\nhasItem : %s", item, hasItem)
-                    if not currentPaneConfig["interactData"]["filter"] then
-                        currentPaneConfig["interactData"]["filter"] = {}
-                    end
-                    if itemConv then
-                        for _, filter in ipairs(itemConv[item]) do
-                            local craftFilter = string.format("d8Conversion_%s", filter)
-                            table.insert(currentPaneConfig["interactData"]["filter"], craftFilter)
+            for _, convertionList in ipairs(root.assetJson(currentPaneConfig["interactData"]["convertionList"])) do
+                local list = convertionList["item"]
+                for index, item in ipairs(list) do 
+                    local itemConv
+                    if type(item) ~= "string" then
+                        itemConv = item
+                        for itemDescriptor, _ in pairs(item) do
+                            item = itemDescriptor
                         end
-                    else
-                        table.insert(currentPaneConfig["interactData"]["filter"], string.format("d8Conversion_%s", item))
+                    end
+
+                    local hasItem = world.entityHasCountOfItem(interactedEntity, item)
+                    if hasItem > 0 then
+                        --sb.logInfo("[intelligentInteraction] :\nitem : %s\nhasItem : %s", item, hasItem)
+                        if not currentPaneConfig["interactData"]["filter"] then
+                            currentPaneConfig["interactData"]["filter"] = {}
+                        end
+                        if itemConv then
+                            for _, filter in ipairs(itemConv[item]) do
+                                local craftFilter = string.format("d8Conversion_%s", filter)
+                                table.insert(currentPaneConfig["interactData"]["filter"], craftFilter)
+                            end
+                        else
+                            table.insert(currentPaneConfig["interactData"]["filter"], string.format("d8Conversion_%s", item))
+                        end
                     end
                 end
             end
@@ -132,35 +134,37 @@ function intelligentInteraction:basicAnalyseIntData(interactedEntity, currentSta
         return
     end
     if self.compiledInteractData["convertionList"] then
-        local list = root.assetJson(self.compiledInteractData["convertionList"])
-        for index, item in ipairs(list) do 
-            local itemConv
-            if type(item) ~= "string" then
-                itemConv = item
-                for itemDescriptor, _ in pairs(item) do
-                    item = itemDescriptor
-                end
-            end
-
-            local hasItem = world.entityHasCountOfItem(interactedEntity, item)
-            if hasItem > 0 then
-                --sb.logInfo("[intelligentInteraction] :\nitem : %s\nhasItem : %s", item, hasItem)
-                if not self.compiledInteractData["filter"] then
-                    self.compiledInteractData["filter"] = {}
-                end
-                
-                if itemConv then
-                    for _, filter in ipairs(itemConv[item]) do
-                        local craftFilter = string.format("d8Conversion_%s", filter)
-                        table.insert(self.compiledInteractData["filter"], string.format("d8Conversion_%s", craftFilter))
+        for _, convertionList in ipairs(root.assetJson(self.compiledInteractData["convertionList"])) do
+            local list = convertionList["item"]
+            for index, item in ipairs(list) do 
+                local itemConv
+                if type(item) ~= "string" then
+                    itemConv = item
+                    for itemDescriptor, _ in pairs(item) do
+                        item = itemDescriptor
                     end
-                else
-                    table.insert(self.compiledInteractData["filter"], string.format("d8Conversion_%s", item))
+                end
+
+                local hasItem = world.entityHasCountOfItem(interactedEntity, item)
+                if hasItem > 0 then
+                    --sb.logInfo("[intelligentInteraction] :\nitem : %s\nhasItem : %s", item, hasItem)
+                    if not self.compiledInteractData["filter"] then
+                        self.compiledInteractData["filter"] = {}
+                    end
+                    
+                    if itemConv then
+                        for _, filter in ipairs(itemConv[item]) do
+                            local craftFilter = string.format("d8Conversion_%s", filter)
+                            table.insert(self.compiledInteractData["filter"], string.format("%s_%s", convertionList["prefix"], craftFilter))
+                        end
+                    else
+                        table.insert(self.compiledInteractData["filter"], string.format("%s_%s", convertionList["prefix"], item))
+                    end
                 end
             end
         end
     end
-    --sb.logInfo("%s", sb.printJson(self.compiledInteractData, 1))
+    
     --sb.logInfo("[intelligentInteraction] :\nfilter = %s", self.compiledInteractData["filter"])
 end
 
