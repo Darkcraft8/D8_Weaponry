@@ -5,6 +5,8 @@
     { "item" : "darkwoodmaterial", "count" : 5 },
     { "item" : "volatilepowder", "count" : 2 }
   ],
+  
+  "duration" : 2,
   "output" : { "item" : "d8Weaponry_tommygun", "count" : 1 },
   "groups" : [ "d8Weaponry_gunsmithing_lv2", "d8Weaponry_gunsmithing" ]
 }

@@ -200,7 +200,7 @@
         
         "projectileType" : "standardbullet",
         "projectileParameters" : {
-          "knockback" : 5,
+          "knockback" : 10,
           "actionOnReap" : [
             {
                 "options" : [ "/sfx/projectiles/bullet_ricochet1.ogg", "/sfx/projectiles/bullet_ricochet3.ogg", "/sfx/projectiles/bullet_ricochet11.ogg", "/sfx/projectiles/bullet_ricochet12.ogg", "/sfx/projectiles/bullet_ricochet13.ogg" ],

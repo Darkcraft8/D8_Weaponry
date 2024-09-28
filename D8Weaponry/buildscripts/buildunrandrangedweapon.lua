@@ -17,6 +17,7 @@ function build(directory, config, parameters, level, seed)
   if (level or configParameter("level", 1)) and not configParameter("fixedLevel", false) then
     parameters.level = (level or configParameter("level", 1))
   end
+  parameters.d8Weaponry_resetTooltipOnUpgrade = configParameter("d8Weaponry_resetTooltipOnUpgrade", true)
 
   setupAbility(config, parameters, "primary")
   setupAbility(config, parameters, "alt")

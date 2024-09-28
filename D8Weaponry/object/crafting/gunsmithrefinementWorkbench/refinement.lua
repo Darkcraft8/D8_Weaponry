@@ -196,6 +196,9 @@ function btn(buttonName)
             if name ~= "tooltipFields" then
                 newItem.parameters[name] = value
             end
+            if not refinement.selectedItemCfg.descriptor.parameters.d8Weaponry_resetTooltipOnUpgrade and name == "tooltipFields" then
+                newItem.parameters[name] = value
+            end
         end
         newItem.parameters.level = refinement.selectedItemCfg.level + 1
         player.consumeItem(refinement.selectedItemCfg.descriptor, false, true)
@@ -227,6 +230,9 @@ function btn(buttonName)
         }
         for name, value in pairs(refinement.selectedItemCfg.descriptor.parameters) do
             if name ~= "tooltipFields" then
+                newItem.parameters[name] = value
+            end
+            if not refinement.selectedItemCfg.descriptor.parameters.d8Weaponry_resetTooltipOnUpgrade and name == "tooltipFields" then
                 newItem.parameters[name] = value
             end
         end

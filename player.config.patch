@@ -6,6 +6,7 @@
       "value" : "/D8Weaponry/localscript/weapInfoRenderer.lua"
     }
   ],
+ 
   [
     {
       "op": "add",
@@ -14,6 +15,15 @@
         "item": "d8Weaponry_gunsmithTable"
       }
     },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item" : "d8Weaponry_gunsmithrefinementworkbench"
+      }
+    },
+
+    
     {
       "op": "add",
       "path": "/defaultBlueprints/tier1/-",
