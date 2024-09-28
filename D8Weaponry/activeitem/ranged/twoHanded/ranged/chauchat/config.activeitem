@@ -428,14 +428,5 @@
         }
     ],
 
-    "builder" : "/D8Weaponry/buildscripts/buildunrandrangedweapon.lua",
-    "upgradeParameters" : {
-        "shortdescription" : "Tommy Gun (Drum Mag)",
-        "cylinderCapacity" : 50,
-        "rarity" : "Legendary",
-        "tooltipFields" : {
-            "ammo1CapacityLabel" : 50,
-            "rarityLabel" : "^magenta;Legendary^reset;"
-        }
-    }
+    "builder" : "/D8Weaponry/buildscripts/buildunrandrangedweapon.lua"
 }

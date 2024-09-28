@@ -10,6 +10,7 @@ local spawnedEntity
 local paneButton = {
 }
 local listContent = {}
+local listUpgradeItem = {}
 local checkInteractRadiusTimer = 0.5
 
 function init()
@@ -47,7 +48,14 @@ function init()
         local objectParam = {
             smashOnBreak = true,
             color = "?replace;ffffff00=ffffffff?setcolor=ffffff?blendmult=/items/armors/decorative/costumes/hiker/back.png;42;10?crop;13;1;21;17?flipx",
-            interactAction = "OpenSongbookInterface"
+            interactAction = "OpenCraftingInterface",
+			interactData = {
+				config = "/interface/windowconfig/crafting.config",
+				filter = {
+					"plain",
+					"craftingtable"
+				}
+			}
         }
         self.playerTilesPosition = world.entityPosition(playerEntityId)
         self.playerTilesPosition[1] = roundPos(self.playerTilesPosition[1])
@@ -107,7 +115,7 @@ function postInit()
 
         if sourceEntity then
             if world.entityExists(sourceEntity) and paneButton then
-                populateList()
+                populateList("partListArea.scrollArea.itemList", listContent, paneButton)
             end
         end
         initTimer = -10
@@ -154,93 +162,114 @@ function checkInteractRadius()
     end
 end
 
-function populateList()
-    self.listPath = "partListArea.scrollArea.itemList"
-    widget.clearListItems(self.listPath)
+function populateList(listPath, listContent, itemList)
+    self.listPath = listPath
+    widget.clearListItems(listPath)
     listContent = {}
-    local openedFirst = false
-    for i, v in ipairs(paneButton) do
-        local id = widget.addListItem(self.listPath)
-        local path = string.format("%s.%s", self.listPath, id)
-        local icon
-        local interactData = v.interactData 
-        local tooltipText
-        
-        if type(interactData.config) == "string" then
-            interactData.config = root.assetJson(v.interactData.config)
-        end
-        if type(interactData) == "string" then
-            interactData = root.assetJson(v.interactData)
-        end
+    if listPath == "partListArea.scrollArea.itemList" then
+        local openedFirst = false
+        for i, v in ipairs(paneButton) do
+            local id = widget.addListItem(self.listPath)
+            local path = string.format("%s.%s", self.listPath, id)
+            local icon
+            local interactData = v.interactData 
+            local tooltipText
+            
+            if type(interactData.config) == "string" then
+                interactData.config = root.assetJson(v.interactData.config)
+            end
+            if type(interactData) == "string" then
+                interactData = root.assetJson(v.interactData)
+            end
 
-        if interactData.paneLayoutOverride then
-            if interactData.paneLayoutOverride.windowtitle then
-                if interactData.paneLayoutOverride.windowtitle.icon then
-                    icon = interactData.paneLayoutOverride.windowtitle.icon.file
-                end
-                if interactData.paneLayoutOverride.windowtitle.title then
-                    tooltipText = interactData.paneLayoutOverride.windowtitle.title
-                end
-            end
-        elseif interactData.config then
-            if interactData.config.paneLayout then
-                if interactData.config.paneLayout.windowtitle then
-                    if interactData.config.paneLayout.windowtitle.icon then
-                        icon = interactData.config.paneLayout.windowtitle.icon.file
+            if interactData.paneLayoutOverride then
+                if interactData.paneLayoutOverride.windowtitle then
+                    if interactData.paneLayoutOverride.windowtitle.icon then
+                        icon = interactData.paneLayoutOverride.windowtitle.icon.file
+                    end
+                    if interactData.paneLayoutOverride.windowtitle.title then
+                        tooltipText = interactData.paneLayoutOverride.windowtitle.title
                     end
                 end
-                if interactData.config.paneLayout.windowtitle.title then
-                    tooltipText = interactData.config.paneLayout.windowtitle.title
-                    if interactData.config.tooltipText then
-                        tooltipText = interactData.config.tooltipText
+            elseif interactData.config then
+                if interactData.config.paneLayout then
+                    if interactData.config.paneLayout.windowtitle then
+                        if interactData.config.paneLayout.windowtitle.icon then
+                            icon = interactData.config.paneLayout.windowtitle.icon.file
+                        end
+                    end
+                    if interactData.config.paneLayout.windowtitle.title then
+                        tooltipText = interactData.config.paneLayout.windowtitle.title
+                        if interactData.config.tooltipText then
+                            tooltipText = interactData.config.tooltipText
+                        end
+                    end
+                end
+            elseif interactData.paneLayout then
+                if interactData.paneLayout.windowtitle then
+                    if interactData.paneLayout.windowtitle.icon then
+                        icon = interactData.paneLayout.windowtitle.icon.file
+                    end
+                    if interactData.paneLayout.windowtitle.title then
+                        tooltipText = interactData.paneLayout.windowtitle.title
+                        if interactData.paneLayout.tooltipText then
+                            tooltipText = interactData.paneLayout.tooltipText
+                        end
+                    end
+                end
+            elseif interactData.gui then
+                if interactData.gui.windowtitle then
+                    if interactData.gui.windowtitle.icon then
+                        icon = interactData.gui.windowtitle.icon.file
+                    end
+                    if interactData.gui.windowtitle.title then
+                        tooltipText = interactData.gui.windowtitle.title
+                        if interactData.gui.tooltipText then
+                            tooltipText = interactData.gui.tooltipText
+                        end
                     end
                 end
             end
-        elseif interactData.paneLayout then
-            if interactData.paneLayout.windowtitle then
-                if interactData.paneLayout.windowtitle.icon then
-                    icon = interactData.paneLayout.windowtitle.icon.file
-                end
-                if interactData.paneLayout.windowtitle.title then
-                    tooltipText = interactData.paneLayout.windowtitle.title
-                    if interactData.paneLayout.tooltipText then
-                        tooltipText = interactData.paneLayout.tooltipText
-                    end
-                end
+            if interactData.tooltipText then
+                tooltipText = interactData.tooltipText
             end
-        elseif interactData.gui then
-            if interactData.gui.windowtitle then
-                if interactData.gui.windowtitle.icon then
-                    icon = interactData.gui.windowtitle.icon.file
-                end
-                if interactData.gui.windowtitle.title then
-                    tooltipText = interactData.gui.windowtitle.title
-                    if interactData.gui.tooltipText then
-                        tooltipText = interactData.gui.tooltipText
-                    end
-                end
+            if not icon then 
+                icon = "/assetmissing.png"
             end
-        end
-        if interactData.tooltipText then
-            tooltipText = interactData.tooltipText
-        end
-        if not icon then 
-            icon = "/assetmissing.png"
-        end
-        widget.setData(path, {
-            interactAction = v.interactAction,
-            interactData = interactData
-        })
-        widget.setImage(string.format("%s.icon", path), icon)
-        listContent[string.format("%s.%s", self.listPath, id)] = {
-            tooltip = {
-                description = tooltipText
+            widget.setData(path, {
+                interactAction = v.interactAction,
+                interactData = interactData
+            })
+            widget.setImage(string.format("%s.icon", path), icon)
+            listContent[string.format("%s.%s", self.listPath, id)] = {
+                tooltip = {
+                    description = tooltipText
+                }
             }
-        }
-        if not openedFirst then
-            widget.setListSelected(self.listPath, id)
-            player.interact(v.interactAction, interactData, sourceEntity)
-            openedFirst = true
+            if not openedFirst then
+                widget.setListSelected(self.listPath, id)
+                player.interact(v.interactAction, interactData, sourceEntity)
+                openedFirst = true
+            end
+        end
+    else
+        for i, v in ipairs(itemList) do
+            local id = widget.addListItem(listPath)
+            local path = string.format("%s.%s", listPath, id)
+            local itemCfg = root.itemConfig(v.item)
+            local itemCount = player.hasCountOfItem(v.item)
+            local itemName = itemCfg["parameters"]["shortdescription"] or itemCfg["config"]["shortdescription"]
+            local count
+
+            if itemCount < v.count then
+                count = string.format("^red;%s/%s", itemCount, v.count)
+            else
+                count = string.format("^green;%s/%s", itemCount, v.count)
+            end
+            widget.setText(string.format("%s.itemName", path), itemName)
+            widget.setText(string.format("%s.count", path), count)
+            widget.setItemSlotItem(string.format("%s.itemIcon", path), v.item)
+            listContent[string.format("%s.%s", listPath, id)] = {}
         end
     end
 end
@@ -285,68 +314,13 @@ function createTooltip(mousePosition)
     end
 
     if widget.inMember("btnUpgrade", mousePosition) then
-        local temptooltip = root.assetJson("/interface/craftingtooltip/craftingtooltip.config")
-        
-        template = temptooltip["itemList"]["schema"]["listTemplate"]
-        template.rarityIcon = {
-            type = "image",
-            file = "/interface/craftingtooltip/listitem.png",
-            position = {1, 0},
-            zlevel = 0
-        }
-        template.itemIcon = {
-            type = "image",
-            file = "/interface/craftingtooltip/listitem.png",
-            position = {1, 0},
-            zlevel = 1
-        }
-        
-        local tooltip = {
-            type = "layout",
-            layoutType = "basic",
-
-            rect = {0, 0, 3000, 3000},
-            children = {
-                
-            }
-        }
-        for index, item in ipairs(PaneScriptConfiguration.UpgradeRecipe) do
-            local itemCfg = root.itemConfig(item)
-            local itemCount = player.hasCountOfItem(item)
-            local tempTemplate = copy(template)
-            tooltip["children"][item.item] = {
-                type = "layout",
-                layoutType = "basic",
-
-                rect = {0, 0, 3000, 3000},
-                children = {
-                    
-                }
-            }
-            tooltip["children"][item.item]["rect"][1] = mousePosition[1]
-            tooltip["children"][item.item]["rect"][2] = mousePosition[2]
-
-            tooltip["children"][item.item]["children"]["background"] = template.background
-            tooltip["children"][item.item]["children"]["count"] = template.count
-            tooltip["children"][item.item]["children"]["itemName"] = template.itemName
-            tooltip["children"][item.item]["children"]["itemIcon"] = template.itemIcon
-            tooltip["children"][item.item]["children"]["rarityIcon"] = template.rarityIcon
-            
-            if itemCount < item.count then
-                tooltip["children"][item.item]["children"]["count"].value = string.format("^red;%s/%s", itemCount, item.count)
-            else
-                tooltip["children"][item.item]["children"]["count"].value = string.format("^green;%s/%s", itemCount, item.count)
-            end
-            tooltip["children"][item.item]["children"]["itemName"].value = itemCfg.parameters.shortdescription or itemCfg.config.shortdescription
-            tooltip["children"][item.item]["children"]["itemIcon"].file = itemCfg.parameters.inventoryIcon or itemCfg.directory .. itemCfg.config.inventoryIcon
-            tooltip["children"][item.item]["children"]["rarityIcon"].file = string.format("/interface/inventory/itemborder%s.png", string.lower(itemCfg.parameters.rartity or itemCfg.config.rarity))
-            
-        end
-
-        sb.logInfo("%s", sb.printJson(tooltip, 1))
-        pane.addWidget(tooltip, "tooltip")
+        populateList("listUpgrade.scrollArea.itemList", listUpgradeItem, PaneScriptConfiguration.UpgradeRecipe)
+        widget.setVisible("listUpgrade", true)
+        widget.setVisible("partListArea", false)
         return
     else
+        widget.setVisible("listUpgrade", false)
+        widget.setVisible("partListArea", true)
         if part["tooltip"] == nil then
         return
         end
@@ -408,6 +382,8 @@ function btnUpgrade()
     end
 
     world.sendEntityMessage(sourceEntity, "requestUpgrade")
-    player.interact(self.interactAction, self.interactData, sourceEntity)
+    if self.interactAction and self.interactData then
+        player.interact(self.interactAction, self.interactData, sourceEntity)
+    end
     uninit()
 end

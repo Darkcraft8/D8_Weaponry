@@ -2,6 +2,7 @@
     "itemName" : "d8Weaponry_tungstenmagnum",
     "price" : 580,
     "maxStack" : 1,
+    "level" : 2,
     "rarity" : "Common",
     "description" : "A large handgun that packs a punch.",
     "shortdescription" : "Tungsten Magnum",
@@ -9,7 +10,6 @@
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : false,
     "itemTags" : ["weapon","ranged","pistol"],
-	"level" : 2,
     
     "inventoryIcon" : [
         { "image" : "normal.png:idle" }

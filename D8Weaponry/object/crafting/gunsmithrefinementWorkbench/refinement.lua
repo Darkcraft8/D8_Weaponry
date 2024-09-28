@@ -73,13 +73,22 @@ function refinement:populateMaterials(listPath)
     self.upgradeMaterials = {}
     if self.selectedItemCfg.level ~= 10 then
         widget.setButtonEnabled("upgradeBtn", true)
-        for _, b in ipairs(self.tiersMaterials[""..level]) do
+        for _, b in ipairs(self.tiersMaterials[""..math.ceil(level)]) do
+            local itemConfig = root.itemConfig(b[1])
             local amount = b[2]
             local amountMath = math.ceil((price/16)/b[2])
-            if  root.itemConfig(b[1])["config"]["currency"] then
-                amountMath = math.ceil(b[2] * (price/(b[2]/15)))
-            end
             amountMath = math.ceil(b[2] + amountMath)
+            if itemConfig["config"]["currency"] then
+                if b[1] == "money" then
+                    amountMath = math.ceil( (price*root.evalFunction("itemLevelPriceMultiplier", level)) - price)
+                elseif b[1] == "essence" then
+                    local prevValue = root.evalFunction("weaponEssenceValue", level)
+                    local newValue = root.evalFunction("weaponEssenceValue", level + 1)
+                    amountMath = math.ceil(newValue - prevValue)
+                else
+                    amountMath = math.ceil((price)*(1.15))
+                end
+            end
 
             local id = widget.addListItem(listPath)
             local path = string.format("%s.%s", listPath, id)
@@ -91,10 +100,10 @@ function refinement:populateMaterials(listPath)
             local itemName = "Upgrade : " .. (itemCfg.parameters.shortdescription or itemCfg.config.shortdescription)
 
             if (itemCount < amountMath) and not player.isAdmin() then
-                count = string.format("^red;%s/%s, %s", itemCount, amountMath, amount)
+                count = string.format("^red;%s/%s", itemCount, amountMath)
                 widget.setButtonEnabled("upgradeBtn", false)
             else
-                count = string.format("^green;%s/%s, %s", itemCount, amountMath, amount)
+                count = string.format("^green;%s/%s", itemCount, amountMath)
             end
 
             widget.setText(string.format("%s.itemName", path), itemName)
@@ -111,10 +120,19 @@ function refinement:populateMaterials(listPath)
 
     if level > 1 then
         for index, b in ipairs(self.tiersMaterials[string.format("%s", (level-1))]) do
+            local itemConfig = root.itemConfig(b[1])
             local amount = b[2]
             local amountMath = math.ceil((price/16)/b[2])
-            if root.itemConfig(b[1])["config"]["currency"] then
-                amountMath = math.ceil(b[2] * (price/(b[2]/15)))
+            if itemConfig["config"]["currency"] then
+                if b[1] == "money" then
+                    amountMath = math.ceil( (price*root.evalFunction("itemLevelPriceMultiplier", level - 1)) - price)
+                elseif b[1] == "essence" then
+                    local prevValue = root.evalFunction("weaponEssenceValue", level - 1)
+                    local newValue = root.evalFunction("weaponEssenceValue", level)
+                    amountMath = math.ceil(newValue - prevValue)
+                else
+                    amountMath = math.ceil((price)*(1.15))
+                end
             end
 
             if self.upgradeMaterials[index] then
@@ -159,14 +177,17 @@ function itemSelected()
     refinement.selectedItem = widget.getListSelected("itemListArea.scrollArea.itemList")
     if refinement.selectedItem then
         local data = widget.getData(string.format("itemListArea.scrollArea.itemList.%s", refinement.selectedItem))
-        refinement.selectedItemCfg.level = data.level or 1
+        refinement.selectedItemCfg.level = math.ceil(data.level) or 1
         refinement.selectedItemCfg.price = data.price or 1
         refinement.selectedItemCfg.descriptor = data.descriptor or {}
         self.itemTimer = 0
+        widget.setButtonEnabled("upgradeBtn", false)
+        widget.setButtonEnabled("downgradeBtn", false)
     end
 end
 function btn(buttonName)
     if "upgradeBtn" == buttonName then
+        player.consumeItem(refinement.selectedItemCfg.descriptor, false, true)
         for _, item in ipairs(refinement.upgradeMaterials) do
             local toBeSpent = {}
             if item["descriptor"] and item["up"] then
@@ -200,13 +221,28 @@ function btn(buttonName)
                 newItem.parameters[name] = value
             end
         end
+        local itemCfg = root.itemConfig(refinement.selectedItemCfg.descriptor)
+        if itemCfg.config.upgradeParameters and (refinement.selectedItemCfg.level + 1) == 6 then
+            for name, value in pairs(itemCfg.config.upgradeParameters) do
+                if type(value) == "table" then
+                    for name2, value2 in pairs(value) do
+                        if not newItem.parameters[name] then
+                            newItem.parameters[name] = {}
+                        end
+                        newItem.parameters[name][name2] = value2
+                    end
+                else
+                    newItem.parameters[name] = value
+                end
+            end
+        end
         newItem.parameters.level = refinement.selectedItemCfg.level + 1
-        player.consumeItem(refinement.selectedItemCfg.descriptor, false, true)
         player.giveItem(newItem)
         
         refinement:reset()
     end
     if "downgradeBtn" == buttonName then
+        player.consumeItem(refinement.selectedItemCfg.descriptor, false, true)
         for _, item in ipairs(refinement.upgradeMaterials) do
             local toBeSpent = {}
             if item["downName"] and item["down"] then
@@ -220,7 +256,9 @@ function btn(buttonName)
                     toBeSpent = item["downName"]
                     toBeSpent.count = item["down"]
                 end
-                player.giveItem(toBeSpent)
+                if not player.isAdmin() then
+                    player.giveItem(toBeSpent)
+                end
             end
         end
         local newItem = {
@@ -236,10 +274,24 @@ function btn(buttonName)
                 newItem.parameters[name] = value
             end
         end
+        local itemCfg = root.itemConfig(refinement.selectedItemCfg.descriptor)
+        if itemCfg.config.upgradeParameters and (refinement.selectedItemCfg.level) == 6 then
+            for name, value in pairs(itemCfg.config.upgradeParameters) do
+                if type(value) == "table" then
+                    for name2, value2 in pairs(value) do
+                        if not newItem.parameters[name] then
+                            newItem.parameters[name] = {}
+                        end
+                        newItem.parameters[name][name2] = itemCfg.config[name][name2]
+                    end
+                else
+                    newItem.parameters[name] = itemCfg.config[name]
+                end
+            end
+        end
         newItem.parameters.level = refinement.selectedItemCfg.level - 1
-        player.consumeItem(refinement.selectedItemCfg.descriptor, false, true)
-        player.giveItem(newItem)
         
+        player.giveItem(newItem)
         refinement:reset()
     end
 end
@@ -284,4 +336,8 @@ function createTooltip(mousePosition)
     end
 
     return tooltip
+end
+
+function d8Weaponry_upgradeParameters(level, itemConfig) -- Todo
+
 end

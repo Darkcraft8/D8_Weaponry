@@ -1,14 +1,14 @@
-# 1.0.2
+# 1.0.5
 ## Addition : 
     Glock (T1 - T3)
     Chauchat (T1 - T3)
     Minigun (T6)
 
     Refinement Workbench (new object)
-        used to upgrade or downgrade firearms of the mod
+        used to upgrade or downgrade weapons
 
 ## Change : 
-    Physical Variant non conversion recipe have been disabled
+    Physical Variant non-conversion recipe have been disabled
         to give incentive to try the new weapons
     Rebalancing weapons damage to scale with weapons level
         to allow player's to use their favorite weapons at almost if not any tier

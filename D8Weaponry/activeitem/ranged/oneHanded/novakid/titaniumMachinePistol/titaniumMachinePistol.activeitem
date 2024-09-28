@@ -9,7 +9,7 @@
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : false,
     "itemTags" : ["weapon","ranged","pistol"],
-	  "level" : 3,
+	"level" : 3,
     
     "inventoryIcon" : [
         { "image" : "normal.png:idle" }
