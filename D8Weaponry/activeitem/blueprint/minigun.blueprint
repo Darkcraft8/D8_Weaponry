@@ -1,0 +1,11 @@
+{
+  "itemName" : "d8Weaponry_minigun-recipe",
+  "price" : 1625,
+  "shortdescription" : "Minigun",
+  "description" : "Ancient firearm enhanced with ^green;refined aegisalt^reset; and ^cyan;cryonic extract^reset;.",
+  "inventoryIcon" : "/D8Weaponry/activeitem/ranged/twoHanded/ranged/minigun/normal.png:idle",
+  "category" : "blueprint",
+  "rarity" : "Legendary",
+
+  "recipe" : { "item" : "d8Weaponry_minigun", "count" : 1 }
+}
