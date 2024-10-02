@@ -3,10 +3,12 @@ refinement = {}
 
 function refinement:init()
     self.config = root.assetJson(config.getParameter("scriptsConfig"))
-    self.allowedItem = self.config.upgradableItemList
+    self.allowedItem = self.config.whiteList
+    self.disallowedItem = self.config.blackList
     self.tiersMaterials = self.config.tiersMaterials
     self.tag = self.config.tag
-    self.skipWhitelist = self.config.skipWhitelist
+    self.skipWhitelist = self.config.skipWhitelist or true
+	self.skipBlacklist = self.config.skipBlacklist or false
 
     refinement:reset()
 end
@@ -16,22 +18,65 @@ function refinement:update(dt)
         self.itemTimer = self.itemTimer - dt 
     else
         self.itemTimer = 0.25
-        self:populateItem("itemListArea.scrollArea.itemList")
+        self:populateItem(self.config.listPath.items)
         if self.selectedItemCfg.level then
-            self:populateMaterials("materialListArea.scrollArea.itemList")
+            self:populateMaterials(self.config.listPath.materials)
         end
     end
 end
 
 function refinement:uninit()
-    widget.clearListItems("itemListArea.scrollArea.itemList")
-    widget.clearListItems("materialListArea.scrollArea.itemList")
+    widget.clearListItems(self.config.listPath.items)
+    widget.clearListItems(self.config.listPath.materials)
 end
 
 function refinement:populateItem(listPath)
     widget.clearListItems(listPath)
-    for _, item in ipairs(player.itemsWithTag(self.tag)) do
-        if self.skipWhitelist then
+	if not self.skipWhitelist and not self.skipBlacklist then
+		sb.logInfo("[D8Weaponry : Refinement Pane] You dont just put both a black and white list...\n			Using WhiteList Logic Instead")
+		self.skipBlacklist = true
+		refinement:populateItem(listPath)
+	else
+		for _, item in ipairs(player.itemsWithTag(self.tag)) do
+			if self.skipWhitelist and self.skipBlacklist then
+				local id = widget.addListItem(listPath)
+				local path = string.format("%s.%s", listPath, id)
+				local cfg = root.itemConfig(item)
+				local level = item.parameters.level or cfg.config.level
+				local price = item.parameters.price or cfg.config.price
+
+				widget.setItemSlotItem(string.format("%s.item", path), item)
+				widget.setData(path, {
+					level = level,
+					price = price,
+					descriptor = item
+				})
+			elseif not self.skipWhitelist and self.skipBlacklist then
+				for _, name in ipairs(self.allowedItem) do 
+					if item.name == name then
+						local id = widget.addListItem(listPath)
+						local path = string.format("%s.%s", listPath, id)
+						local cfg = root.itemConfig(item)
+						local level = item.parameters.level or cfg.config.level
+						local price = item.parameters.price or cfg.config.price
+
+						widget.setItemSlotItem(string.format("%s.item", path), item)
+						widget.setData(path, {
+							level = level,
+							price = price,
+							descriptor = item
+						})
+					end
+				end
+			elseif self.skipWhitelist and not self.skipBlacklist then
+				self:blackListThingamagig(item, listPath)
+			end
+		end
+	end
+end
+function refinement:blackListThingamagig(item, listPath)
+	for _, name in ipairs(self.disallowedItem) do
+        if item.name == name then return else
             local id = widget.addListItem(listPath)
             local path = string.format("%s.%s", listPath, id)
             local cfg = root.itemConfig(item)
@@ -44,29 +89,12 @@ function refinement:populateItem(listPath)
                 price = price,
                 descriptor = item
             })
-        else
-            for _, name in ipairs(self.allowedItem) do 
-                if item.name == name then
-                    local id = widget.addListItem(listPath)
-                    local path = string.format("%s.%s", listPath, id)
-                    local cfg = root.itemConfig(item)
-                    local level = item.parameters.level or cfg.config.level
-                    local price = item.parameters.price or cfg.config.price
 
-                    widget.setItemSlotItem(string.format("%s.item", path), item)
-                    widget.setData(path, {
-                        level = level,
-                        price = price,
-                        descriptor = item
-                    })
-                end
-            end
+            return
         end
     end
 end
-
 function refinement:populateMaterials(listPath)
-    --Math Part
     widget.clearListItems(listPath)
     local price = self.selectedItemCfg.price
     local level = self.selectedItemCfg.level
@@ -174,10 +202,10 @@ function uninit()
 end
 
 function itemSelected()
-    refinement.selectedItem = widget.getListSelected("itemListArea.scrollArea.itemList")
+    refinement.selectedItem = widget.getListSelected(refinement.config.listPath.items)
     if refinement.selectedItem then
         local data = widget.getData(string.format("itemListArea.scrollArea.itemList.%s", refinement.selectedItem))
-        refinement.selectedItemCfg.level = math.ceil(data.level) or 1
+        refinement.selectedItemCfg.level = math.ceil(data.level or 1)
         refinement.selectedItemCfg.price = data.price or 1
         refinement.selectedItemCfg.descriptor = data.descriptor or {}
         self.itemTimer = 0
@@ -303,8 +331,8 @@ function refinement:reset()
     widget.setButtonEnabled("upgradeBtn", false)
     widget.setButtonEnabled("downgradeBtn", false)
 
-    self:populateItem("itemListArea.scrollArea.itemList")
-    widget.clearListItems("materialListArea.scrollArea.itemList")
+    self:populateItem(self.config.listPath.items)
+    widget.clearListItems(self.config.listPath.materials)
 end
 
 function createTooltip(mousePosition)
