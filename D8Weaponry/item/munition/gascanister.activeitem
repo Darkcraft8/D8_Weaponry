@@ -1,0 +1,22 @@
+{
+    "itemName" : "d8Weaponry_gascanister",
+    "price" : 1,
+    "level" : 1,
+    "maxStack" : 4,
+    "rarity" : "Common",
+    "category" : "d8Weaponry_containerItem",
+    "description" : "a gas canister",
+    "shortdescription" : "Gas Canister",
+    "itemTags" : ["munition"],
+    "inventoryIcon" : "gascanisterIcon.png",
+    "image" : "gascanister.png",
+    "scripts" : [],
+
+    "gasKind" : "oxygen",
+    "gasAmount" : 0,
+    "gasMax" : 5,
+    "durability" : 6,
+    "durabilityHit" : 0,
+
+    "note" : "This is an activeitem only so that whe can trick the game to render a durability bar depending on how full it is."
+}

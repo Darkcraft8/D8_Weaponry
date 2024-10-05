@@ -51,5 +51,12 @@
         "/spawnitem d8Weaponry_minigun",
         
         "/spawnitem d8Weaponry_standardbullet 5000"
+    ],
+
+    "d8Weaponry_testcontainermechanic" : [
+        "/spawnitem d8Weaponry_moonmakeshiftflamethrower",
+        
+        "/spawnitem d8Weaponry_gascanister 4 '{\"gasKind\" : \"oxygen\", \"gasAmount\" : 125, \"gasMax\" : 125, \"durability\" : 126, \"durabilityHit\" : 125}'"
     ]
+
 }

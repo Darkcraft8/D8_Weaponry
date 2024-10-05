@@ -4,7 +4,7 @@
     "level" : 1,
     "maxStack" : 5000,
     "rarity" : "Common",
-    "category" : "Munition",
+    "category" : "d8Weaponry_munition",
     "description" : "a piercing bullet",
     "shortdescription" : "Piercing Bullet",
     "itemTags" : ["munition"],

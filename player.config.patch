@@ -136,5 +136,13 @@
         } 
       }
     }
+  ],
+
+  [
+    {
+      "op": "add",
+      "path": "/inventoryFilters/autoAddToCustomBar/categoryBlacklist/-",
+      "value": "d8Weaponry_containerItem"
+    }
   ]
 ]

@@ -1,0 +1,16 @@
+[
+  [
+    {
+      "op": "add",
+      "path": "/labels/d8Weaponry_containerItem",
+      "value": "Container"
+    }
+  ],
+  [
+    {
+      "op": "add",
+      "path": "/labels/d8Weaponry_munition",
+      "value": "Munition"
+    }
+  ]
+]

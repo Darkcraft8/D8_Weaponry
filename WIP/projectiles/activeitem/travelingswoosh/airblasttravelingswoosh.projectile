@@ -1,0 +1,34 @@
+{
+  "projectileName" : "airblasttravelingswoosh",
+  "image" : "/projectiles/activeitems/travelingswoosh/energytravelingswoosh.png",
+  "animationCycle" : 0.16,
+  "timeToLive" : 0.15,
+  "frameNumber" : 5,
+  "speed" : 40,
+  "orientationLocked" : true,
+  "damagePoly" : [ 
+    [-40, 24.5],
+    [3.5, 24.5],
+    [15.5, 21.5],
+    [28.5, 15.5], 
+    [36.5, 7.5], 
+    [40.5, -1.5], 
+    [40.5, -12.5], 
+    [32.5, -24.5], 
+    [-12, -24.5] 
+  ],
+  "animationLoops" : true,
+  "piercing" : true,
+  "bounces" : -1,
+  "flippable" : true,
+  "damageTeam" : {
+   "type" : "indiscriminate"
+  },
+  "damageKind" : "nodamage",
+  "damageType" : "ignoresdef",
+  "emitters" : [ ],
+  "fullbright" : true,
+  "statusEffects" : [],
+  "knockback" : 40,
+  "knockbackDirectional" : true
+}

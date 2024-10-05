@@ -13,6 +13,8 @@ Current Dev Stage of Weaponry : Finished for first release
 
 todo :
 --> config screen for the renderer
+--> Make a few altAbility their own abilityFile
+--> Finish Container Item Mechanic by adding object to fill/use them
 
 idea for next updates : 
 

@@ -81,7 +81,7 @@
   },
   "damageKindImage" : {
     "type" : "image",
-    "position" : [120, 90],
+    "position" : [60, 88],
     "file" : "",
     "centered" : true,
     "maxSize" : [16, 16],
