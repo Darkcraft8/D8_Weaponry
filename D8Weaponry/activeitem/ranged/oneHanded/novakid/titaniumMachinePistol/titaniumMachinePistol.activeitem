@@ -5,7 +5,7 @@
     "rarity" : "Uncommon",
     "description" : "A large handgun that packs a punch.",
     "shortdescription" : "Titanium Machine Pistol",
-    "category" : "Magnum",
+    "category" : "d8weaponry_machinepistol",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : false,
     "itemTags" : ["weapon","ranged","pistol"],

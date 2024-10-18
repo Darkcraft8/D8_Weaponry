@@ -12,5 +12,54 @@
       "path": "/labels/d8Weaponry_munition",
       "value": "Munition"
     }
+  ],
+  [
+    {
+      "op": "add",
+      "path": "/labels/d8weaponry_nailgun",
+      "value": "Nailgun"
+    }
+  ],
+  [
+    {
+      "op": "add",
+      "path": "/labels/d8weaponry_smg",
+      "value": "Submachine Gun"
+    }
+  ],
+  [
+    {
+      "op": "add",
+      "path": "/labels/d8weaponry_mg",
+      "value": "Machine Gun"
+    }
+  ],
+  [
+    {
+      "op": "add",
+      "path": "/labels/d8weaponry_gatlinggun",
+      "value": "Gatling Gun"
+    }
+  ],
+  [
+    {
+      "op": "add",
+      "path": "/labels/d8weaponry_revolver",
+      "value": "Revolver"
+    }
+  ],
+  [
+    {
+      "op": "add",
+      "path": "/labels/d8weaponry_machinepistol",
+      "value": "Machine Pistol"
+    }
+  ],
+  [
+    {
+      "op": "add",
+      "path": "/labels/d8weaponry_makeshiftweapon",
+      "value": "Makeshift Weapon"
+    }
   ]
 ]

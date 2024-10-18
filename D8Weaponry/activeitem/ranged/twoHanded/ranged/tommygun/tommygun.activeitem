@@ -5,7 +5,7 @@
     "rarity" : "Uncommon",
     "description" : "Where going gansta with this one.",
     "shortdescription" : "Tommy Gun",
-    "category" : "Submachine Gun",
+    "category" : "d8Weaponry_smg",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : true,
     "itemTags" : ["weapon","ranged","assaultrifle", "upgradeableWeapon", "d8Weaponry_gun"],

@@ -1,5 +1,5 @@
 {
-    "itemName" : "d8Weaponry_moonmakeshiftflamethrower",
+    "itemName" : "d8Weaponry_erchiusbreach_makeshiftflamethrower",
     "price" : 190,
     "maxStack" : 1,
     "level" : 1,
@@ -332,6 +332,7 @@
 
     "cylinderCapacity" : 125,
     "cylinder" : 0,
+
     "primaryAbility" : {
         "scripts" : ["/D8Weaponry/activeitem/ranged/d8weap_gunfire_fork.lua"],
         "class" : "GunFire",
@@ -528,24 +529,9 @@
         }
 
     },
+
+    "altAbilityType" : "d8Weaponry_airblast",
     "altAbility" : {
-        "scripts" : ["/D8Weaponry/activeitem/ranged/d8weap_altfire_fork.lua"],
-        "class" : "GunFire",
-        "name" : "Airblast",
-        
-        "fireTime" : 1,
-        "baseDps" : 0,
-        "energyUsage" : 10,
-        "projectileCount" : 1,
-        "inaccuracy" : 0.025,
-        "fireType" : "auto",
-        
-        "projectileType" : "airblasttravelingswoosh",
-        "projectileParameters" : {
-            "processing" : "?multiply=ffffff75?replace;ffffff75=0000ff45"
-        },
-        "projectileOffset" : [0, 0],
-        "muzzleFlashVariants" : 1,
         "stances" : {
             "idle" : {
                 "weaponRotation" : 0,
@@ -720,7 +706,6 @@
                 "durabilityHit" : 0
             }
         }
-
     },
     
     "d8Weaponry" : [

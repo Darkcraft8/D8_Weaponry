@@ -6,7 +6,7 @@
     "rarity" : "common",
     "description" : "American hated this one.",
     "shortdescription" : "Chauchat",
-    "category" : "Machine Gun",
+    "category" : "d8weaponry_mg",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : true,
     "itemTags" : ["weapon","ranged","assaultrifle", "d8Weaponry_gun"],

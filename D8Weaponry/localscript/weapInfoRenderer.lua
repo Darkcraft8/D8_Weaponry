@@ -687,7 +687,6 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
     if complete then
         number = math.ceil(count)
     end
-    local numberTable = {}
     
     local digit =    number % 10
     number = number // 10

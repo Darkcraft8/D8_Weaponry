@@ -522,6 +522,7 @@ function GunFire:reloadMost()
 
   if world.entityType(activeItem.ownerEntityId()) == "player" then
       if self.ammoType and not player.isAdmin() then
+          local returnedItemDurability = returnedItemDurability or config.getParameter(self.ammoCountName)
           local ammoDescriptor = {
               name = self.ammoType,
               parameters = self.ammoParam or {},
@@ -539,6 +540,16 @@ function GunFire:reloadMost()
           if player.consumeItem(consumed,true,true) then
               self:changeAmmoCount(ammoDescriptor["count"], "add", self.ammoMaxName, self.ammoCountName)
               if self.returnedItem then
+                sb.logInfo("%s", self.returnedItem)
+                if self.returnedItem.parameters.durabilityHit then
+                  self.returnedItem.parameters.durabilityHit = returnedItemDurability
+                end
+                if self.returnedItem.parameters.gasAmount then
+                  self.returnedItem.parameters.gasAmount = returnedItemDurability
+                  sb.logInfo("%s", self.returnedItem.parameters.gasAmount)
+                end
+                sb.logInfo("%s", self.returnedItem)
+                
                 player.giveItem(self.returnedItem)
               end
           end

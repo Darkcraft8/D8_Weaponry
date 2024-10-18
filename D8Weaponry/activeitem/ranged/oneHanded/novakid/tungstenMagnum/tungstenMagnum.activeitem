@@ -6,7 +6,7 @@
     "rarity" : "Common",
     "description" : "A large handgun that packs a punch.",
     "shortdescription" : "Tungsten Magnum",
-    "category" : "Magnum",
+    "category" : "d8weaponry_revolver",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : false,
     "itemTags" : ["weapon","ranged","pistol"],
