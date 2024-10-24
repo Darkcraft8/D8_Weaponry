@@ -1,0 +1,35 @@
+{
+  "id" : "d8Weaponry_guide",
+  "title" : "Guide des Armes",
+  "description" : "This book contain information about firearms!!... yet it seem as if it was made by a ^#ffa100;compagny that doesn't exist?!^reset;",
+  "icon" : "/projectiles/guns/bullets/bullet-1/icon.png",
+  "contentPages" : [
+"Bienvenue,
+si vous lisez ce guide cela signifie que vous s'est intéresest par la procession,production et/ou utilisation d'arme a feux
+    
+Table du Content
+- 1| Introduction
+- 2| History
+- 3| Basic Usage
+- 4-5| Bonus: Enhancing your weapon's",
+"Todo.",
+"Todo.",
+"Vous avez peut-etre devenue attacher a une arme specific,
+Elle a possiblement sauvez votre vie ou peut-etre qu'elle a un signifiquance cher a vos yeux
+    
+Bien vous étre chanceux parce-que nous avons creer des schemat pour une table qui vous permetra de facilement amélioré vaux arme
+Oui, grace a cette table est des matériaux et outils",
+"appropriet vous pouvez desormer amélioré n'importe quelle arme que vous poséder"
+
+  ],
+  "itemConfig" : {
+    "shortdescription" : "Guide des Armes offer par",
+    "description" : "This book contain information about firearms!!... yet it seem as if it was made by a ^#ffa100;compagny that doesn't exist?!^reset;",
+    "rarity" : "Legendary",
+    "price" : 10025,
+    "tooltipFields" : {
+      "subTitle" : "^white;EP:Armory and Balistic's^reset;",
+      "rarityLabel" : "^magenta;Legendary^reset;"
+    }
+  }
+}

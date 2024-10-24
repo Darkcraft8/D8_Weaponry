@@ -1,0 +1,19 @@
+{
+    "name" : "d8weaponry_erchiusbreach_erchiusinterference",
+    "blockingStat" : "d8weaponry_erchiusbreach_erchiusinterferenceImmunity",
+    "effectConfig" : {
+      "energyModifier" : 2,
+      "maxEnergyRegen" : 0.15
+    },
+    "defaultDuration" : 42069,
+  
+    "scripts" : [
+      "erchiusinterference.lua"
+    ],
+  
+    "label" : "^pink;[Erchius Interference] ^red;Energy regen capped to 15%^reset;, ^green;Maximum is Doubled^reset;",
+    "icon" : "/interface/statuses/energyregen.png:?hueshift=-75",
+
+    "animationConfig" : "/player/stat_primary.animation"
+  }
+  

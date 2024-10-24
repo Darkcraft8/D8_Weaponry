@@ -68,6 +68,7 @@ function init()
     if d8Weaponry_var.config["opacityMax"] then
         d8Weaponry_var.opacityMax = d8Weaponry_var.config["opacityMax"]
     end
+
 end
 
 function update(dt)
@@ -189,11 +190,13 @@ function update(dt)
         end
     end
 end
+
 function d8weaponry_clearMemory() -- Cleaning Scripts Memory of weapons parameters
     d8Weaponry_var.weapon["parameters"]["d8Weaponry"] = {}
     d8Weaponry_var.memory = {}
     d8Weaponry_var.weapConf = "replaceMe"
 end
+
 function teleportOut()
     vanillaTeleportOut()
 end

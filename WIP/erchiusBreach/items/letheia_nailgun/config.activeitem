@@ -4,7 +4,7 @@
     "maxStack" : 1,
     "level" : 1,
     "rarity" : "Common",
-    "description" : "A advance tool that use molten metal to shape and shoot nails.",
+    "description" : "A advance tool that use molten metal contain in core fragment to shape and shoot nails.",
     "shortdescription" : "Letheia Standard Nailgun",
     "category" : "d8weaponry_nailgun",
     "tooltipKind" : "d8Weaponry_gun",
@@ -104,7 +104,7 @@
             }
         },
         
-        "ammoType" : "volatilepowder",
+        "ammoType" : "corefragmentore",
         "ammoMaxName" : "MaxMetalCannister",
         "ammoCountName" : "MetalCannister",
         "reloadType" : "full",
