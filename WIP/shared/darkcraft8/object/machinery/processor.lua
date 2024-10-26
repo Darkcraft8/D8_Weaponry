@@ -1,3 +1,5 @@
+require("/WIP/shared/darkcraft8/object/machinery/slotUtil.lua")
+
 -- Machinery that produce ressource/item logic is here
 function D8Machinery:processorLogic(dt, self)
     --sb.logInfo("producerLogic, dt = %s, timer = %s", dt, self.timer)
@@ -62,7 +64,11 @@ function D8Machinery:craftItem()
                     local prev = self.scriptConfig.ressources[itemInput.ressource]
                     local after = self.scriptConfig.ressources[itemInput.ressource] - itemInput.count
                     if prev ~= after then
-                        self.scriptConfig.ressources[itemInput.ressource] = self.scriptConfig.ressources[itemInput.ressource] - itemInput.count
+                        if self.scriptConfig.ressources[itemInput.ressource] > itemInput.count then
+                            self.scriptConfig.ressources[itemInput.ressource] = self.scriptConfig.ressources[itemInput.ressource] - itemInput.count
+                        else
+                            consumedItem = false
+                        end
                     else
                         consumedItem = false
                     end
@@ -71,7 +77,49 @@ function D8Machinery:craftItem()
             if consumedItem then
                 --sb.logInfo("consumedItem %s", consumedItem)
                 --sb.logInfo("self.scriptConfig.ressources %s", self.scriptConfig.ressources)
-                sb.logInfo("itemsFitWhere %s, %s", self:itemsFitWhere(true))
+                for _, itemInput in ipairs(self.recipeProgress.nextRecipe.outputs) do
+                    local slot, item = self:findItem(itemInput, self.scriptConfig.slotConfig.input)
+                    --sb.logInfo("slot %s, item %s", slot, item)
+                    if slot and item then
+                        local full = true
+                        for name, value in pairs(self.recipeProgress.nextRecipe.amount) do 
+                            if item["parameters"][name] < itemInput["parameters"][name] then -- Math Passage
+                                item["parameters"][name] = item["parameters"][name] + value
+                                if item["parameters"][name] > itemInput["parameters"][name] then -- If item value overflow from wanted when adding then set to wanted
+                                    item["parameters"][name] = itemInput["parameters"][name]
+                                end
+                            end
+                            if item["parameters"][name] < itemInput["parameters"][name] then
+                                full = false
+                            end
+                        end
+                        if full then
+                            world.containerConsumeAt(entity.id(), slot - 1, item.count)
+                            self:putItemsIn(item, self.scriptConfig.slotConfig.output)
+                        else
+                            local consumed = world.containerConsumeAt(entity.id(), slot - 1, 1)
+                            local leftOver = world.containerItemAt(entity.id(), slot -1)
+                            if leftOver then
+                                leftOver.count = leftOver.count - 1
+                                if slot > self.scriptConfig.slotConfig.input[1] then
+                                    world.containerPutItemsAt(entity.id(), leftOver, slot)
+                                    item.count = 1
+                                    world.containerPutItemsAt(entity.id(), item, slot - 2)
+                                else
+                                    world.containerPutItemsAt(entity.id(), leftOver, slot)
+                                    world.containerPutItemsAt(entity.id(), item, slot - 1)
+                                end
+                            else
+                                world.containerPutItemsAt(entity.id(), item, slot - 1)
+                            end
+                            --sb.logInfo("consumed %s", consumed)
+                            --sb.logInfo("item %s", item)
+                            --sb.logInfo("item in slot %s", world.containerItemAt(entity.id(), slot - 1))
+                        end
+                    end
+                end
+                ---sb.logInfo("itemsFitWhere output %s, %s", self:itemsFitWhere(self.scriptConfig.slotConfig.output, true))
+                --sb.logInfo("itemsFitWhere input %s, %s", self:itemsFitWhere(self.scriptConfig.slotConfig.input, true))
             end
         else
             local consumedItem = true
@@ -168,7 +216,6 @@ function D8Machinery:craftItem()
     return end
 end
 
-
 function D8Machinery:recipesPopulate() -- if string then root if table then if string root if table then add to list
     if type(self.scriptConfig["recipes"]) == "string" then
         local root = root.assetJson(self.scriptConfig["recipes"])
@@ -251,8 +298,10 @@ function D8Machinery:recipesUpdate(dt)
                 hasItem = false
                 for i2, v2 in pairs(world.containerItems(entity.id())) do
                     for i3, v3 in pairs(v.parameters) do
-                        if v2["parameters"][i3] < v3 then
-                            hasItem = true
+                        if v2["parameters"][i3] and v3 then
+                            if v2["parameters"][i3] < v3 then
+                                hasItem = true
+                            end
                         end
                     end
                 end
@@ -385,28 +434,58 @@ function D8Machinery:hasRequirement(currentItems, currentRessoures, recipeList)
     end
 end
 
-function D8Machinery:itemsFitWhere(debug)
+function D8Machinery:findItem(item, slotTable)
+    local currentItems = world.containerItems(entity.id())
+    local currentRessoures = self.scriptConfig.ressources
+    for _, i in ipairs(slotTable) do
+        local slotItem = currentItems[i]
+        if slotItem then
+            if slotItem.name == item.item then
+                return i, currentItems[i]
+            end
+        end
+    end
+end
+
+function D8Machinery:itemsFitWhere(slotTable, debug)
     local currentItems = world.containerItems(entity.id())
     local currentRessoures = self.scriptConfig.ressources
     local result1, result2 = false, nil
 
-    for _, i in ipairs(self.scriptConfig.slotConfig.output) do
+    for _, i in ipairs(slotTable) do
         local fit = false
         if debug then
             sb.logInfo("currentItem n'%s, %s", i, currentItems[i])
         end
         if currentItems[i] then
-            for _, outputCfg in ipairs(self.recipeProgress.nextRecipe.outputs) do
-                sb.logInfo("outputCfg %s", v)
-                for i2, v2 in pairs(outputCfg.parameters) do
-                    sb.logInfo("i2 %s, v2 %s", i2, v2 )
-                end
+            sb.logInfo("%s", currentItems[i])
+            --if world.containerAddItems() then
+            --end
+            for i2, v2 in pairs(currentItems[i].parameters) do
+                sb.logInfo("i2 %s, v2 %s", i2, v2 )
             end
         end
         if fit then
             result1, result2 = i, currentItems[i]
+            return result1, result2
         end
     end
 
     return result1, result2
+end
+
+function D8Machinery:putItemsIn(item, slotTable)
+    local currentItems = world.containerItems(entity.id())
+    local currentRessoures = self.scriptConfig.ressources
+
+    for _, i in ipairs(slotTable) do
+        local leftOver = world.containerPutItemsAt(entity.id(), item, i - 1)
+        sb.logInfo("leftOver %s", leftOver)
+
+        if not leftOver then return end -- End the function when finished
+        if not slotTable[_+1] then
+            world.spawnItem(leftOver, world.entityPosition(entity.id()))
+        end
+    end
+
 end

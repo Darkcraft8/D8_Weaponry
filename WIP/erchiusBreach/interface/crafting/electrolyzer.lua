@@ -42,26 +42,45 @@ end
 
 function drawRessource(objectParameters)
     local oxygenAmount = 0
+    local hydrogenAmount = 0
+
     if objectParameters.ressources then
         oxygenAmount = objectParameters.ressources.oxygen or 0
-    end
-    if oxygenAmount > 27 then
-        oxygenAmount = 27
-    elseif oxygenAmount < 0 then
-        oxygenAmount = 0
-    end
-    local oxygenImage = "/assetmissing.png:?replace;ffffff00=6f6fffff?crop;0;0;3;1?scalenearest=1;"
-
-    local hydrogenAmount = 0
-    if objectParameters.ressources then
         hydrogenAmount = objectParameters.ressources.hydrogen or 0
     end
-    if hydrogenAmount > 27 then
-        hydrogenAmount = 27
-    elseif hydrogenAmount < 0 then
+
+    if objectParameters.scriptConfig.maxRessources then
+        if hydrogenAmount > objectParameters.scriptConfig.maxRessources.hydrogen then
+            hydrogenAmount = objectParameters.scriptConfig.maxRessources.hydrogen
+        end
+        if oxygenAmount > objectParameters.scriptConfig.maxRessources.oxygen then
+            oxygenAmount = objectParameters.scriptConfig.maxRessources.oxygen
+        end
+    end
+
+    if oxygenAmount < 0 then
+        oxygenAmount = 0
+    end
+    if hydrogenAmount < 0 then
         hydrogenAmount = 0
     end
+
+    local oxygenImage = "/assetmissing.png:?replace;ffffff00=6f6fffff?crop;0;0;3;1?scalenearest=1;"
     local hydrogenImage = "/assetmissing.png:?replace;ffffff00=6fff6fff?crop;0;0;3;1?scalenearest=1;"
-    widget.setImage("ressourceOxygen", oxygenImage .. oxygenAmount)
-    widget.setImage("ressourceHydrogen", hydrogenImage .. hydrogenAmount)
+
+    local oxygenPercent = oxygenAmount / 100
+    local hydrogenPercent = hydrogenAmount / 100
+    if objectParameters.scriptConfig.maxRessources then
+        oxygenPercent = (oxygenAmount / objectParameters.scriptConfig.maxRessources.oxygen)
+        hydrogenPercent = (hydrogenAmount / objectParameters.scriptConfig.maxRessources.hydrogen)
+        if oxygenPercent <= 0 then 
+            oxygenPercent = 0.001
+        end
+        if hydrogenPercent <= 0 then 
+            hydrogenPercent = 0.001
+        end
+    end
+
+    widget.setImage("ressourceOxygen", oxygenImage .. (27 * oxygenPercent))
+    widget.setImage("ressourceHydrogen", hydrogenImage .. (27 * hydrogenPercent))
 end

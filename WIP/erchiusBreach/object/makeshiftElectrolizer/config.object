@@ -59,6 +59,11 @@
       "oxygen" : 0,
       "energy" : 0
     },
+    "maxRessources" : {
+      "hydrogen" : 250,
+      "oxygen" : 250,
+      "energy" : 250
+    },
     "recipes" : "/WIP/erchiusBreach/object/makeshiftElectrolizer/recipes.config",
     "slotConfig" : {
       "input" : [1,2,3,4],
