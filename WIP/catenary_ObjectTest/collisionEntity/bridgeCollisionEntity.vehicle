@@ -1,0 +1,32 @@
+{
+  "name" : "d8Weaponry_bridgeCollisionEntity",
+  "boundBox" : [-0.5, -0.1, 0.5, 0.1],
+  "slaveControlTimeout" : 2.0,
+  "slaveControlHeartbeat" : 1.0,
+  "canBeHit" : false,
+
+  "persistent" : false,
+
+  "script" : "/WIP/catenary_ObjectTest/collisionEntity/bridgeCollisionEntity.lua",
+  "animation" : "/WIP/catenary_ObjectTest/collisionEntity/bridgeCollisionEntity.animation",
+
+  "movementSettings" : {
+    "collisionPoly" : [ [-0.5, 0.0], [-0.5, -0.5], [0.5, -0.5], [0.5, 0.0] ],
+    "mass" : 4.0,
+    "collisionEnabled" : false,
+    "gravityEnabled" : false,
+    "ignorePlatformCollision" : true,
+    "enableSurfaceSlopeCorrection" : false,
+    "physicsEffectCategories" : []
+  },
+
+  "loungePositions" : {},
+
+  "physicsCollisions" : {
+    "platform" : {
+      "collision" : [ [0, 0], [0, 0] ],
+      "collisionKind" : "platform",
+      "attachToPart" : "platform"
+    }
+  }
+}

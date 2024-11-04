@@ -67,6 +67,7 @@ function init()
 
     if d8Weaponry_var.config["opacityMax"] then
         d8Weaponry_var.opacityMax = d8Weaponry_var.config["opacityMax"]
+        d8Weaponry_var.opacity = d8Weaponry_var.config["opacityMax"]
     end
 
 end
@@ -119,7 +120,7 @@ function update(dt)
                 d8Weaponry_var.time = ( (-175) + (d8Weaponry_var.time + (12*(dt))) ) % 175
             else
                 d8Weaponry_var.time = 0
-                if d8Weaponry_var.opacity[1] > 0 or d8Weaponry_var.opacity[2] > 0 then
+                if d8Weaponry_var.opacity > 0 then
                     for index, value in ipairs(d8Weaponry_var.weapConf) do
                         local max = value[value["ammoMaxName"]]
                         local count = value[value["ammoCountName"]]
@@ -152,19 +153,8 @@ function update(dt)
                     end
                 end
                 d8Weaponry_var.barOffset = util.clamp(d8Weaponry_var.barOffset + (4*dt), 2, 3)
-                if d8Weaponry_var.opacity[1] < d8Weaponry_var.opacityMax[1] or d8Weaponry_var.opacity[2] < d8Weaponry_var.opacityMax[2] then
-                    if d8Weaponry_var.opacity[2] == 9 then
-                        d8Weaponry_var.opacity[1] = d8Weaponry_var.opacity[1] + 4
-                        d8Weaponry_var.opacity[2] = 0
-                    else
-                        d8Weaponry_var.opacity[2] = d8Weaponry_var.opacity[2] + 4
-                    end
-                    if d8Weaponry_var.opacity[1] > d8Weaponry_var.opacityMax[1] then
-                        d8Weaponry_var.opacity[1] = d8Weaponry_var.opacityMax[1]
-                    end
-                    if (d8Weaponry_var.opacity[2] > d8Weaponry_var.opacityMax[2] and d8Weaponry_var.opacity[1] == d8Weaponry_var.opacityMax[1]) or d8Weaponry_var.opacity[2] > 9 then
-                        d8Weaponry_var.opacity[2] = d8Weaponry_var.opacityMax[2]
-                    end
+                if d8Weaponry_var.opacity < d8Weaponry_var.opacityMax then
+                    d8Weaponry_var.opacity = d8Weaponry_var.opacity + 4
                 end
             else
                 if d8Weaponry_var.textOpacity > 0 then
@@ -173,17 +163,11 @@ function update(dt)
                         d8Weaponry_var.textOpacity = 0
                     end
                 end
-                if d8Weaponry_var.opacity[2] == 0 then
-                    d8Weaponry_var.opacity[1] = d8Weaponry_var.opacity[1] - 2
-                    d8Weaponry_var.opacity[2] = 9
-                else
-                    d8Weaponry_var.opacity[2] = d8Weaponry_var.opacity[2] - 2
+                if d8Weaponry_var.opacity ~= 0 then
+                    d8Weaponry_var.opacity = d8Weaponry_var.opacity - 2
                 end
-                if d8Weaponry_var.opacity[1] < 0 then
-                    d8Weaponry_var.opacity[1] = 0
-                end
-                if d8Weaponry_var.opacity[2] < 0 then
-                    d8Weaponry_var.opacity[2] = 0
+                if d8Weaponry_var.opacity < 0 then
+                    d8Weaponry_var.opacity = 0
                 end
                 d8Weaponry_var.barOffset = util.clamp(d8Weaponry_var.barOffset - (1.5*dt), 2, 4)
             end
@@ -392,12 +376,12 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
         
         while segmentNum > 0 do
             local drawable = {
-                image = string.format("%s:?scalenearest=%s;1?multiply=7F7F7F%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2]),
+                image = string.format("%s:?scalenearest=%s;1?multiply=7F7F7F", barText, segmentSize),
                 position = {
                     (ammoPos[1] + 0.45) + (segmentSize*segmentNum),
                     ammoPos[2]
                 },
-                color = {255,255,255},
+                color = {255,255,255, d8Weaponry_var.opacity},
                 fullbright = true,
                 rotation = 0
             }
@@ -405,13 +389,13 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                 drawable["position"][1] = (ammoPos[1] - 0.45) - (segmentSize*segmentNum)
             end
             if RGB then
-                drawable["image"] = string.format("%s:?scalenearest=%s;1?hueshift=%s?multiply=7F7F7F%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                drawable["image"] = string.format("%s:?scalenearest=%s;1?hueshift=%s?multiply=7F7F7F", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360)
             end
             if string.find(barText, ":") then
                 if RGB then
-                    drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=7F7F7F%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                    drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=7F7F7F", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360)
                 else
-                    drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=7F7F7F%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                    drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=7F7F7F", barText, segmentSize)
                 end
             end
             if not starExtensions or not d8Weaponry_var.config["starExtensions"]["useUiAnimator"] then
@@ -511,12 +495,12 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                     end
                 end
                 local drawable = {
-                    image = string.format("%s:?scalenearest=%s;1?multiply=FFFFFF%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2]),
+                    image = string.format("%s:?scalenearest=%s;1", barText, segmentSize),
                     position = {
                         util.clamp(slided, staticPos, slided),
                         ammoPos[2]
                     },
-                    color = {255,255,255},
+                    color = {255,255,255, d8Weaponry_var.opacity},
                     fullbright = true,
                     rotation = 0
                 }
@@ -524,13 +508,13 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                     drawable["position"][1] = (ammoPos[1] - 0.45) - (segmentSize*segmentNum)
                 end
                 if RGB then
-                    drawable["image"] = string.format("%s:?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                    drawable["image"] = string.format("%s:?scalenearest=%s;1?hueshift=%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360)
                 end
                 if string.find(barText, ":") then
                     if RGB then
-                        drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                        drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360)
                     else
-                        drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=FFFFFF%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                        drawable["image"] = string.format("%s?scalenearest=%s;1", barText, segmentSize)
                     end
                 end
                 if not starExtensions or not d8Weaponry_var.config["starExtensions"]["useUiAnimator"] then
@@ -593,12 +577,12 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
             local staticPos = ((ammoPos[1] + 0.2) + (segmentSize))
             local slided = staticPos
             local drawable = {
-                image = string.format("%s:?crop;0;0;1;7?scalenearest=%s;1?multiply=FFFFFF%s%s?crop;0;0;%s;7", barText, size, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2], lastCullPercent),
+                image = string.format("%s:?crop;0;0;1;7?scalenearest=%s;1?crop;0;0;%s;7", barText, size, lastCullPercent),
                 position = {
                     staticPos,
                     ammoPos[2]-0.4
                 },
-                color = {255,255,255},
+                color = {255,255,255, d8Weaponry_var.opacity},
                 fullbright = true,
                 centered = false,
                 rotation = 0
@@ -607,13 +591,13 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                 drawable["position"][1] = (ammoPos[1] - 0.2) - (segmentSize)
             end
             if RGB then
-                drawable["image"] = string.format("%s:?crop;0;0;1;7?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s?crop;0;0;%s;7", barText, size, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2], lastCullPercent)
+                drawable["image"] = string.format("%s:?crop;0;0;1;7?scalenearest=%s;1?hueshift=%s?crop;0;0;%s;7", barText, size, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, lastCullPercent)
             end
             if string.find(barText, ":") then
                 if RGB then
-                    drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                    drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360)
                 else
-                    drawable["image"] = string.format("%s?crop;0;0;1;7?scalenearest=%s;1?multiply=FFFFFF%s%s?crop;0;0;%s;7", barText, size, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2], lastCullPercent)
+                    drawable["image"] = string.format("%s?crop;0;0;1;7?scalenearest=%s;1?crop;0;0;%s;7", barText, size, lastCullPercent)
                 end
             end
             localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
@@ -628,15 +612,12 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
     end
     
     local drawable = {
-        image = string.format("%s:?multiply=FFFFFF%s%s", ammoText, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2]),
+        image = ammoText,
         position = ammoPos,
-        color = {255,255,255},
+        color = {255,255,255, d8Weaponry_var.opacity},
         fullbright = true,
         rotation = ((math.pi/180) * Rotate)
     }
-    if string.find(ammoText, ":") then
-        drawable["image"] = string.format("%s?multiply=FFFFFF%s%s", ammoText, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
-    end
     if not starExtensions or not d8Weaponry_var.config["starExtensions"]["useUiAnimator"] then
         localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     elseif not starExtensions then
@@ -705,12 +686,12 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
         segmentOffset = 1
     end
     local drawable = {
-        image = string.format("/objects/outpost/number%s/icon.png:?multiply=FFFFFF%s%s?brightness=100", thousand, opacity[1], opacity[2]),
+        image = string.format("/objects/outpost/number%s/icon.png:?brightness=100", thousand),
         position = {
             (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*d8Weaponry_var.pixel),
             ammoPos[2]
         },
-        color = {255,255,255},
+        color = {255,255,255, d8Weaponry_var.opacity},
         fullbright = true,
         rotation = 0,
         scale = 0.5
@@ -718,12 +699,12 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     numberOffset = 8
     drawable = {
-        image = string.format("/objects/outpost/number%s/icon.png:?multiply=FFFFFF%s%s?brightness=100", hundred, opacity[1], opacity[2]),
+        image = string.format("/objects/outpost/number%s/icon.png:?brightness=100", hundred),
         position = {
             (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*d8Weaponry_var.pixel),
             ammoPos[2]
         },
-        color = {255,255,255},
+        color = {255,255,255, d8Weaponry_var.opacity},
         fullbright = true,
         rotation = 0,
         scale = 0.5
@@ -731,12 +712,12 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     numberOffset = 16
     drawable = {
-        image = string.format("/objects/outpost/number%s/icon.png:?multiply=FFFFFF%s%s?brightness=100", ten, opacity[1], opacity[2]),
+        image = string.format("/objects/outpost/number%s/icon.png:?brightness=100", ten),
         position = {
             (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*d8Weaponry_var.pixel),
             ammoPos[2]
         },
-        color = {255,255,255},
+        color = {255,255,255, d8Weaponry_var.opacity},
         fullbright = true,
         rotation = 0,
         scale = 0.5
@@ -744,12 +725,12 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     numberOffset = 24
     drawable = {
-        image = string.format("/objects/outpost/number%s/icon.png:?multiply=FFFFFF%s%s?brightness=100", digit, opacity[1], opacity[2]),
+        image = string.format("/objects/outpost/number%s/icon.png:?brightness=100", digit),
         position = {
             (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*d8Weaponry_var.pixel),
             ammoPos[2]
         },
-        color = {255,255,255},
+        color = {255,255,255, d8Weaponry_var.opacity},
         fullbright = true,
         rotation = 0,
         scale = 0.5

@@ -17,7 +17,7 @@ function build(directory, config, parameters, level, seed)
   if (level or configParameter("level", 1)) and not configParameter("fixedLevel", false) then
     parameters.level = (level or configParameter("level", 1))
   end
-  parameters.d8Weaponry_resetTooltipOnUpgrade = configParameter("d8Weaponry_resetTooltipOnUpgrade", true)
+  config.d8Weaponry_resetTooltipOnUpgrade = configParameter("d8Weaponry_resetTooltipOnUpgrade", true)
 
   setupAbility(config, parameters, "primary")
   setupAbility(config, parameters, "alt")
@@ -125,8 +125,8 @@ function build(directory, config, parameters, level, seed)
     end
   end
   -- populate parameters d8Weaponry 
-  if config.d8Weaponry then
-    parameters.d8Weaponry = config.d8Weaponry
+  if configParameter("d8Weaponry") then
+    parameters.d8Weaponry = configParameter("d8Weaponry")
   end
 
   -- set price

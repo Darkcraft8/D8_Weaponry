@@ -500,13 +500,27 @@
 
         "ammoType" : "d8Weaponry_gascanister",
         "ammoParam" : {
-            "gasKind" : "oxygen",
-            "gasAmount" : 125,
-            "gasMax" : 125,
+            "resourceKind" : "oxygen",
+            "resourceAmount" : 125,
+            "resourceMax" : 125,
             
             "durability" : 126,
-            "durabilityHit" : 125
+            "durabilityHit" : 125,
+
+            "buildConfig" : {
+                "resource1Label" : "Oxygen",   
+                "resourcePath" : {    
+                    "resource1Amount" : "resourceAmount",    
+                    "resource1MaxAmount" : "resourceMax"   
+                }  
+            }
         },
+        "softRequirement" : true,
+        "softRequirementParam" : {
+            "resourceAmount" : 1,
+            "durabilityHit" : 1
+        },
+        "softRequirementAmmoParam" : "resourceAmount",
         "ammoName" : "Gas Canister",
         "ammoMaxName" : "cylinderCapacity",
         "ammoCountName" : "cylinder",
@@ -519,13 +533,25 @@
             "name" : "d8Weaponry_gascanister",
             "count" : 1,
             "parameters" : {
-                "gasKind" : "oxygen",
-                "gasAmount" : 0,
-                "gasMax" : 125,
+                "resourceKind" : "oxygen",
+                "resourceAmount" : 0,
+                "resourceMax" : 125,
                 
                 "durability" : 126,
-                "durabilityHit" : 0
+                "durabilityHit" : 0,
+
+                "buildConfig" : {
+                    "resource1Label" : "Oxygen",   
+                    "resourcePath" : {    
+                        "resource1Amount" : "resourceAmount",    
+                        "resource1MaxAmount" : "resourceMax"   
+                    }  
+                }
             }
+        },
+        "returnedItemAmmoParams" : {
+            "resourceAmount" : 0,
+            "durabilityHit" : 0
         }
 
     },
@@ -679,12 +705,20 @@
 
         "ammoType" : "d8Weaponry_gascanister",
         "ammoParam" : {
-            "gasKind" : "oxygen",
-            "gasAmount" : 125,
-            "gasMax" : 125,
+            "resourceKind" : "oxygen",
+            "resourceAmount" : 125,
+            "resourceMax" : 125,
             
             "durability" : 126,
-            "durabilityHit" : 125
+            "durabilityHit" : 125,
+
+            "buildConfig" : {
+                "resource1Label" : "Oxygen",   
+                "resourcePath" : {    
+                    "resource1Amount" : "resourceAmount",    
+                    "resource1MaxAmount" : "resourceMax"   
+                }  
+            }
         },
         "ammoName" : "Gas Canister",
         "ammoMaxName" : "cylinderCapacity",
@@ -698,12 +732,20 @@
             "name" : "d8Weaponry_gascanister",
             "count" : 1,
             "parameters" : {
-                "gasKind" : "oxygen",
-                "gasAmount" : 0,
-                "gasMax" : 125,
+                "resourceKind" : "oxygen",
+                "resourceAmount" : 0,
+                "resourceMax" : 125,
                 
                 "durability" : 126,
-                "durabilityHit" : 0
+                "durabilityHit" : 0,
+
+                "buildConfig" : {
+                    "resource1Label" : "Oxygen",   
+                    "resourcePath" : {    
+                        "resource1Amount" : "resourceAmount",    
+                        "resource1MaxAmount" : "resourceMax"   
+                    }  
+                }
             }
         }
     },

@@ -5,18 +5,31 @@
     "maxStack" : 4,
     "rarity" : "Common",
     "category" : "d8Weaponry_containerItem",
-    "description" : "a canister",
+    "description" : "A gas canister, it capable of containing up to <resource1.maxAmount> unit of <resource1Label>",
     "shortdescription" : "Canister",
-    "itemTags" : ["munition"],
+    "itemTags" : ["munition", "d8Weaponry_containerItem"],
     "inventoryIcon" : "gascanisterIcon.png",
+    "tooltipKind" : "d8MachineryShared_ResourceContainer",
     "image" : "gascanister.png",
     "scripts" : [],
 
-    "gasKind" : "oxygen",
-    "gasAmount" : 0,
-    "gasMax" : 5,
-    "durability" : 6,
+    "resourceKind" : "none",
+    "resourceAmount" : 0,
+    "resourceMax" : 125,
+
+    "durability" : 126,
     "durabilityHit" : 0,
 
-    "note" : "This is an activeitem only so that whe can trick the game to render a durability bar depending on how full it is."
+    "note" : "This is an activeitem only so that whe can trick the game to render a durability bar depending on how full it is.",
+
+    "builder" : "/shared/darkcraft8/machinery/V0_0_1/buildscripts/D8Machinery_ResourceContainerTooltip_Buildscript.lua",
+    "buildConfig" : {
+
+        "resourcePath" : {
+            "resource1Amount" : "resourceAmount",
+            "resource1MaxAmount" : "resourceMax"
+        },
+        "resource1Label" : "Gas"
+
+    }
 }

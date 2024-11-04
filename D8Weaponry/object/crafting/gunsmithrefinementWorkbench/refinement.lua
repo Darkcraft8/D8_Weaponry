@@ -42,15 +42,16 @@ function refinement:populateItem(listPath)
 				local id = widget.addListItem(listPath)
 				local path = string.format("%s.%s", listPath, id)
 				local cfg = root.itemConfig(item)
-				local level = item.parameters.level or cfg.config.level
-				local price = item.parameters.price or cfg.config.price
-
-				widget.setItemSlotItem(string.format("%s.item", path), item)
-				widget.setData(path, {
-					level = level,
-					price = price,
-					descriptor = item
-				})
+				local level = cfg.parameters.level or cfg.config.level
+				local price = cfg.parameters.price or cfg.config.price
+                if not cfg.config.fixedLevel and not cfg.parameters.fixedLevel then
+                    widget.setItemSlotItem(string.format("%s.item", path), item)
+                    widget.setData(path, {
+                        level = level,
+                        price = price,
+                        descriptor = item
+                    })
+                end
 			elseif not self.skipWhitelist and self.skipBlacklist then
 				for _, name in ipairs(self.allowedItem) do 
 					if item.name == name then
@@ -60,12 +61,14 @@ function refinement:populateItem(listPath)
 						local level = item.parameters.level or cfg.config.level
 						local price = item.parameters.price or cfg.config.price
 
-						widget.setItemSlotItem(string.format("%s.item", path), item)
-						widget.setData(path, {
-							level = level,
-							price = price,
-							descriptor = item
-						})
+                        if not cfg.config.fixedLevel and not cfg.parameters.fixedLevel then
+                            widget.setItemSlotItem(string.format("%s.item", path), item)
+                            widget.setData(path, {
+                                level = level,
+                                price = price,
+                                descriptor = item
+                            })
+                        end
 					end
 				end
 			elseif self.skipWhitelist and not self.skipBlacklist then
@@ -80,15 +83,17 @@ function refinement:blackListThingamagig(item, listPath)
             local id = widget.addListItem(listPath)
             local path = string.format("%s.%s", listPath, id)
             local cfg = root.itemConfig(item)
-            local level = item.parameters.level or cfg.config.level
-            local price = item.parameters.price or cfg.config.price
-
-            widget.setItemSlotItem(string.format("%s.item", path), item)
-            widget.setData(path, {
-                level = level,
-                price = price,
-                descriptor = item
-            })
+            local level = cfg.parameters.level or cfg.config.level
+            local price = cfg.parameters.price or cfg.config.price
+            
+            if not cfg.config.fixedLevel and not cfg.parameters.fixedLevel then
+                widget.setItemSlotItem(string.format("%s.item", path), item)
+                widget.setData(path, {
+                    level = level,
+                    price = price,
+                    descriptor = item
+                })
+            end
 
             return
         end

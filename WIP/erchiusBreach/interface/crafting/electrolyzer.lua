@@ -1,3 +1,5 @@
+require "/scripts/util.lua"
+
 local container_init = init
 local container_update = update
 local container_uninit = uninit
@@ -5,16 +7,18 @@ local container_swapSlot = swapSlot
 
 function init()
     if container_init then container_init() end
-    --sb.logInfo("Container Custom Script init")
     sourceEntity = pane.containerEntityId()
-    --sb.logInfo("dt %s", sb.printJson(objectParameters, 1))
+    self.progressBarTexture = config.getParameter("gui.progressBar.file")
+    --sb.logInfo("message %s", message)
 end
 
 function update(dt)
     if container_update then container_update(dt) end
-    --sb.logInfo("dt %s", dt)
     objectParameters = world.getObjectParameter(sourceEntity, '')
-    drawRessource(objectParameters)
+    if objectParameters.D8Machinery_paneParam then
+        drawRessource(objectParameters)
+        drawProgressBar(objectParameters.D8Machinery_paneParam.globalInit, objectParameters.D8Machinery_paneParam.globalDuration)
+    end
 end
 
 function uninit()
@@ -22,39 +26,44 @@ function uninit()
 
 end
 
-function clear()
+function takeOutputBtn()
     local itemGridItems = widget.itemGridItems("itemGrid2")
     for _, i in ipairs(objectParameters.scriptConfig.slotConfig.output) do
-        local itemDescriptor = itemGridItems[i]
-        world.containerTakeAt(sourceEntity, i - 1)
+        local itemDescriptor = itemGridItems[i + 1]
+        world.containerTakeAt(sourceEntity, i)
         player.giveItem(itemDescriptor)
     end
-    --for i, v in pairs(itemGridItems) do
-    --    if i ~= 1 and i ~= 2 then
-    --        sb.logInfo("%s, %s", i, v)
-    --        sb.logInfo("%s", itemGridItems[i])
-    --        local itemDescriptor = itemGridItems[i]
-    --        world.containerTakeAt(sourceEntity, i - 1)
-    --        player.giveItem(itemDescriptor)
-    --    end
-    --end
+end
+
+function clear()
+    local itemGridItems = widget.itemGridItems("itemGrid2")
+    for _, i in ipairs(objectParameters.scriptConfig.slotConfig.input) do
+        local itemDescriptor = itemGridItems[i + 1]
+        world.containerTakeAt(sourceEntity, i)
+        player.giveItem(itemDescriptor)
+    end
+    for _, i in ipairs(objectParameters.scriptConfig.slotConfig.output) do
+        local itemDescriptor = itemGridItems[i + 1]
+        world.containerTakeAt(sourceEntity, i)
+        player.giveItem(itemDescriptor)
+    end
 end
 
 function drawRessource(objectParameters)
     local oxygenAmount = 0
     local hydrogenAmount = 0
 
-    if objectParameters.ressources then
-        oxygenAmount = objectParameters.ressources.oxygen or 0
-        hydrogenAmount = objectParameters.ressources.hydrogen or 0
+    if objectParameters.D8Machinery_paneParam.resources then
+        oxygenAmount = objectParameters.D8Machinery_paneParam.resources.oxygen or 0
+        hydrogenAmount = objectParameters.D8Machinery_paneParam.resources.hydrogen or 0
     end
 
-    if objectParameters.scriptConfig.maxRessources then
-        if hydrogenAmount > objectParameters.scriptConfig.maxRessources.hydrogen then
-            hydrogenAmount = objectParameters.scriptConfig.maxRessources.hydrogen
+    if objectParameters.D8Machinery_paneParam.maxResources then
+        if hydrogenAmount > objectParameters.D8Machinery_paneParam.maxResources.hydrogen then
+            hydrogenAmount = objectParameters.D8Machinery_paneParam.maxResources.hydrogen
         end
-        if oxygenAmount > objectParameters.scriptConfig.maxRessources.oxygen then
-            oxygenAmount = objectParameters.scriptConfig.maxRessources.oxygen
+        if oxygenAmount > objectParameters.D8Machinery_paneParam.maxResources.oxygen then
+            oxygenAmount = objectParameters.D8Machinery_paneParam.maxResources.oxygen
         end
     end
 
@@ -70,9 +79,9 @@ function drawRessource(objectParameters)
 
     local oxygenPercent = oxygenAmount / 100
     local hydrogenPercent = hydrogenAmount / 100
-    if objectParameters.scriptConfig.maxRessources then
-        oxygenPercent = (oxygenAmount / objectParameters.scriptConfig.maxRessources.oxygen)
-        hydrogenPercent = (hydrogenAmount / objectParameters.scriptConfig.maxRessources.hydrogen)
+    if objectParameters.D8Machinery_paneParam.maxResources then
+        oxygenPercent = (oxygenAmount / objectParameters.D8Machinery_paneParam.maxResources.oxygen)
+        hydrogenPercent = (hydrogenAmount / objectParameters.D8Machinery_paneParam.maxResources.hydrogen)
         if oxygenPercent <= 0 then 
             oxygenPercent = 0.001
         end
@@ -83,4 +92,23 @@ function drawRessource(objectParameters)
 
     widget.setImage("ressourceOxygen", oxygenImage .. (27 * oxygenPercent))
     widget.setImage("ressourceHydrogen", hydrogenImage .. (27 * hydrogenPercent))
+end
+
+function drawProgressBar(initDuration, currentRecipeProgress)
+    if currentRecipeProgress and initDuration then
+        local percent = currentRecipeProgress / (initDuration or 1)
+        local imageSize = root.imageSize(self.progressBarTexture)
+        local newImage = copy(self.progressBarTexture)
+        
+        if imageSize[1]*percent < 0 or imageSize[1]*percent > imageSize[1] then
+            newImage = newImage.."?crop;0;0;"..imageSize[1]..";"..imageSize[2]
+        else
+            newImage = newImage.."?crop;0;0;"..math.ceil(imageSize[1]*percent)..";"..imageSize[2]
+        end
+        
+        widget.setImage("progressBar", newImage)
+        widget.setVisible("progressBar", true)
+    else
+        widget.setVisible("progressBar", false)
+    end
 end

@@ -12,7 +12,15 @@ function GunFire:init()
   self.weapon.onLeaveAbility = function()
     self.weapon:setStance(self.stances.idle)
   end
-  activeItem.setInstanceValue("durability", -config.getParameter(self.ammoMaxName))
+  if config.getParameter(self.ammoMaxName) > 5 then
+    if config.getParameter(self.ammoMaxName) % 2 ~= 0 then
+      activeItem.setInstanceValue("durability", -(config.getParameter(self.ammoMaxName) + 1))
+    else
+      activeItem.setInstanceValue("durability", -(config.getParameter(self.ammoMaxName) + 1.5))
+    end
+  else
+    activeItem.setInstanceValue("durability", -5)
+  end
   if not config.getParameter(self.ammoCountName) then
     activeItem.setInstanceValue(self.ammoCountName, config.getParameter(self.ammoMaxName))
   end
@@ -87,6 +95,9 @@ function GunFire:update(dt, fireMode, shiftHeld)
 
           if self.ammoReloadNeeded then
             ammoDescriptor["count"] = config.getParameter(self.ammoReloadNeeded, 1)
+          end
+          if self.softRequirement then
+            ammoDescriptor = self:FindValidItem(ammoDescriptor)
           end
           hasAmmo = player.hasItem(ammoDescriptor, true) or player.isAdmin()
         else
@@ -521,41 +532,7 @@ function GunFire:reloadMost()
   end
 
   if world.entityType(activeItem.ownerEntityId()) == "player" then
-      if self.ammoType and not player.isAdmin() then
-          local returnedItemDurability = returnedItemDurability or config.getParameter(self.ammoCountName)
-          local ammoDescriptor = {
-              name = self.ammoType,
-              parameters = self.ammoParam or {},
-              count = (config.getParameter(self.ammoMaxName) - config.getParameter(self.ammoCountName))
-          }
-          local playerAmmo = player.hasCountOfItem(ammoDescriptor, true)
-          if playerAmmo < ammoDescriptor["count"] then
-            ammoDescriptor["count"] = playerAmmo
-          end
-          local consumed = copy(ammoDescriptor)
-          if self.ammoReloadNeeded then
-            consumed.count = config.getParameter(self.ammoReloadNeeded, 1)
-            ammoDescriptor["count"] = config.getParameter(self.ammoMaxName)
-          end
-          if player.consumeItem(consumed,true,true) then
-              self:changeAmmoCount(ammoDescriptor["count"], "add", self.ammoMaxName, self.ammoCountName)
-              if self.returnedItem then
-                sb.logInfo("%s", self.returnedItem)
-                if self.returnedItem.parameters.durabilityHit then
-                  self.returnedItem.parameters.durabilityHit = returnedItemDurability
-                end
-                if self.returnedItem.parameters.gasAmount then
-                  self.returnedItem.parameters.gasAmount = returnedItemDurability
-                  sb.logInfo("%s", self.returnedItem.parameters.gasAmount)
-                end
-                sb.logInfo("%s", self.returnedItem)
-                
-                player.giveItem(self.returnedItem)
-              end
-          end
-      else
-        self:changeAmmoCount((config.getParameter(self.ammoMaxName) - config.getParameter(self.ammoCountName)), "add", self.ammoMaxName, self.ammoCountName)
-      end
+    self:playerReloadLogic()
   else
     self:changeAmmoCount((config.getParameter(self.ammoMaxName) - config.getParameter(self.ammoCountName)), "add", self.ammoMaxName, self.ammoCountName)
   end
@@ -757,4 +734,79 @@ end
 
 function GunFire:uninit()
   animator.setGlobalTag("weaponDirective", "")
+end
+
+function GunFire:FindValidItem(ammo)
+  local result = copy(ammo)
+  local valueCheck = nil
+  for name, value in pairs(self.softRequirementParam or {}) do
+    result.parameters[name] = ammo.parameters[name]
+    if type(value) == "number" and not valueCheck then
+      valueCheck = name
+    end
+  end
+  
+  repeat
+    local hasItem = player.hasItem(result, true)
+    --sb.logInfo("hasItem %s, item %s", hasItem, result)
+    if hasItem then return result end
+    for name, value in pairs(self.softRequirementParam) do
+      if type(value) == "number" then
+        result.parameters[name] = result.parameters[name] - 1
+      end
+    end
+  until result.parameters[valueCheck] < self.softRequirementParam[valueCheck]
+
+  return result
+end
+
+function GunFire:playerReloadLogic()
+  if self.ammoType and not player.isAdmin() then
+    local returnedItemDurability = config.getParameter(self.ammoCountName)
+    local ammoDescriptor = {
+        name = self.ammoType,
+        parameters = self.ammoParam or {},
+        count = (config.getParameter(self.ammoMaxName) - config.getParameter(self.ammoCountName))
+    }
+    local playerAmmo = player.hasCountOfItem(ammoDescriptor, true)
+    if playerAmmo < ammoDescriptor["count"] then
+      ammoDescriptor["count"] = playerAmmo
+    end
+    local consumed = copy(ammoDescriptor)
+    if self.ammoReloadNeeded then
+      consumed.count = config.getParameter(self.ammoReloadNeeded, 1)
+      ammoDescriptor["count"] = config.getParameter(self.ammoMaxName)
+    end
+    if self.softRequirement then
+      consumed = self:FindValidItem(consumed)
+    end
+    if player.consumeItem(consumed,true,true) then
+        if self.softRequirement then
+          self:changeAmmoCount(consumed["parameters"][self.softRequirementAmmoParam], "add", self.ammoMaxName, self.ammoCountName)
+        else
+          self:changeAmmoCount(ammoDescriptor["count"], "add", self.ammoMaxName, self.ammoCountName)
+        end
+        if self.returnedItem then
+          player.giveItem(self:returnedItemBuild(consumed, returnedItemDurability))
+        end
+    end
+  else
+    self:changeAmmoCount((config.getParameter(self.ammoMaxName) - config.getParameter(self.ammoCountName)), "add", self.ammoMaxName, self.ammoCountName)
+  end
+end
+
+function GunFire:returnedItemBuild(consumed, returnedItemDurability)
+  for name, value in pairs(self.returnedItemAmmoParams or {}) do
+    self.returnedItem.parameters[name] = returnedItemDurability -- config.getParameter(self.ammoCountName)
+    if self.softRequirement then
+      local diff = math.abs((consumed["parameters"][self.softRequirementAmmoParam] - returnedItemDurability))
+      if (consumed["parameters"][self.softRequirementAmmoParam] - returnedItemDurability) > 0 then 
+        self.returnedItem.parameters[name] = (consumed["parameters"][self.softRequirementAmmoParam] - diff)
+      else
+        self.returnedItem.parameters[name] = (consumed["parameters"][self.softRequirementAmmoParam] - diff)
+      end
+    end
+  end
+  
+  return self.returnedItem
 end

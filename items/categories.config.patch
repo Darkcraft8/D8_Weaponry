@@ -61,5 +61,15 @@
       "path": "/labels/d8weaponry_makeshiftweapon",
       "value": "Makeshift Weapon"
     }
+  ],
+
+  [
+    {
+      "op": "add",
+      "path": "/labels/d8weaponry_bridgepole",
+      "value": "Brigde Pole"
+    }
   ]
+
+  
 ]

@@ -27,6 +27,11 @@ idea for next updates :
 --> New Bow
 --> Crossbows... just disguising a gun should be enough
 
+Survival Horror Missions idea :
+
+Erchius Mining/Space Station on BH5-GG-M12/BlackHole5-GasGiant-Moon12...
+or radiant ecounter mission...
+
 postPone :
 
 -- > allow to override the projectile action with hitscan for insanely fast projectile representation (a laser or sniper round for exemple)...
