@@ -163,7 +163,7 @@
 
     "baseOffset" : [0, -0.2],
     "muzzleOffset" : [3.45, 0.3],
-    "aimOffset" : 0.4,
+    "aimOffset" : 0.3,
     
     "scripts" : ["/items/active/weapons/ranged/gun.lua"],
     
@@ -264,36 +264,39 @@
                 "weaponRotation" : 0,
                 "allowFlip" : true,
                 "armRotation" : 0,
-                "weaponOffset" : [-0.3, 0],
+                "weaponOffset" : [0.6, 0.4],
                 "animationStates" : {
                     "animation" : "idle"
                 },
-                "frontArmFrame" : "swimIdle.2?crop;4;0;43;43",
+                "frontArmFrame" : "rotation?crop;4;0;43;43?scalenearest=1.3;0.7",
                 "allowRotate" : true,
-                "twoHanded" : true
+                "twoHanded" : true,
+                "backArmFrame" : "rotation?crop;0;0;39;43"
             },
             "fire" : {
                 "duration" : 0,
                 "weaponRotation" : 0,
                 "allowFlip" : false,
                 "armRotation" : 0,
-                "weaponOffset" : [-0.3, 0],
-                "frontArmFrame" : "swimIdle.2?crop;4;0;43;43",
+                "weaponOffset" : [0.6, 0.4],
+                "frontArmFrame" : "rotation?crop;4;0;43;43?scalenearest=1.3;0.7",
                 "animationStates" : {
                     "barrelSmoke" : "on"
                 },
                 "allowRotate" : false,
-                "twoHanded" : true
+                "twoHanded" : true,
+                "backArmFrame" : "rotation?crop;0;0;39;43"
             },
             "cooldown" : {
                 "duration" : 0.06,
                 "weaponRotation" : 0,
                 "allowFlip" : false,
                 "armRotation" : 6,
-                "weaponOffset" : [-0.3, 0],
-                "frontArmFrame" : "swimIdle.2?crop;4;0;43;43",
+                "weaponOffset" : [0.6, 0.4],
+                "frontArmFrame" : "rotation?crop;4;0;43;43?scalenearest=1.3;0.7",
                 "allowRotate" : false,
-                "twoHanded" : true
+                "twoHanded" : true,
+                "backArmFrame" : "rotation?crop;0;0;39;43"
             },
 
             "reload1" : {

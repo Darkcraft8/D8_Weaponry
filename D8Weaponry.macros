@@ -57,6 +57,11 @@
         "/spawnitem d8Weaponry_erchiusbreach_makeshiftflamethrower",
         
         "/spawnitem d8Weaponry_gascanister 4 '{\"gasKind\" : \"oxygen\", \"gasAmount\" : 125, \"gasMax\" : 125, \"durability\" : 126, \"durabilityHit\" : 125}'"
+    ],
+
+    "d8Weap_EB_OI" : [
+        "Warping to UuidLess Overrun Installation",
+        "/warp instanceWorld:d8Weaponry_erchiusBreach_overruninstallation"
     ]
 
 }

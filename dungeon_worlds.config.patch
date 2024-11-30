@@ -1,0 +1,17 @@
+[
+  {
+    "op": "add",
+    "path": "/d8Weaponry_erchiusBreach_overruninstallation",
+    "value": {
+      "primaryDungeon": "d8Weaponry_erchiusBreach_overruninstallation",
+      "threatLevel": 1,
+      "gravity": 80,
+      "worldSize": [2000,2000],
+      "dungeonBaseHeight": 1000,
+      "dungeonSurfaceHeight": 495,
+      "ambientLightLevel": [0,0,0],
+      "environmentStatusEffects": ["d8weaponry_erchiusbreach_erchiusinterference"],
+	    "musicTrack" : "/music/tentacle-exploration1.ogg"
+    }
+  }
+]

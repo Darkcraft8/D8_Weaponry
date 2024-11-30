@@ -157,7 +157,18 @@
     "muzzleFlash" : {
       "active" : false,
       "position" : [0, 0],
-      "color" : [140, 80, 0]
+      "transformationGroups" : ["muzzle"],
+      "color" : [70, 40, 0]
+    },
+    "muzzleFlashPoint" : {
+      "active" : false,
+      "position" : [0, 0],
+      "transformationGroups" : ["muzzle"],
+      "color" : [125, 70, 0],
+      "pointLight" : true,
+      "pointAngle" : 0.00,
+      "pointBeam" : 20,
+      "beamAmbience" : 0.75
     }
   },
 

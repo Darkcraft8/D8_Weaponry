@@ -1,0 +1,8 @@
+--List of thing needed to be done
+--Stance
+--Projectile
+--Hitbox
+--Resource requirement/manipulation
+--better physical reload system
+--attachment/modular part ?
+--

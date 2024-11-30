@@ -294,6 +294,7 @@
                 "duration" : 0.2,
                 "weaponRotation" : -25,
                 "armRotation" : -20,
+                "aimAngle" : 0,
                 "weaponOffset" : [-1.15, 0],
                 "frontArmFrame" : "rotation?crop;3;0;43;43",
                 "backArmFrame" : "run.5",

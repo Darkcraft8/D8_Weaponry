@@ -329,6 +329,7 @@
                 "weaponRotation" : 0,
                 "allowFlip" : false,
                 "armRotation" : 0,
+                "aimAngle" : 0,
                 "weaponOffset" : [-1.1, 0.35],
                 "animationStates" : {
                     "animation" : "reload1"

@@ -25,7 +25,7 @@
                 "fire" : {
                     "rangeMultiplier" : 1.5,
                     "pitchMultiplier" : 0.5,
-                    "volume" : 1.5,
+                    "volume" : 1.15,
                     "pool" : ["/sfx/gun/mech_flakcannon1.ogg", "/sfx/gun/mech_flakcannon2.ogg", "/sfx/gun/mech_flakcannon3.ogg"]
                 },
                 "reload1" : {

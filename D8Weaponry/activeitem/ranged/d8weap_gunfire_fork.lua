@@ -35,6 +35,8 @@ function GunFire:update(dt, fireMode, shiftHeld)
 
   if animator.animationState("firing") ~= "fire" then
     animator.setLightActive("muzzleFlash", false)
+    animator.setLightActive("muzzleFlashPoint", false)
+    
     if self.temperature > 0 then
       self.temperature = self.temperature - (5 * dt)
     elseif self.temperature < 0 then
@@ -288,6 +290,7 @@ function GunFire:muzzleFlash()
   end
 
   animator.setLightActive("muzzleFlash", true)
+  animator.setLightActive("muzzleFlashPoint", true)
 end
 
 function GunFire:fireProjectile(projectileType, projectileParams, inaccuracy, firePosition, projectileCount)

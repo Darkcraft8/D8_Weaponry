@@ -1,0 +1,59 @@
+[
+  [
+	  {
+		"op": "add",
+		"path": "/d8Weaponry_erchiusBreach_overruninstallation",
+		"value": {
+			"type" : "FloatingDungeon",
+			"dungeonWorld" : "d8Weaponry_erchiusBreach_overruninstallation",
+			"seed" : 1234,
+			"spawningEnabled" : true,
+		  	"beamUpRule" : "Nowhere",
+		  	"disableDeathDrops" : false,
+		  	"persistent" : false,
+		  	"useUniverseClock" : true,
+
+			"skyParameters": {
+				"dayLength": 720,
+				"surfaceLevel": 1000,
+				"spaceLevel": 3000,
+				"seed": -5288806180628667000,
+				"skyType": "barren",
+				"skyColoring": {
+					"mainColor": [ 0, 0, 0 ],
+					"morningColors": [
+						[ 0,0,0 ],
+						[ 0,0,0 ]
+					],
+					"dayColors": [
+						[ 0,0,0 ],
+						[ 0,0,0 ]
+					],
+					"eveningColors": [
+						[ 0,0,0 ],
+						[ 0,0,0 ]
+					],
+					"nightColors": [
+						[ 0,0,0 ],
+						[ 0,0,0 ]
+					],
+					"morningLightColor": [ 0,0,0 ],
+					"dayLightColor": [ 0,0,0 ],
+					"eveningLightColor": [ 0,0,0 ],
+					"nightLightColor": [ 0,0,0 ]
+				},
+				"satellites" : [],
+				"planet" : {
+					"pos" : [ 0.85, 0.75 ],
+					"layers" : [
+						{
+							"scale" : 1,
+							"image" : "/celestial/system/gas_giant/gas_giant_base.png?brightness=-255"
+						}
+					]
+				}
+			}
+		}
+	  }
+	]
+]
