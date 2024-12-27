@@ -1,6 +1,6 @@
 {
     "itemName" : "d8Weaponry_gascanister",
-    "price" : 1,
+    "price" : 125,
     "level" : 1,
     "maxStack" : 4,
     "rarity" : "Common",

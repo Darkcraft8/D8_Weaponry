@@ -1,6 +1,6 @@
 {
     "itemName" : "d8Weaponry_standardbullet",
-    "price" : 1,
+    "price" : 5,
     "level" : 1,
     "maxStack" : 5000,
     "rarity" : "Common",

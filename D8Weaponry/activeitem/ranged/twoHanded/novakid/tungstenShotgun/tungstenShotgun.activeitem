@@ -605,8 +605,7 @@
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/D8Weaponry/item/munition/shotgunshell.png",
-            "ammoText" : "/D8Weaponry/item/munition/shotgunshell.png",
-            "numberOnly" : true
+            "ammoText" : "/D8Weaponry/item/munition/shotgunshell.png"
         }
     ],
     "cylinderCapacity" : 8,

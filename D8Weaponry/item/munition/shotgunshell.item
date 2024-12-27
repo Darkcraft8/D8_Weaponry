@@ -1,6 +1,6 @@
 {
     "itemName" : "d8Weaponry_shotgunshell",
-    "price" : 3,
+    "price" : 15,
     "level" : 1,
     "maxStack" : 5000,
     "rarity" : "Common",

@@ -305,8 +305,7 @@
             "ammoCountName" : "cylinder",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
             "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-			"rotation" : -90,
-            "numberOnly" : true
+			"rotation" : -90
         }
     ],
     "cylinderCapacity" : 6,

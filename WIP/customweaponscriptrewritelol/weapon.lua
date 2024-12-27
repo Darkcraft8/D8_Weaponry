@@ -5,4 +5,4 @@
 --Resource requirement/manipulation
 --better physical reload system
 --attachment/modular part ?
---
+-- .. i got a ballsy idea >:D "see item.lua"

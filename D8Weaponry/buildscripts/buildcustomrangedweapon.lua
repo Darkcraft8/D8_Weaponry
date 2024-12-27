@@ -100,16 +100,16 @@ function build(directory, config, parameters, level, seed)
     end
   end
   -- populate d8Weaponry
-  if config.d8Weaponry then
-    parameters.d8Weaponry = parameters.d8Weaponry or config.d8Weaponry
+  if configParameter("d8Weaponry") then
+    parameters.d8Weaponry = configParameter("d8Weaponry")
   end
   -- setUp ammo count
-  if config.primaryAbility.ammoCountName then
-    parameters[config.primaryAbility.ammoCountName] = parameters[config.primaryAbility.ammoCountName] or config[config.primaryAbility.ammoCountName] or config[config.primaryAbility.ammoMaxName]
+  if configParameter(config.primaryAbility.ammoCountName) then
+    parameters[config.primaryAbility.ammoCountName] = configParameter(config.primaryAbility.ammoCountName) or configParameter(config.primaryAbility.ammoMaxName)
   end
   if config.altAbility then
-    if config.altAbility.ammoCountName then
-      parameters[config.altAbility.ammoCountName] = parameters[config.altAbility.ammoCountName] or config[config.altAbility.ammoCountName] or config[config.altAbility.ammoMaxName]
+    if configParameter(config.altAbility.ammoCountName) then
+      parameters[config.altAbility.ammoCountName] = configParameter(config.altAbility.ammoCountName) or configParameter(config.altAbility.ammoMaxName)
     end
   end
 

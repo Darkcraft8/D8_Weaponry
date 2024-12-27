@@ -28,6 +28,13 @@ function GunFire:init()
   animator.setGlobalTag("weaponDirective", "")
 end
 
+local oldUpdate = update
+local currentMoves = nil
+function update(dt, fireMode, shiftHeld, moves)
+  currentMoves = moves
+  oldUpdate(dt, fireMode, shiftHeld, moves)
+end
+
 function GunFire:update(dt, fireMode, shiftHeld)
   WeaponAbility.update(self, dt, fireMode, shiftHeld)
 
@@ -77,7 +84,7 @@ function GunFire:update(dt, fireMode, shiftHeld)
       activeItem.setInstanceValue(self.ammoCountName, config.getParameter(self.ammoMaxName))
     end
     if self.reloadType ~= "passive" then
-      if config.getParameter(self.ammoCountName) <= 0 and ( world.entityType(activeItem.ownerEntityId()) ~= "player" or self.reloadwithattack ) or shiftHeld then
+      if config.getParameter(self.ammoCountName) <= 0 and ( world.entityType(activeItem.ownerEntityId()) ~= "player" or self.reloadwithattack ) or (shiftHeld and currentMoves["up"])then
         local hasAmmo = false
         if player then
           local ammoDescriptor = {
@@ -132,7 +139,7 @@ function GunFire:update(dt, fireMode, shiftHeld)
     and not status.resourceLocked("energy")
     and not world.lineTileCollision(mcontroller.position(), self:firePosition()) then
     
-    if config.getParameter(self.ammoCountName) <= 0 and ( world.entityType(activeItem.ownerEntityId()) ~= "player" or self.reloadwithattack ) or shiftHeld then elseif config.getParameter(self.ammoCountName) >= (0 + self.ammoCost) then
+    if config.getParameter(self.ammoCountName) <= 0 and ( world.entityType(activeItem.ownerEntityId()) ~= "player" or self.reloadwithattack ) or (shiftHeld and currentMoves["up"]) then elseif config.getParameter(self.ammoCountName) >= (0 + self.ammoCost) then
       if self.fireType == "auto" and status.overConsumeResource("energy", self:energyPerShot()) then
         self:setState(self.auto)
       elseif self.fireType == "burst" then
@@ -349,7 +356,7 @@ function GunFire:energyPerShot()
 end
 
 function GunFire:damagePerShot()
-  local ammoCost = (config.getParameter(self.ammoMaxName, 2) - (self.stances.ammoCost or 1))
+  local ammoCost = util.clamp((config.getParameter(self.ammoMaxName, 2) - (self.stances.ammoCost or 1)), 1, (config.getParameter(self.ammoMaxName, 2) - (self.stances.ammoCost or 1)))
   return (self.baseDamage or (self.baseDps / (ammoCost / (ammoCost*(8/ammoCost) ) ) ) ) * (self.baseDamageMultiplier or 1.0) * config.getParameter("damageLevelMultiplier") / self.projectileCount
 end
 

@@ -1,0 +1,314 @@
+{
+    "itemName" : "d8Weaponry_medievalWeaponPack1_crossbow",
+    "price" : 262,
+    "maxStack" : 1,
+    "rarity" : "Common",
+    "shortdescription" : "Crossbow",
+    "description" : "Medieval problem's require medieval solution.",
+    "category" : "d8weaponry_crossbow",
+    "tooltipKind" : "d8Weaponry_gun",
+    "twoHanded" : true,
+    "itemTags" : ["weapon","ranged","crossbow", "upgradeableWeapon"],
+    
+    "inventoryIcon" : [
+        { "image" : "normal.png:idle" }
+    ],
+    
+    "animation" : "/D8Weaponry/activeitem/ranged/gun.animation",
+    "animationParts" : {
+        "middle" : "normal.png",
+        "muzzleFlash" : "/assetmissing.png"
+    },
+    "animationCustom" : {
+        "sounds" : {
+                "fire" : {
+                    "rangeMultiplier" : 1,
+                    "pitchMultiplier" : 1.5,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/ar2.ogg", "/sfx/gun/ar4.ogg"]
+                },
+                "reload1" : {
+                    "rangeMultiplier" : 1,
+                    "pitchMultiplier" : 0.75,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/reload/pistol_reload_clip2.ogg"]
+                },
+                "reload4" : {
+                    "rangeMultiplier" : 1,
+                    "pitchMultiplier" : 1,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/reload/pistol_reload_clip3.ogg"]
+                }
+        },
+        "animatedParts" : {
+            "stateTypes" : {
+                "ammo" : {
+                  "priority" : -1,
+                  "default" : "off",
+                  "states" : {
+                    "off" : {},
+                    "on" : {}
+                  }
+                },
+                "animation" : {
+                  "default" : "idle",
+                  "states" : {
+                    "idle" : {},
+                    "reload1" : {},
+                    "reload2" : {},
+                    "reload3" : {},
+                    "fire" : {}
+                  }
+                },
+                "barrelSmoke" : {
+                   "default" : "off",
+                   "states" : {
+                      "off" : {
+                       "properties" : {
+                       }
+                      },
+                      "on" : {
+                       "frames" : 1,
+                       "cycle" : 2.5,
+                       "mode" : "transition",
+                       "transition" : "off",
+                       "properties" : {}
+                      }
+                   }
+                }
+              },
+            "parts" : {
+                "middle" : {
+                    "properties" : {
+                        "centered" : true,
+                        "offset" : [0, 0],
+                        "transformationGroups" : ["weapon"]
+                    },
+
+                    "partStates" : {
+                        "animation" : {
+                            "reload1" : {
+                                "properties" : {
+                                    "image" : "<partImage>:reload.2"
+                                }
+                            },
+                            "reload2" : {
+                                "properties" : {
+                                    "image" : "<partImage>:reload.1"
+                                }
+                            },
+                            "fire" : {
+                                "properties" : {
+                                    "image" : "<partImage>:empty"
+                                }
+                            }
+                        },
+                        "ammo" : {
+                            "off" : {
+                                "properties" : {
+                                    "image" : "<partImage>:empty"
+                                }
+                            },
+                            "on" : {
+                                "properties" : {
+                                    "image" : "<partImage>:idle"
+                                }
+                            }
+                        }
+                    }
+                },
+                "muzzleFlash" : {
+                    "properties" : {
+                        "zLevel" : -1,
+                        "centered" : true,
+                        "offset" : [0.45, 0],
+                        "fullbright" : true,
+                        "transformationGroups" : ["muzzle"]
+                    },
+                    "partStates" : {
+                        "firing" : {
+                            "fire" : {
+                                "properties" : {
+                                    "image" : "<partImage>"
+                                }
+                            }
+                        }
+                    }
+                },
+                "muzzleFlash2" : {
+                    "properties" : {
+                      "zLevel" : -1,
+                      "centered" : true,
+                      "offset" : [0, 0],
+                      "fullbright" : true,
+                      "transformationGroups" : ["muzzle"]
+                    },
+
+                    "partStates" : {
+                        "firing" : {
+                            "fire" : {
+                                "properties" : {
+                                    "image" : "/assetmissing.png"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "particleEmitters" : {
+            "bulletShell" : {
+                "active" : false,
+                "transformationGroups" : ["weapon"],
+                "emissionRate" : 1,
+                "burstCount" : 0,
+                "particles" : []
+            }
+        },
+        "lights" : {
+            "muzzleFlash" : {
+              "color" : [0, 0, 0]
+            },
+            "muzzleFlashPoint" : {
+              "color" : [0, 0, 0]
+            }
+        }
+    },
+    
+    "baseOffset" : [0, 0],
+    "muzzleOffset" : [0, 0],
+    "aimOffset" : 0,
+    
+    "scripts" : ["/items/active/weapons/ranged/gun.lua"],
+    
+    "elementalType" : "physical",
+
+    "level" : 1,
+    "primaryAbility" : {
+        "scripts" : ["/D8Weaponry/activeitem/ranged/d8weap_gunfire_fork.lua"],
+        "class" : "GunFire",
+        
+        "fireTime" : 0.1,
+        "baseDps" : 1.2,
+        "energyUsage" : 10,
+        "projectileCount" : 1,
+        "inaccuracy" : 0.015,
+        "fireType" : "auto",
+        
+        "projectileType" : "woodenbolt",
+        "projectileParameters" : {
+          "knockback" : 10
+        },
+        "projectileOffset" : [0, 0.2],
+        "muzzleFlashVariants" : 1,
+        
+        "stances" : {
+            "idle" : {
+                "weaponRotation" : 0,
+                "allowFlip" : true,
+                "armRotation" : 0,
+                "weaponOffset" : [-0.5, 0],
+                "animationStates" : {},
+                "frontArmFrame" : "run.2?crop=3;3;43;43",
+                "allowRotate" : true,
+                "twoHanded" : true,
+                "weaponRotationCenter" : [0, 0]
+            },
+            "fire" : {
+                "duration" : 0,
+                "weaponRotation" : 0,
+                "allowFlip" : false,
+                "armRotation" : 0,
+                "weaponOffset" : [-0.5, 0],
+                "burstParticleEmitters" : ["bulletShell"],
+                "frontArmFrame" : "run.2?crop=3;3;43;43",
+                "animationStates" : {
+                    "animation" : "fire"
+                },
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "weaponRotationCenter" : [0, 0]
+            },
+            "cooldown" : {
+                "duration" : 0.1,
+                "weaponRotation" : 0,
+                "allowFlip" : false,
+                "armRotation" : 0,
+                "weaponOffset" : [-0.5, 0],
+                "frontArmFrame" : "run.2?crop=3;3;43;43",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "weaponRotationCenter" : [0, 0]
+            },
+            "reload1" : {
+                "duration" : 0.4,
+                "weaponRotation" : -20,
+                "allowFlip" : false,
+                "armRotation" : -30,
+                "aimAngle" : 0,
+                "weaponOffset" : [-1.2, 0],
+                "animationStates" : {
+                    "animation" : "reload1"
+                },
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "playSounds" : ["reload1"]
+
+            },
+            "reload2" : {
+                "duration" : 0.4,
+                "weaponRotation" : -20,
+                "allowFlip" : false,
+                "armRotation" : -30,
+                "aimAngle" : 0,
+                "weaponOffset" : [-1.2, 0],
+                "animationStates" : {
+                    "animation" : "reload2"
+                },
+                "frontArmFrame" : "swim.4?crop;0;2;43;43",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "playSounds" : ["reload1"]
+
+            },
+            "reload3" : {
+                "duration" : 0.4,
+                "weaponRotation" : -20,
+                "allowFlip" : false,
+                "armRotation" : -30,
+                "aimAngle" : 0,
+                "weaponOffset" : [-1.2, 0],
+                "animationStates" : {
+                    "animation" : "idle"
+                },
+                "frontArmFrame" : "swim.5?crop;0;2;43;43",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "playSounds" : ["reload1"]
+            }
+        },
+
+        "postFire" : true,
+        "ammoType" : "d8Weaponry_woodenbolt",
+        "ammoName" : "Wooden bolt",
+        "ammoMaxName" : "primAmmoCap",
+        "ammoCountName" : "primAmmo",
+        "reloadType" : "full",
+        "ammoAnimationPart" : "ammo",
+        "ammoCost" : 1
+    },
+
+    "d8Weaponry" : [
+        {
+            "isBar" : true,
+            "ammoMaxName" : "primAmmoCap",
+            "ammoCountName" : "primAmmo",
+            "barText" : "/projectiles/guns/arrows/woodenbolt/icon.png",
+            "ammoText" : "/projectiles/guns/arrows/woodenbolt/icon.png"
+        }
+    ],
+    "primAmmoCap" : 1,
+    "primAmmo" : 0,
+
+    "builder" : "/D8Weaponry/buildscripts/buildunrandrangedweapon.lua"
+}

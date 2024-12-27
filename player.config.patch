@@ -28,6 +28,13 @@
       "op": "add",
       "path": "/defaultBlueprints/tier1/-",
       "value": {
+        "item": "d8Weaponry_woodenbolt"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
         "item": "d8Weaponry_standardbullet"
       }
     },
@@ -46,6 +53,13 @@
       }
     },
 
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_medievalWeaponPack1_crossbow"
+      }
+    },
     {
       "op": "add",
       "path": "/defaultBlueprints/tier1/-",

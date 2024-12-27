@@ -38,3 +38,6 @@ postPone :
 	possibly with "isHitscan" : true has parameters... maybe make so that the projectile spawn one or two block distance from destination so that it easier to 
 	create and/or convert weapons
 	
+idea :
+
+-- > Creation of a whole new system for the mod weapon's that use modularity... would also require to make a script to convert any old weapon to new format... will try later on

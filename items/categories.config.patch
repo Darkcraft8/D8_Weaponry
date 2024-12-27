@@ -20,6 +20,19 @@
       "value": "Nailgun"
     }
   ],
+  
+  [
+    {
+      "op": "add",
+      "path": "/labels/d8weaponry_mg",
+      "value": "Machine Gun"
+    },
+    {
+      "op": "add",
+      "path": "/labels/d8weaponry_gatlinggun",
+      "value": "Gatling Gun"
+    }
+  ],
   [
     {
       "op": "add",
@@ -30,25 +43,9 @@
   [
     {
       "op": "add",
-      "path": "/labels/d8weaponry_mg",
-      "value": "Machine Gun"
-    }
-  ],
-  [
-    {
-      "op": "add",
-      "path": "/labels/d8weaponry_gatlinggun",
-      "value": "Gatling Gun"
-    }
-  ],
-  [
-    {
-      "op": "add",
       "path": "/labels/d8weaponry_revolver",
       "value": "Revolver"
-    }
-  ],
-  [
+    },
     {
       "op": "add",
       "path": "/labels/d8weaponry_machinepistol",
@@ -60,6 +57,11 @@
       "op": "add",
       "path": "/labels/d8weaponry_makeshiftweapon",
       "value": "Makeshift Weapon"
+    },
+    {
+      "op": "add",
+      "path": "/labels/d8weaponry_crossbow",
+      "value": "Crossbow"
     }
   ],
 

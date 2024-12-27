@@ -297,8 +297,7 @@
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-            "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-            "numberOnly" : true
+            "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png"
         }
     ],
     "cylinderCapacity" : 8,

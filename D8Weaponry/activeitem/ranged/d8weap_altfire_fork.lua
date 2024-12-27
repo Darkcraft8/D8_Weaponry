@@ -13,6 +13,13 @@ function AltFireAttack:init()
   self.cooldownTimer = self.fireTime
 end
 
+local oldUpdate = update
+local currentMoves = nil
+function update(dt, fireMode, shiftHeld, moves)
+  currentMoves = moves
+  oldUpdate(dt, fireMode, shiftHeld, moves)
+end
+
 function AltFireAttack:update(dt, fireMode, shiftHeld)
   WeaponAbility.update(self, dt, fireMode, shiftHeld)
 
@@ -32,7 +39,7 @@ function AltFireAttack:update(dt, fireMode, shiftHeld)
     if not config.getParameter(self.ammoCountName) then
       activeItem.setInstanceValue(self.ammoCountName, config.getParameter(self.ammoMaxName))
     end
-    if config.getParameter(self.ammoCountName) <= 0 and self.reloadwithattack or shiftHeld then
+    if config.getParameter(self.ammoCountName) <= 0 and self.reloadwithattack or (shiftHeld and currentMoves["up"]) then
         if self.reloadType == "singleAmmo" then
             if config.getParameter(self.ammoCountName) < config.getParameter(self.ammoMaxName) or self.infMag then
                 self:setState(self.reloadSingle)
@@ -53,7 +60,7 @@ function AltFireAttack:update(dt, fireMode, shiftHeld)
     and not status.resourceLocked("energy")
     and not world.lineTileCollision(mcontroller.position(), self:firePosition()) then
     
-    if config.getParameter(self.ammoCountName) <= 0 and self.reloadwithattack or shiftHeld then elseif config.getParameter(self.ammoCountName) >= (0 + self.ammoCost) then
+    if config.getParameter(self.ammoCountName) <= 0 and self.reloadwithattack or (shiftHeld and currentMoves["up"])  then elseif config.getParameter(self.ammoCountName) >= (0 + self.ammoCost) then
         if self.fireType == "auto" and status.overConsumeResource("energy", self:energyPerShot()) then
             self:setState(self.auto)
         elseif self.fireType == "burst" then

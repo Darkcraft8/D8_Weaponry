@@ -1,0 +1,15 @@
+[
+  {
+    "op": "add",
+    "path": "/items/d8Weap_Config",
+    "value": {
+      "label": "D8:Weaponry Config",
+      "icon": "/D8Weaponry/object/crafting/gunsmithTable/icon1.png",
+      "weight": 0,
+      "action": [
+        "pane",
+        "/D8Weaponry/interfaces/scripted/renderConfig/renderConfig.config"
+      ]
+    }
+  }
+]

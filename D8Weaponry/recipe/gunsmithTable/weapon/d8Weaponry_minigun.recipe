@@ -1,9 +1,9 @@
 {
   "input" : [
-    { "item" : "refinedaegisalt", "count" : 6 },
-    { "item" : "solariumstar", "count" : 10 },
+    { "item" : "refinedaegisalt", "count" : 12 },
+    { "item" : "solariumstar", "count" : 15 },
     { "item" : "ironbar", "count" : 25 },
-    { "item" : "cryonicextract", "count" : 5 }
+    { "item" : "cryonicextract", "count" : 6 }
   ],
   
   "duration" : 4,

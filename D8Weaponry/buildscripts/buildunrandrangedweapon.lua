@@ -64,7 +64,8 @@ function build(directory, config, parameters, level, seed)
     config.tooltipFields = config.tooltipFields or {}
     config.tooltipFields.levelLabel = string.format("Level: %s", math.floor(util.round(configParameter("level", 1), 1)))
     local ammoCost = ((config[config.primaryAbility.ammoMaxName] or 2) - (config.primaryAbility.stances.ammoCost or 1))
-    config.tooltipFields.dpsLabel = util.round((config.primaryAbility.baseDps or 0) * config.damageLevelMultiplier, 1)
+    if ammoCost < 1 then ammoCost = 1 end
+  
     config.tooltipFields.speedLabel = util.round(1 / (config.primaryAbility.fireTime or 1.0), 1)
     local reloadTime = 0
     for stancesName, value in pairs(config.primaryAbility.stances) do 
@@ -73,7 +74,7 @@ function build(directory, config, parameters, level, seed)
       end
     end
     config.tooltipFields.reloadLabel = string.format("Reload: ~%s", reloadTime)
-    config.tooltipFields.damagePerShotLabel = util.round((config.primaryAbility.baseDamage or (config.primaryAbility.baseDps / (ammoCost / (ammoCost*(8/ammoCost) ) ) ) ) * (config.primaryAbility.baseDamageMultiplier or 1.0) * (config.primaryAbility.damageLevelMultiplier or 1.0) / (config.primaryAbility.projectileCount or 1), 1)
+    config.tooltipFields.damagePerShotLabel = util.round((config.primaryAbility.baseDamage or (config.primaryAbility.baseDps / (ammoCost / (ammoCost*(8/ammoCost) ) ) ) ) * (config.primaryAbility.baseDamageMultiplier or 1.0) * (config.primaryAbility.damageLevelMultiplier or 1.0) / (config.primaryAbility.projectileCount or 1), 1) * math.floor(util.round(configParameter("level", 1), 1))
     config.tooltipFields.energyPerShotLabel = util.round((config.primaryAbility.energyUsage or 0) * (config.primaryAbility.fireTime or 1.0), 1)
     
     if string.lower(config.rarity) == "uncommon" then
