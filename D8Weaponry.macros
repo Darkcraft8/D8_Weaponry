@@ -1,59 +1,69 @@
 {
-    "d8Weaponry_giveAll" : [
-        "/spawnitem d8Weaponry_ironrevolver",
-        "/spawnitem d8Weaponry_ironassaultrifle",
-        "/spawnitem d8Weaponry_tungstenmagnum",
-        "/spawnitem d8Weaponry_tungstenshotgun",
-        "/spawnitem d8Weaponry_titaniummachinepistol",
-        "/spawnitem d8Weaponry_titaniumsniperrifle",
-
-        "/spawnitem d8Weaponry_makarov",
-        "/spawnitem d8Weaponry_doublebarrelshotgun",
-        "/spawnitem d8Weaponry_tommygun",
+    "d8Weap_JPBAI" : [
+        "/spawnitem JPBAITest 1",
+        "/spawnitem d8Weaponry_JPBAI_chauchat 1"
+    ],
+    
+    "d8Weap_giveAll" : [
+        "/d8Weap_T1",
+        "/d8Weap_T2",
+        "/d8Weap_T3",
+        "/d8Weap_T4",
+        "/d8Weap_T5",
+        "/d8Weap_T6",
+        "/d8Weap_T7",
+        "/d8Weap_T8",
+        "/d8Weap_T9",
+        "/d8Weap_T10",
 
         "/spawnitem d8Weaponry_standardbullet 5000",
         "/spawnitem d8Weaponry_piercingbullet 5000",
         "/spawnitem d8Weaponry_shotgunshell 5000"
     ],
-    "d8Weaponry_testrenderer" : [
-        "/spawnitem d8Weaponry_ironrevolver"
-    ],
 
-    "d8Weaponry_testT1" : [
+    "d8Weap_T1" : [
         "/spawnitem d8Weaponry_ironrevolver",
         "/spawnitem d8Weaponry_glock",
         "/spawnitem d8Weaponry_chauchat",
         "/spawnitem d8Weaponry_ironassaultrifle",
-        "/spawnitem d8Weaponry_standardbullet 5000"
+        "/spawnitem d8Weaponry_medievalWeaponPack1_crossbow"
     ],
 
-    "d8Weaponry_testT2" : [
+    "d8Weap_T2" : [
         "/spawnitem d8Weaponry_tungstenmagnum",
         "/spawnitem d8Weaponry_tungstenshotgun",
-        "/spawnitem d8Weaponry_standardbullet 5000",
-        "/spawnitem d8Weaponry_shotgunshell 5000"
+        "/spawnitem d8Weaponry_frenchWeaponPack1_famas"
     ],
 
-    "d8Weaponry_testT3" : [
+    "d8Weap_T3" : [
         "/spawnitem d8Weaponry_titaniummachinepistol",
         "/spawnitem d8Weaponry_titaniumsniperrifle",
 
         "/spawnitem d8Weaponry_makarov",
         "/spawnitem d8Weaponry_doublebarrelshotgun",
-        "/spawnitem d8Weaponry_tommygun",
-
-        "/spawnitem d8Weaponry_standardbullet 5000",
-        "/spawnitem d8Weaponry_piercingbullet 5000",
-        "/spawnitem d8Weaponry_shotgunshell 5000"
+        "/spawnitem d8Weaponry_tommygun"
     ],
 
-    "d8Weaponry_testT6" : [
-        "/spawnitem d8Weaponry_minigun",
-        
-        "/spawnitem d8Weaponry_standardbullet 5000"
+    "d8Weap_T4" : [
     ],
 
-    "d8Weaponry_testcontainermechanic" : [
+    "d8Weap_T5" : [
+    ],
+
+    "d8Weap_T6" : [
+        "/spawnitem d8Weaponry_minigun"
+    ],
+    
+    "d8Weap_T7" : [
+    ],
+    "d8Weap_T8" : [
+    ],
+    "d8Weap_T9" : [
+    ],
+    "d8Weap_T10" : [
+    ],
+
+    "d8Weap_testcontainermechanic" : [
         "/spawnitem d8Weaponry_erchiusbreach_makeshiftflamethrower",
         
         "/spawnitem d8Weaponry_gascanister 4 '{\"gasKind\" : \"oxygen\", \"gasAmount\" : 125, \"gasMax\" : 125, \"durability\" : 126, \"durabilityHit\" : 125}'"
@@ -62,6 +72,30 @@
     "d8Weap_EB_OI" : [
         "Warping to UuidLess Overrun Installation",
         "/warp instanceWorld:d8Weaponry_erchiusBreach_overruninstallation"
-    ]
+    ],
 
+    "d8Weap_testT1" : [
+        "/d8Weaponry_T1",
+        "/spawnitem d8Weaponry_standardbullet 5000"
+    ],
+
+    "d8Weap_testT2" : [
+        "/d8Weaponry_T2",
+        "/spawnitem d8Weaponry_standardbullet 5000",
+        "/spawnitem d8Weaponry_shotgunshell 5000"
+    ],
+
+    "d8Weap_testT3" : [
+        "/d8Weaponry_T3",
+
+        "/spawnitem d8Weaponry_standardbullet 5000",
+        "/spawnitem d8Weaponry_piercingbullet 5000",
+        "/spawnitem d8Weaponry_shotgunshell 5000"
+    ],
+
+    "d8Weap_testT6" : [
+        "/d8Weaponry_T6",
+        
+        "/spawnitem d8Weaponry_standardbullet 5000"
+    ]
 }

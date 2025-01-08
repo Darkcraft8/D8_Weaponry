@@ -1,14 +1,14 @@
 {
     "itemName" : "d8Weaponry_frenchWeaponPack1_famas",
     "price" : 960,
-    "maxStack" : 1,
+    "maxStack" : 2,
     "rarity" : "Uncommon",
     "shortdescription" : "Famas F1",
     "description" : "Todo.",
     "category" : "assaultRifle",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : true,
-    "itemTags" : ["weapon","ranged","assaultrifle", "upgradeableWeapon", "d8Weaponry_gun"],
+    "itemTags" : ["weapon","ranged","assaultrifle", "d8Weaponry_gun"],
     
     "inventoryIcon" : [
         { "image" : "normal.png:idle" }
@@ -26,7 +26,7 @@
         "sounds" : {
                 "fire" : {
                     "rangeMultiplier" : 1,
-                    "pitchMultiplier" : 1.5,
+                    "pitchMultiplier" : 1,
                     "volume" : 1,
                     "pool" : ["/sfx/gun/ar2.ogg", "/sfx/gun/ar4.ogg"]
                 },
@@ -41,6 +41,12 @@
                     "pitchMultiplier" : 1,
                     "volume" : 1,
                     "pool" : ["/sfx/gun/reload/pistol_reload_clip3.ogg"]
+                },
+                "slide" : {
+                    "rangeMultiplier" : 1,
+                    "pitchMultiplier" : 0.85,
+                    "volume" : 1,
+                    "pool" : ["/sfx/gun/reload/machinepistol_reload_clip3.ogg"]
                 }
         },
         "animatedParts" : {
@@ -380,6 +386,32 @@
                 "allowRotate" : true,
                 "twoHanded" : true,
                 "playSounds" : ["reload4"]
+            },
+            
+            "reloadAfterEmpty1" : {
+                "duration" : 0.2,
+                "weaponRotation" : 30,
+                "armRotation" : 0,
+                "weaponOffset" : [0.25, 0],
+                "frontArmFrame" : "swim.3",
+                "backArmFrame" : "run.4",
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : false
+            },
+            "reloadAfterEmpty2" : {
+                "duration" : 0.2,
+                "weaponRotation" : 30,
+                "armRotation" : 0,
+                "weaponOffset" : [0.25, 0],
+                "frontArmFrame" : "run.1",
+                "backArmFrame" : "run.4",
+                "playSounds" : ["slide"],
+                "twoHanded" : true,
+
+                "allowRotate" : false,
+                "allowFlip" : false
             }
         },
 
@@ -404,14 +436,5 @@
     "cylinderCapacity" : 20,
     "cylinder" : 0,
 
-    "builder" : "/D8Weaponry/buildscripts/buildunrandrangedweapon.lua",
-    "upgradeParameters" : {
-        "shortdescription" : "Tommy Gun (Drum Mag)",
-        "cylinderCapacity" : 50,
-        "rarity" : "Legendary",
-        "tooltipFields" : {
-            "ammo1CapacityLabel" : 50,
-            "rarityLabel" : "^magenta;Legendary^reset;"
-        }
-    }
+    "builder" : "/D8Weaponry/buildscripts/buildunrandrangedweapon.lua"
 }

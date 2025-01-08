@@ -761,6 +761,10 @@ function d8weaponry_drawableUpdate(drawable, name, pos)--Way less annoing to han
         table.insert(d8Weaponry_var.weapon["parameters"]["d8Weaponry"], pos, pendingRendering)
     end
     if drawable.isBuilt then
+        if drawable.keepPos then
+            localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
+            return 
+        end
         local size = d8Weaponry_var.barOffset + drawable.size[2]
         drawable.position[2] = drawable.position[2] -size-(1*(d8Weaponry_var.renderIndex))
         localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
@@ -776,6 +780,7 @@ function d8WeaponryUtils:add(drawable)
 end
 
 function d8WeaponryUtils:remove(drawable)
+    if type(drawable) == "string" then drawable = {name = drawable} end
     if type(drawable) ~= "table" then sb.logError("[d8WeaponryUtils:remove] Following Drawable isn't a table\n"..sb.printJson(drawable, 1)) return end
     if not drawable.name then sb.logError("[d8WeaponryUtils:remove] Following Drawable lack a name"..sb.printJson(drawable, 1)) return end
     local newList = {}

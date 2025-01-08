@@ -8,5 +8,9 @@
     "description" : "a wooden bolt, watch out for splinter's!",
     "shortdescription" : "Wooden bolt",
     "itemTags" : ["munition"],
-    "inventoryIcon" : "/projectiles/guns/arrows/woodenbolt/icon.png"
+    "inventoryIcon" : "/projectiles/guns/arrows/woodenbolt/icon.png",
+
+    "projectileType" : "woodenbolt",
+    "projectileCount" : 1,
+    "projectileParameter" : {}
 }

@@ -104,12 +104,6 @@
     }
   },
 
-  "rotationGroups" : {
-    "weapon" : {
-      "angularVelocity" : 0
-    }
-  },
-
   "transformationGroups" : {
     "weapon" : {},
     "muzzle" : {}

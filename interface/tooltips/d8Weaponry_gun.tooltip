@@ -67,7 +67,7 @@
   },
   "handednessLabel" : {
     "type" : "label",
-    "position" : [56, 212],
+    "position" : [62, 173],
     "hAnchor" : "right",
     "centered" : true,
     "wrapWidth" : 126

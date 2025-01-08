@@ -8,7 +8,7 @@
     "category" : "d8weaponry_crossbow",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : true,
-    "itemTags" : ["weapon","ranged","crossbow", "upgradeableWeapon"],
+    "itemTags" : ["weapon","ranged","crossbow"],
     
     "inventoryIcon" : [
         { "image" : "normal.png:idle" }
@@ -23,21 +23,21 @@
         "sounds" : {
                 "fire" : {
                     "rangeMultiplier" : 1,
-                    "pitchMultiplier" : 1.5,
+                    "pitchMultiplier" : 0.75,
                     "volume" : 1,
-                    "pool" : ["/sfx/gun/ar2.ogg", "/sfx/gun/ar4.ogg"]
+                    "pool" : ["/sfx/gun/crossbow1.ogg"]
                 },
                 "reload1" : {
                     "rangeMultiplier" : 1,
                     "pitchMultiplier" : 0.75,
                     "volume" : 1,
-                    "pool" : ["/sfx/gun/reload/pistol_reload_clip2.ogg"]
+                    "pool" : ["/sfx/gun/bow_draw1.ogg", "/sfx/gun/bow_draw2.ogg", "/sfx/gun/bow_draw3.ogg"]
                 },
                 "reload4" : {
                     "rangeMultiplier" : 1,
                     "pitchMultiplier" : 1,
                     "volume" : 1,
-                    "pool" : ["/sfx/gun/reload/pistol_reload_clip3.ogg"]
+                    "pool" : ["/sfx/gun/reload/machinepistol_reload_clip2.ogg"]
                 }
         },
         "animatedParts" : {
@@ -197,7 +197,8 @@
         
         "projectileType" : "woodenbolt",
         "projectileParameters" : {
-          "knockback" : 10
+          "knockback" : 10,
+          "piercing" : false
         },
         "projectileOffset" : [0, 0.2],
         "muzzleFlashVariants" : 1,
@@ -243,7 +244,7 @@
             "reload1" : {
                 "duration" : 0.4,
                 "weaponRotation" : -20,
-                "allowFlip" : false,
+                "allowFlip" : true,
                 "armRotation" : -30,
                 "aimAngle" : 0,
                 "weaponOffset" : [-1.2, 0],
@@ -256,9 +257,9 @@
 
             },
             "reload2" : {
-                "duration" : 0.4,
+                "duration" : 0.5,
                 "weaponRotation" : -20,
-                "allowFlip" : false,
+                "allowFlip" : true,
                 "armRotation" : -30,
                 "aimAngle" : 0,
                 "weaponOffset" : [-1.2, 0],
@@ -268,13 +269,13 @@
                 "frontArmFrame" : "swim.4?crop;0;2;43;43",
                 "allowRotate" : false,
                 "twoHanded" : true,
-                "playSounds" : ["reload1"]
+                "playSounds" : []
 
             },
             "reload3" : {
-                "duration" : 0.4,
+                "duration" : 0.6,
                 "weaponRotation" : -20,
-                "allowFlip" : false,
+                "allowFlip" : true,
                 "armRotation" : -30,
                 "aimAngle" : 0,
                 "weaponOffset" : [-1.2, 0],
@@ -284,7 +285,7 @@
                 "frontArmFrame" : "swim.5?crop;0;2;43;43",
                 "allowRotate" : false,
                 "twoHanded" : true,
-                "playSounds" : ["reload1"]
+                "playSounds" : ["reload4"]
             }
         },
 

@@ -28,6 +28,7 @@ function load()
     widget.setText("positionX", property("posOffset")[1]) 
     widget.setText("positionY", property("posOffset")[2])
     widget.setChecked("numberOnly", property("numberOnly"))
+    widget.setChecked("mousePos", property("mousePos"))
 end
 
 function confirm_box()
@@ -57,7 +58,10 @@ end
 
 function button(buttonName)
     if buttonName == "numberOnly" then
-        setProperty("numberOnly", widget.getChecked("numberOnly"))
+        setProperty("numberOnly", widget.getChecked(buttonName))
+    end
+    if buttonName == "mousePos" then
+        setProperty("mousePos", widget.getChecked(buttonName))
     end
 end
 

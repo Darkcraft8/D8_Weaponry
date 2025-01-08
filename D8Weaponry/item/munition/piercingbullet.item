@@ -8,5 +8,9 @@
     "description" : "a piercing bullet",
     "shortdescription" : "Piercing Bullet",
     "itemTags" : ["munition"],
-    "inventoryIcon" : "/projectiles/guns/bullets/piercingbullet/icon.png"
+    "inventoryIcon" : "/projectiles/guns/bullets/piercingbullet/icon.png",
+
+    "projectileType" : "piercingbullet",
+    "projectileCount" : 1,
+    "projectileParameter" : {}
 }

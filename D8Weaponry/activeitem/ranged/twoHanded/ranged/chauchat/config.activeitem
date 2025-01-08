@@ -282,7 +282,10 @@
                 "frontArmFrame" : "rotation?crop;4;0;43;43",
                 "allowRotate" : true,
                 "twoHanded" : true,
-                "backArmFrame" : "rotation?crop;0;0;39;43"
+                "backArmFrame" : "rotation?crop;0;0;39;43",
+                "animationStates" : {
+                    "animation" : "idle"
+                }
             },
             
             "fire" : {
