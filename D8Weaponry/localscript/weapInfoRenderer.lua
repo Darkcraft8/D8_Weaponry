@@ -17,7 +17,7 @@ if type(d8WeaponryUtils) ~= "table" then
     getmetatable('').d8WeaponryUtils = d8WeaponryUtils
 end--For any external Drawable, draw before those of the weapons...
 local d8Weaponry_var = {
-    config = "replaceMe",
+    config = {},
     pixel = 0.125,
     time = 0,
     memoryClearTimer = 0,
@@ -30,8 +30,8 @@ local d8Weaponry_var = {
         }
     },
     d8WeaponryDrawableList = {},
-    weapParam = "replaceMe",
-    weapConf = "replaceMe",
+    weapParam = {},
+    weapConf = {},
     primaryConf = {},
     secondaryConf = {},
     initTimer = 2,
@@ -55,6 +55,10 @@ local d8Weaponry_var = {
 
 function init()
     vanillaInit()
+    if xsb then require "/shared/xStarboundPatch/luaLinking.lua" end
+
+    d8WeaponryUtils[player.uniqueId()] = {}
+    d8WeaponryUtils[player.uniqueId()]["drawableList"] = {}
     d8Weaponry_var.config = root.assetJson("/D8Weaponry.config")
     if player.getProperty("d8Weap") then
         d8Weaponry_var.config = util.mergeTable(d8Weaponry_var.config, player.getProperty("d8Weap")["renderCfg"] or {})
@@ -73,11 +77,12 @@ function init()
         d8Weaponry_var.opacityMax = d8Weaponry_var.config["opacityMax"]
         d8Weaponry_var.opacity = d8Weaponry_var.config["opacityMax"]
     end
-
+    --sb.logInfo("shared %s", shared)
 end
 
 function update(dt)
     vanillaUpdate(dt)
+    if _ENV["xCallbackCheckRequest"] then xCallbackCheckRequest("d8WeapUtils:callback") end
     if d8Weaponry_var.config["customAmmoRenderer"] then
         if d8Weaponry_var.initTimer > 0 then
             d8Weaponry_var.initTimer = d8Weaponry_var.initTimer - 1
@@ -91,8 +96,8 @@ function update(dt)
             end
             d8Weaponry_var.renderIndex = 0
             d8Weaponry_var.rendereredAmount = 0
-            if d8WeaponryUtils.drawableList then
-                for name, drawable in pairs(d8WeaponryUtils.drawableList) do
+            if d8WeaponryUtils[player.uniqueId()]["drawableList"] then
+                for name, drawable in pairs(d8WeaponryUtils[player.uniqueId()]["drawableList"]) do
                     d8weaponry_drawableUpdate(drawable, name, d8Weaponry_var.renderIndex)
                 end
             end
@@ -133,10 +138,12 @@ function update(dt)
                             d8Weaponry_var.memory[index]["ammoText"] = "/assetmissing.png"
                             d8Weaponry_var.memory[index]["barText"] = "/assetmissing.png"
                         end
-                        local size = d8Weaponry_var.barOffset + value.size[2]
-						
-                        d8weaponry_renderBar(0,  -size-(1*(d8Weaponry_var.rendereredAmount)), max, count, index)
-                        d8Weaponry_var.rendereredAmount = d8Weaponry_var.rendereredAmount + 1
+                        if type(value) == "table" then
+                            local size = d8Weaponry_var.barOffset + value.size[2]
+                            
+                            d8weaponry_renderBar(0,  -size-(1*(d8Weaponry_var.rendereredAmount)), max, count, index)
+                            d8Weaponry_var.rendereredAmount = d8Weaponry_var.rendereredAmount + 1
+                        end
                     end
                     if not (player.primaryHandItem() or player.altHandItem()) then
                         if d8Weaponry_var.memoryClearTimer < 0 and type(d8Weaponry_var.weapConf) == "table" then
@@ -185,7 +192,7 @@ end
 function d8weaponry_clearMemory() -- Cleaning Scripts Memory of weapons parameters
     d8Weaponry_var.weapon["parameters"]["d8Weaponry"] = {}
     d8Weaponry_var.memory = {}
-    d8Weaponry_var.weapConf = "replaceMe"
+    d8Weaponry_var.weapConf = {}
 end
 
 function teleportOut()
@@ -773,32 +780,48 @@ function d8weaponry_drawableUpdate(drawable, name, pos)--Way less annoing to han
     end
 end
 
-function d8WeaponryUtils:add(drawable)
-    if type(drawable) ~= "table" then sb.logError("[d8WeaponryUtils:add] Following Drawable isn't a table\n"..sb.printJson(drawable, 1)) return end
-    if not drawable.name then sb.logError("[d8WeaponryUtils:remove] Following Drawable lack a name"..sb.printJson(drawable, 1)) return end
-    d8WeaponryUtils.drawableList[drawable.name] = drawable
+function xCallback(requestCfg)
+    local drawable, Uuid  = requestCfg.drawable, requestCfg.Uuid
+    if requestCfg.callback == "send" then
+        if d8WeaponryUtils.drawableList[drawable.name] then
+            d8WeaponryUtils:update(drawable, Uuid)
+        else
+            d8WeaponryUtils:add(drawable, Uuid)
+        end
+    elseif requestCfg.callback == "remove" then
+        d8WeaponryUtils:remove(drawable, Uuid)
+    end
 end
 
-function d8WeaponryUtils:remove(drawable)
+function d8WeaponryUtils:add(drawable, Uuid)
+    if Uuid ~= player.uniqueId() then return end
+    if type(drawable) ~= "table" then sb.logError("[d8WeaponryUtils:add] Following Drawable isn't a table\n"..sb.printJson(drawable, 1)) return end
+    if not drawable.name then sb.logError("[d8WeaponryUtils:remove] Following Drawable lack a name"..sb.printJson(drawable, 1)) return end
+    d8WeaponryUtils[player.uniqueId()]["drawableList"][drawable.name] = drawable
+end
+
+function d8WeaponryUtils:remove(drawable, Uuid)
+    if Uuid ~= player.uniqueId() then return end
     if type(drawable) == "string" then drawable = {name = drawable} end
     if type(drawable) ~= "table" then sb.logError("[d8WeaponryUtils:remove] Following Drawable isn't a table\n"..sb.printJson(drawable, 1)) return end
     if not drawable.name then sb.logError("[d8WeaponryUtils:remove] Following Drawable lack a name"..sb.printJson(drawable, 1)) return end
     local newList = {}
-    for name, drawable in pairs(d8WeaponryUtils.drawableList) do
+    for name, drawable in pairs(d8WeaponryUtils[player.uniqueId()]["drawableList"]) do
         if name ~= drawable.name then
             newList[name] = drawable
         end
     end
-    d8WeaponryUtils.drawableList = newList
+    d8WeaponryUtils[player.uniqueId()]["drawableList"] = newList
 end
 
-function d8WeaponryUtils:update(drawable)
+function d8WeaponryUtils:update(drawable, Uuid)
+    if Uuid ~= player.uniqueId() then return end
     self:remove(drawable)
     self:add(drawable)
 end
 
-function d8WeaponryUtils:updateCfg()
-    if player.getProperty("d8Weap") then
+function d8WeaponryUtils:updateCfg(Uuid)
+    if player.getProperty("d8Weap") and player.uniqueId() == Uuid then
         d8Weaponry_var.config = util.mergeTable(d8Weaponry_var.config, player.getProperty("d8Weap")["renderCfg"])
         
         d8Weaponry_var.opacityMax = d8Weaponry_var.config["opacityMax"]

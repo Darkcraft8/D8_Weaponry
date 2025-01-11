@@ -8,39 +8,68 @@ function d8WeapItem.init()
     d8WeapItem.magazineCapacity = config.getParameter("magazineCapacity", 1)
     table.insert(updateFunc, "d8WeapItem.update")
     --d8WeapItem.addMunition({item = "d8Weaponry_standardbullet"})
+    if xsb then require "/shared/xStarboundPatch/luaLinking.lua" end
 end
 
 function d8WeapItem.uninit()
-    if d8WeapItem.curMagazine then
-        activeItem.setInstanceValue("curMagazine", d8WeapItem.curMagazine)
-        --sb.logInfo("%s", d8WeapItem.curMagazine)
-    end
-    if d8WeaponryUtils then
-        d8WeaponryUtils:remove("d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
-    end
-end
-
-function d8WeapItem.update(dt, fireMode, isShiftHeld, currentMove)
-    if d8WeaponryUtils then
-        local drawable = d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "test")--d8Weap_buildDrawable_ResourceBar(d8WeapItem.curMunitionAmount(), d8WeapItem.magazineCapacity or 100, "d8WeapItem" .."-".. config.getParameter("shortdescription", "") .."-".. activeItem.hand() , directive)
-        if d8WeaponryUtils.drawableList[drawable.name] then
-            d8WeaponryUtils:update(drawable)
-        else
-            d8WeaponryUtils:add(drawable)
+    if d8WeapItem.curMagazine then activeItem.setInstanceValue("curMagazine", d8WeapItem.curMagazine) end
+    if _ENV["xCallbackSendRequest"] and player then
+        local drawable = d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem" .."-".. config.getParameter("shortdescription", "") .."-".. activeItem.hand())
+        xCallbackSendRequest("d8WeapUtils:callback", {
+            drawable = drawable,
+            Uuid = player.uniqueId(),
+            callback = "remove"
+        })
+    else
+        if d8WeaponryUtils and player then
+            d8WeaponryUtils:remove("d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand(), player.uniqueId())
         end
     end
 end
 
+function d8WeapItem.update(dt, fireMode, isShiftHeld, currentMove)
+    if player then
+        local updateToolTip = function(curMagazine)
+            local tooltipFields = config.getParameter("tooltipFields", {})
+            local newImage = d8Weap_Magazine_Image(curMagazine or {})
+            if newImage ~= tooltipFields.magazineImage then
+                tooltipFields.magazineImage = newImage
+                activeItem.setInstanceValue("tooltipFields", tooltipFields)
+            end
+        end
+        updateToolTip(d8WeapItem.curMagazine)
+    end
+
+    if _ENV["xCallbackSendRequest"] and player then
+        local drawable = d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem" .."-".. config.getParameter("shortdescription", "") .."-".. activeItem.hand())
+        xCallbackSendRequest("d8WeapUtils:callback", {
+            drawable = drawable,
+            Uuid = player.uniqueId(),
+            callback = "send"
+        })
+    else
+        if d8WeaponryUtils and player then
+            local drawable = d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem" .."-".. config.getParameter("shortdescription", "") .."-".. activeItem.hand())
+            if d8WeaponryUtils.drawableList[drawable.name] then
+                d8WeaponryUtils:update(drawable, player.uniqueId())
+            else
+                d8WeaponryUtils:add(drawable, player.uniqueId())
+            end
+        end
+    end
+
+end
+
 function d8WeapItem.consumeMag()
     if world.entityType(activeItem.ownerEntityId()) ~= "player" then return true end
-    if player.isAdmin() then return true end
+    if (player.isAdmin() or config.getParameter("admin")) then return true end
     --sb.logInfo("%s", Weapon.canConsumeItem(d8WeapItem.magazine))
     if Weapon.canConsumeItem(d8WeapItem.magazine) then return Weapon.consumeItem(d8WeapItem.magazine) else return false end
 end
 
 function d8WeapItem.canConsumeMag()
     if world.entityType(activeItem.ownerEntityId()) ~= "player" then return true end
-    if player.isAdmin() then return true end
+    if (player.isAdmin() or config.getParameter("admin")) then return true end
     return Weapon.canConsumeItem(d8WeapItem.magazine)
 end
 
@@ -78,6 +107,7 @@ end
 function d8WeapItem.refillCurMag()
     --sb.logInfo("%s", d8WeapItem.curMagazine)
     d8WeapItem.curMagazine = copy(d8WeapItem.magazine)
+    activeItem.setInstanceValue("curMagazine", d8WeapItem.curMagazine)
     --sb.logInfo("%s", d8WeapItem.curMagazine)
 end
 
@@ -98,6 +128,7 @@ function d8WeapItem.addMunition(args)
         end
         table.insert(d8WeapItem.curMagazine, 1, munitionCfg)
     end
+    activeItem.setInstanceValue("curMagazine", d8WeapItem.curMagazine)
 end
 
 function d8WeapItem.consumeMunition()
@@ -119,6 +150,7 @@ function d8WeapItem.consumeMunition()
         end
         d8WeapItem.curMagazine = newMagazine
     end
+    activeItem.setInstanceValue("curMagazine", d8WeapItem.curMagazine)
 end
 
 function d8WeapItem.hasMunitionLoaded()

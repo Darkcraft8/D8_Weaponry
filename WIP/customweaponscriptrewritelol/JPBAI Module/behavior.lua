@@ -75,8 +75,10 @@ function behaviorUpdate(dt, fireMode, isShiftHeld, currentMove)
                 if k == "hasLineOfSight" then if useBehav then useBehav = not check_raycastToSpawnPos(v) checkResult.hasLineOfSight = useBehav end end
             end
             if p.cooldown then if useBehav then useBehav = check_Cooldown(behavior) end end
-            --sb.logInfo("%s", behavior)
-            --sb.logInfo("%s", checkResult)
+            if config.getParameter("debug") then 
+                sb.logInfo("behavior %s", behavior)
+                sb.logInfo("checkResult %s", checkResult)
+            end
             if useBehav == true then
                 if p.cooldown then self.behaviorCooldown[behavior] = p.cooldown end
                 setBehavior(behavior)
@@ -136,42 +138,6 @@ function behaviorTimer(list, operation) -- increase or decrease value of time, m
     end
 end
 
--- Events
-function behavior_hitbox()
-end
-function behavior_monster(event)
-    local monsterCfg = event.parameter or {}
-    if event.level then 
-        monsterCfg.level = event.level
-    else 
-        monsterCfg.level = 1
-        if event.scalingFunction then -- Prepare Scaling based on weapon stat or scaling function
-            monsterCfg.level = call({callback = event.scalingFunction, args = event})
-        elseif Weapon then
-            monsterCfg.level = Weapon.level
-        end
-    end
-    local pos = spawnPosition(event)
-    
-    local status, message = pcall(world.spawnMonster(event.type, pos, monsterCfg))
-    --sb.logInfo("%s", pos) sb.logInfo("%s", event.type) sb.logInfo("%s", monsterCfg)
-    --sb.logInfo("spawnMonster | %s, %s", status, message)
-    if not message then sb.logError("monster | %s", message) end
-end
-
-function behavior_projectile(event)
-    local projectileCfg = event.parameter or {}
-    local pos = spawnPosition(event)
-    local direction = aimVector(event.inaccuracy or 0)
-    if event.scalingFunction or Weapon then -- Prepare Scaling based on weapon stat or scaling function
-        local callback = call({callback = event.scalingFunction or "Weapon.basicDamage", args = event})
-        projectileCfg.power = callback
-        projectileCfg.powerMultiplier = activeItem.ownerPowerMultiplier()
-    end
-    for i = 1, (event.count or 1) do
-        local projectileId = world.spawnProjectile(event.type, pos, activeItem.ownerEntityId(), direction, event.posRelativeToOwner, projectileCfg)
-    end
-end
 -- Callback
 function inflictedDamage(notifications)
     --sb.logInfo("damageDealt %s", notifications)

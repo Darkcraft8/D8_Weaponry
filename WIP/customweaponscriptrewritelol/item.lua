@@ -15,7 +15,8 @@ updateFunc = { -- just so that incase a script need to
     "updateStance"
 }
 uninitFunc = {
-    "uninitBehavior"
+    "uninitBehavior",
+    "uninitStance"
 }
 
 require "/WIP/customweaponscriptrewritelol/JPBAI Module/behavior.lua"
@@ -107,7 +108,7 @@ function configInit()
         end
     end
     config = customConfig
-    --sb.logInfo("Config Override Initialisation Done\nconfig.rootParameter | Vanilla getParameter\nconfig.getParameter  | getParameter from a list that can get updated using setParameter\nconfig.setParameter  | set parameter in the list to the wanted value, will also recursively create array when/if needed")
+    --sb.logInfo("Config Override Initialisation Done\nconfig.rootParameter | Vanilla getParameter\nconfig.getParameter  | getParameter from a list that can get updated using setParameter")
 end
 
 function segmentPath(path)

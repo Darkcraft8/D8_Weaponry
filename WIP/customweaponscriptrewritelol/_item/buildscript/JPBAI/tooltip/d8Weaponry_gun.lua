@@ -1,3 +1,5 @@
+require("/WIP/customweaponscriptrewritelol/_item/d8Weap/localRenderUtil.lua")
+
 function tooltip(config, parameters)
     configParameter = function(keyName, defaultValue)
         if parameters[keyName] ~= nil then
@@ -41,9 +43,11 @@ function tooltip(config, parameters)
     config.tooltipFields.damagePerShotLabel = "~"..util.round(damageValue)
 
     local reloadTime = stanceDuration(configParameter("behaviors", {})["reload"]["stance"])
-    config.tooltipFields.energyPerShotTitleLabel = string.format("Reload: ~%s", reloadTime)
+    config.tooltipFields.energyPerShotTitleLabel = "Reload:"
+    config.tooltipFields.energyPerShotLabel = string.format("~%s", reloadTime)
     local fireTime = stanceDuration(configParameter("behaviors", {})["fire"]["stance"])
     config.tooltipFields.speedLabel = tostring(fireTime)
+    config.tooltipFields.magazineImage = d8Weap_Magazine_Image(configParameter("curMagazine", {}))
 end
 
 function stanceDuration(stanceName)

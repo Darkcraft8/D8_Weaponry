@@ -71,8 +71,7 @@ function setProperty(propertyName, propertyValue)
     local cfg = player.getProperty("d8Weap")
     cfg["renderCfg"][propertyName] = propertyValue
     player.setProperty("d8Weap", cfg)
-
-    d8WeaponryUtils:updateCfg()
+    d8WeaponryUtils:updateCfg(player.uniqueId())
 end
 
 function property(propertyName)

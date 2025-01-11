@@ -67,7 +67,7 @@
   },
   "handednessLabel" : {
     "type" : "label",
-    "position" : [62, 173],
+    "position" : [61, 173],
     "hAnchor" : "right",
     "centered" : true,
     "wrapWidth" : 126
@@ -96,6 +96,11 @@
     "minSize" : [60, 60]
   },
 
+  "magazineImage" : {
+    "type" : "image",
+    "position" : [71, 118.5],
+    "file" : ""
+  },
   "ammo1NameLabel" : {
     "type" : "label",
     "position" : [71, 173],

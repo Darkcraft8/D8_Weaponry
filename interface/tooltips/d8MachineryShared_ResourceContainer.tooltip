@@ -39,6 +39,12 @@
     "wrapWidth" : 175
   },
 
+  "magazineImage" : {
+    "type" : "image",
+    "position" : [71, 93.5],
+    "file" : ""
+  },
+
   "resource1NameLabel" : {
     "type" : "label",
     "position" : [70, 134],

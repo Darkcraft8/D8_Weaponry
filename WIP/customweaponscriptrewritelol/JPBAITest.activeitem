@@ -36,5 +36,14 @@
             "stance" : "idle",
             "possibleOutcome" : []
         }
+    },
+
+    "builder" : "/WIP/customweaponscriptrewritelol/_item/buildscript/JPBAI/behaviorBuild.lua",
+    "buildConfig" : {
+        "behavior" : {
+            "gunFire" : "primary"
+        },
+        "inaccuracy" : 1,
+        "fireOffset" : [1, 1]
     }
 }

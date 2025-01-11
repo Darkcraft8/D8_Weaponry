@@ -17,13 +17,20 @@ function build(directory, config, parameters, level, seed)
         parameters.level = (level or configParameter("level", 1))
     end
 
+    if configParameter("buildConfig") then 
+        for behaviorName, fireType in pairs(configParameter("buildConfig")["behavior"]) do 
+            setupBehavior(config, parameters, behaviorName, fireType)
+        end
+    end
+
     local elementalType = configParameter("elementalType", "physical")
     replacePatternInData(config, nil, "<elementalType>", elementalType)
-
-    if configParameter("tooltipKind", "base") ~= "base" then
+    local tooltipList = root.assetJson("/WIP/customweaponscriptrewritelol/_item/buildscript/JPBAI/tooltip/tooltipList.config")
+    if tooltipList[configParameter("tooltipKind", "base")] then
         config.tooltipFields = config.tooltipFields or {}
-        -- Yup this mean you can add func to build tooltip simply by adding one to the tooltip folder next to this script
-        require("/WIP/customweaponscriptrewritelol/_item/buildscript/JPBAI/tooltip/" .. config.tooltipKind .. ".lua")
+        -- Yup this mean you can add func to build tooltip simply by adding it name and path to the toolTipList
+        local tooltipLib = tooltipList[configParameter("tooltipKind", "base")]
+        require(tooltipLib)
         if _ENV.tooltip then tooltip(config, parameters) end
     end
 

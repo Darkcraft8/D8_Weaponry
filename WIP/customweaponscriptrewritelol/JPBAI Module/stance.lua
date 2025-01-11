@@ -26,12 +26,15 @@ function setStance(stanceName) -- replace and expend on the old version in stanc
     if not self.lightFlash then
         self.lightFlash = {}
         self.lightFlashprogress = {}
+        self.lightFlashDuration = {}
     end
-    for lightName, boolean in pairs(self.stance.lightFlash or {}) do
-        animator.setLightActive(lightName, boolean)
+    for lightName, value in pairs(self.stance.lightFlash or {}) do
+        animator.setLightActive(lightName, true)
 
         self.lightFlash[lightName] = getLightColor(lightName)
         self.lightFlashprogress[lightName] = 0
+        self.lightFlashDuration[lightName] = 10
+        if type(value) == "number" then self.lightFlashDuration[lightName] = value end
     end
     for group, transform in pairs(self.stance.transformations or {}) do
         animator.resetTransformationGroup(group)
@@ -64,8 +67,11 @@ function setStance(stanceName) -- replace and expend on the old version in stanc
     if self.stance.backArmFrame ~= nil then activeItem.setBackArmFrame(self.stance.backArmFrame) end
     if self.stance.holdingItem ~= nil then activeItem.setHoldingItem(self.stance.holdingItem) end
     if self.stance.twoHanded ~= nil then activeItem.setTwoHandedGrip(self.stance.twoHanded) end
-    
+
     updateAim(self.stance.allowRotate, self.stance.allowFlip)
+    if self.stance.invertDirection then
+        activeItem.setFacingDirection(-1 * (self.aimDirection or 0))
+    end
 end
 
 function updateStance(dt) -- added updateAim in so that rotation and flip get updated
@@ -88,15 +94,20 @@ function updateStance(dt) -- added updateAim in so that rotation and flip get up
                 if transform.velocity.scale then animator.scaleTransformationGroup(group, transform.velocity.scale * dt) end
             end
         end
+        if self.stance.invertDirection then
+            activeItem.setFacingDirection(-1 * (self.aimDirection or 0))
+        end
     end
 
-    for lightName, boolean in pairs(self.lightFlash or {}) do
-        self.lightFlash[lightName] = interpColor(self.lightFlashprogress[lightName], self.lightFlash[lightName], {0, 0, 0})
-        self.lightFlashprogress[lightName] = math.min(1.0, self.lightFlashprogress[lightName] + (dt / 5))
-        animator.setLightColor(lightName, self.lightFlash[lightName])
-        if self.lightFlashprogress[lightName] >= 1 then
-            animator.setLightActive(lightName, false)
-            animator.setLightColor(lightName, getLightColor(lightName))
+    for lightName, _ in pairs(self.lightFlash or {}) do
+        if self.lightFlashprogress[lightName] < 1 then
+            self.lightFlash[lightName] = interpColor(self.lightFlashprogress[lightName], self.lightFlash[lightName], {0, 0, 0})
+            self.lightFlashprogress[lightName] = math.min(1.0, self.lightFlashprogress[lightName] + (dt / self.lightFlashDuration[lightName]))
+            animator.setLightColor(lightName, self.lightFlash[lightName])
+            if self.lightFlashprogress[lightName] >= 1 then
+                animator.setLightActive(lightName, false)
+                animator.setLightColor(lightName, getLightColor(lightName))
+            end
         end
     end
 
@@ -162,6 +173,13 @@ function lerpStance(dt)
     end)
 end
 
+function uninitStance()
+    for lightName, _ in pairs(self.lightFlash or {}) do-- reset light state and color
+        animator.setLightActive(lightName, getLightState(lightName))
+        animator.setLightColor(lightName, getLightColor(lightName))
+    end
+end
+
 function interpColor(ratio, a, b)
     local color = {0,0,0}
     color[1] = interp.linear(ratio, a[1], b[1])
@@ -169,8 +187,50 @@ function interpColor(ratio, a, b)
     color[3] = interp.linear(ratio, a[3], b[3])
     return color
 end
+function getLightState(lightName)
+    local animationFile = config.getParameter("animation") 
+    if type(animationFile) == "string" then animationFile = root.assetJson(config.getParameter("animation")) end
+    local itemCfg = root.itemConfig(item.descriptor())
+    local state = false
+    if animationFile["lights"] then
+        if animationFile["lights"] then
+            if animationFile["lights"][lightName] then
+                if animationFile["lights"][lightName]["active"] ~= nil then 
+                    state = animationFile["lights"][lightName]["active"]
+                else
+                    state = false
+                end
+            end
+        end
+    end
+    if itemCfg["config"]["animationCustom"] then
+        if itemCfg["config"]["animationCustom"]["lights"] then
+            if itemCfg["config"]["animationCustom"]["lights"][lightName] then
+                if itemCfg["config"]["animationCustom"]["lights"][lightName]["active"] ~= nil then
+                    state = itemCfg["config"]["animationCustom"]["lights"][lightName]["active"]
+                else
+                    state = false
+                end
+            end
+        end
+    end
+    if itemCfg["parameters"]["animationCustom"] then
+        if itemCfg["parameters"]["animationCustom"]["lights"] then
+            if itemCfg["parameters"]["animationCustom"]["lights"][lightName] then
+                if itemCfg["parameters"]["animationCustom"]["lights"][lightName]["active"] ~= nil then
+                    state = itemCfg["parameters"]["animationCustom"]["lights"][lightName]["active"]
+                else
+                    state = false
+                end
+            end
+        end
+    end
+    return state
+end
+
 function getLightColor(lightName)
-    local animationFile = root.assetJson(config.getParameter("animation"))
+    local animationFile = config.getParameter("animation") 
+    if type(animationFile) == "string" then animationFile = root.assetJson(config.getParameter("animation")) end
     local itemCfg = root.itemConfig(item.descriptor())
     local color = {255, 255, 255}
     if animationFile["lights"] then
