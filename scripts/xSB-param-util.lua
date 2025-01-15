@@ -1,4 +1,5 @@
--- Thanks Fezzed for helping me patch my lua codes
+-- Thanks Fezzed for helping me patch my lua codes so that xSb client can see the ammo renderer on JPBAI Weapon's and allow the config pane to
+-- tell the renderer to update it current user config
 
 -- The line bellow where writen by fezzed
 -- Use this instead of table.pack when sending parameters through messages or global variables in xStarbound.

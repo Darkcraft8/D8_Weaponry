@@ -16,3 +16,4 @@ self explanatory
 event for when a hitbox collide with something
 
 * eventOnStance
+when the stance is initiated the events will be triggered

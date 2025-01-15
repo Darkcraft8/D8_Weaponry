@@ -51,16 +51,16 @@ function tooltip(config, parameters)
 end
 
 function stanceDuration(stanceName)
-    local reloadTime = 0
+    local time = 0
     local stanceName = stanceName
     local stances = configParameter("stances", {})
-    if not stanceName then return reloadTime end
-    reloadTime = reloadTime + stances[stanceName]["duration"]
+    if not stanceName then return time end
+    time = time + stances[stanceName]["duration"]
     while stances[stanceName]["transition"] do
         stanceName = stances[stanceName]["transition"]
-        if stances[stanceName]["transition"] then reloadTime = reloadTime + stances[stanceName]["duration"] end
+        if stances[stanceName]["transition"] then time = time + stances[stanceName]["duration"] end
     end
-    return reloadTime
+    return time
 end
 
 function damageScaling(args)

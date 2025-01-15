@@ -1,7 +1,11 @@
 {
     "d8Weap_JPBAI" : [
-        "/spawnitem JPBAITest 1",
-        "/spawnitem d8Weaponry_JPBAI_chauchat 1"
+        "giving exemple JBPAI",
+        "/spawnitem d8Weap_Exemple_CoreEdge 1",
+        "/spawnitem d8Weaponry_JPBAI_chauchat 1",
+        "/spawnitem d8Weaponry_JPBAI_glock 1",
+
+        "/spawnitem d8Weaponry_standardbullet 5000"
     ],
     
     "d8Weap_giveAll" : [

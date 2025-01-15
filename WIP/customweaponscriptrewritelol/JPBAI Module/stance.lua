@@ -4,6 +4,11 @@ require "/scripts/interp.lua"
 -- i will put here any stance specific function that i need to create
 local oldSetStance = setStance
 local oldUpdateStance = updateStance
+local oldInitStances = initStances
+function initStances()
+    oldInitStances()
+    table.insert(updateFunc, "updateStance")
+end
 
 function setStance(stanceName) -- replace and expend on the old version in stances.lua
     self.stanceName = stanceName
@@ -42,6 +47,7 @@ function setStance(stanceName) -- replace and expend on the old version in stanc
         if transform.translate then animator.translateTransformationGroup(group, transform.translate) end
         if transform.rotate then animator.rotateTransformationGroup(group, util.toRadians(transform.rotate), rotationCenter) end
         if transform.scale then animator.scaleTransformationGroup(group, transform.scale) end
+        
     end
 
     if type(self.stance.armRotation) == "table" then
@@ -85,18 +91,16 @@ function updateStance(dt) -- added updateAim in so that rotation and flip get up
         end
     else
         if self.stance.armAngularVelocity ~= nil then self.armRotation = self.armRotation + self.stance.armAngularVelocity end
+        if sb.printJson(self.stance.transformations or {}) ~= "{}" then end
         for group, transform in pairs(self.stance.transformations or {}) do
             if transform.velocity then
                 local rotationCenter = transform.rotationCenter or {0, 0}
-        
                 if transform.velocity.translate then animator.translateTransformationGroup(group, vec2.mul(transform.velocity.translate, dt)) end
                 if transform.velocity.rotate then animator.rotateTransformationGroup(group, util.toRadians((transform.velocity.rotate * dt)), rotationCenter) end
                 if transform.velocity.scale then animator.scaleTransformationGroup(group, transform.velocity.scale * dt) end
             end
         end
-        if self.stance.invertDirection then
-            activeItem.setFacingDirection(-1 * (self.aimDirection or 0))
-        end
+        if self.stance.invertDirection then activeItem.setFacingDirection(-1 * (self.aimDirection or 0)) end
     end
 
     for lightName, _ in pairs(self.lightFlash or {}) do
@@ -134,6 +138,8 @@ function lerpStance(dt)
     local progress = 0
     local from = self.stance
     local to = self.stances[from['transition']]
+    local fromAimAngle = self.aimAngle or 0
+    local armProgress, aimProgress, armAngle
 
     util.wait(from.duration or 0.25, function(dt)
         for group, transform in pairs(from.transformations or {}) do
@@ -162,15 +168,36 @@ function lerpStance(dt)
                 if transform.scale then animator.scaleTransformationGroup(group, scale) end
             end
         end
-        self.armRotation = util.toRadians(interp.linear(progress, from.armRotation or 0, to.armRotation or 0) )
-        self.armRotation = self.armRotation + self.aimAngle
-        activeItem.setArmAngle(self.armRotation)
+        
+        local aimAngle = activeItem.aimAngleAndDirection(self.fireOffset[2], activeItem.ownerAimPosition())
+        armAngle = 0
+        armProgress = util.toRadians(interp.linear(progress, from.armRotation or 0, to.armRotation or 0) )
+        aimProgress = interp.linear(progress, fromAimAngle, aimAngle or 0)
+        
+        if (from.allowRotate and to.allowRotate) or to.allowRotate then
+            armAngle = aimProgress + armProgress
+        elseif from.allowRotate then
+            armAngle = interp.linear(progress, fromAimAngle + util.toRadians(from.armRotation), 0 + util.toRadians(to.armRotation) )
+        else
+            armAngle = armProgress
+        end
+        activeItem.setArmAngle(armAngle)
         if progress > 0.5 then 
             if to.frontArmFrame ~= nil then activeItem.setFrontArmFrame(to.frontArmFrame) end
             if to.backArmFrame ~= nil then activeItem.setBackArmFrame(to.backArmFrame) end
+            if to.invertDirection then
+                activeItem.setFacingDirection(-1 * (self.aimDirection or 0))
+            end
         end
         progress = math.min(1.0, progress + (dt / from.duration))
     end)
+    self.armRotation = to.armRotation or 0
+    if tostring.resetAim then
+        self.aimAngle = 0
+    elseif to.aimAngle then
+        self.aimAngle = to.aimAngle
+    end
+    updateAim(to.allowRotate, to.allowFlip)
 end
 
 function uninitStance()
@@ -187,38 +214,14 @@ function interpColor(ratio, a, b)
     color[3] = interp.linear(ratio, a[3], b[3])
     return color
 end
+
 function getLightState(lightName)
-    local animationFile = config.getParameter("animation") 
-    if type(animationFile) == "string" then animationFile = root.assetJson(config.getParameter("animation")) end
-    local itemCfg = root.itemConfig(item.descriptor())
     local state = false
-    if animationFile["lights"] then
-        if animationFile["lights"] then
-            if animationFile["lights"][lightName] then
-                if animationFile["lights"][lightName]["active"] ~= nil then 
-                    state = animationFile["lights"][lightName]["active"]
-                else
-                    state = false
-                end
-            end
-        end
-    end
-    if itemCfg["config"]["animationCustom"] then
-        if itemCfg["config"]["animationCustom"]["lights"] then
-            if itemCfg["config"]["animationCustom"]["lights"][lightName] then
-                if itemCfg["config"]["animationCustom"]["lights"][lightName]["active"] ~= nil then
-                    state = itemCfg["config"]["animationCustom"]["lights"][lightName]["active"]
-                else
-                    state = false
-                end
-            end
-        end
-    end
-    if itemCfg["parameters"]["animationCustom"] then
-        if itemCfg["parameters"]["animationCustom"]["lights"] then
-            if itemCfg["parameters"]["animationCustom"]["lights"][lightName] then
-                if itemCfg["parameters"]["animationCustom"]["lights"][lightName]["active"] ~= nil then
-                    state = itemCfg["parameters"]["animationCustom"]["lights"][lightName]["active"]
+    if self.animationCfg["lights"] then
+        if self.animationCfg["lights"] then
+            if self.animationCfg["lights"][lightName] then
+                if self.animationCfg["lights"][lightName]["active"] ~= nil then 
+                    state = self.animationCfg["lights"][lightName]["active"]
                 else
                     state = false
                 end
@@ -229,33 +232,12 @@ function getLightState(lightName)
 end
 
 function getLightColor(lightName)
-    local animationFile = config.getParameter("animation") 
-    if type(animationFile) == "string" then animationFile = root.assetJson(config.getParameter("animation")) end
-    local itemCfg = root.itemConfig(item.descriptor())
     local color = {255, 255, 255}
-    if animationFile["lights"] then
-        if animationFile["lights"] then
-            if animationFile["lights"][lightName] then
-                if animationFile["lights"][lightName]["color"] then 
-                    color = animationFile["lights"][lightName]["color"]
-                end
-            end
-        end
-    end
-    if itemCfg["config"]["animationCustom"] then
-        if itemCfg["config"]["animationCustom"]["lights"] then
-            if itemCfg["config"]["animationCustom"]["lights"][lightName] then
-                if itemCfg["config"]["animationCustom"]["lights"][lightName]["color"] then
-                    color = itemCfg["config"]["animationCustom"]["lights"][lightName]["color"]
-                end
-            end
-        end
-    end
-    if itemCfg["parameters"]["animationCustom"] then
-        if itemCfg["parameters"]["animationCustom"]["lights"] then
-            if itemCfg["parameters"]["animationCustom"]["lights"][lightName] then
-                if itemCfg["parameters"]["animationCustom"]["lights"][lightName]["color"] then
-                    color = itemCfg["parameters"]["animationCustom"]["lights"][lightName]["color"]
+    if self.animationCfg["lights"] then
+        if self.animationCfg["lights"] then
+            if self.animationCfg["lights"][lightName] then
+                if self.animationCfg["lights"][lightName]["color"] then 
+                    color = self.animationCfg["lights"][lightName]["color"]
                 end
             end
         end

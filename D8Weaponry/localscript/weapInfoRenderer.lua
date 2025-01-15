@@ -781,7 +781,7 @@ function d8weaponry_drawableUpdate(drawable, name, pos)--Way less annoing to han
 end
 
 function xCallback(requestCfg)
-    local drawable, Uuid  = requestCfg.drawable, requestCfg.Uuid
+    local drawable, Uuid = requestCfg.drawable, requestCfg.Uuid
     if requestCfg.callback == "send" then
         if d8WeaponryUtils.drawableList[drawable.name] then
             d8WeaponryUtils:update(drawable, Uuid)
@@ -790,6 +790,8 @@ function xCallback(requestCfg)
         end
     elseif requestCfg.callback == "remove" then
         d8WeaponryUtils:remove(drawable, Uuid)
+    elseif requestCfg.callback == "updateCfg" then
+        d8WeaponryUtils:updateCfg(Uuid)
     end
 end
 

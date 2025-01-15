@@ -22,10 +22,12 @@ idea for next updates :
 --> Grenade Launcher
 --> Basicaly more weapons
 
--+> Weapons Quality/Level Upgrade
 -+> Weapons Attachment through new bench or item that open a pane to change attachment
 --> New Bow
---> Crossbows... just disguising a gun should be enough
+
+++> Blessed Munition Can of St'Antioche
+desc : "BLESSED BE THE MUNITION CANS OF ANTIOCHE AND MAY THE LIGHT BE MUZZLEFLASH."
+effect : "https://youtu.be/zIViU1cVtHg?si=57AmVe1yxe3aYIdp"
 
 Survival Horror Missions idea :
 

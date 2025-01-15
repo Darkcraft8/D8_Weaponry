@@ -94,16 +94,16 @@ end
 -----------------------------------------------------------------------------------
 -- Events
 function behavior_hitbox(event) -- todo
-    local poly = animator.partPoly(event.partName, event.polyName or "hitbox")
+    local hitboxInfo = event.hitbox or {}
+    local poly = animator.partPoly(hitboxInfo.partName, hitboxInfo.polyName or "damageArea")
     local damageLine, damagePoly
-    local knockback = event.knockback
-    local damage = event.baseDamage
-    
+    local knockback = event.knockback or 0
+    local damage = event.baseDamage or 0
+    if not poly then sb.logError("behavior_hitbox | poly not found for %s : %s", hitboxInfo.partName, hitboxInfo.polyName) return end
     if #poly == 2 then damageLine = poly else damagePoly = poly end
     if (event.damageScalingFunction or Weapon) and damage then damage = call({callback = event.damageScalingFunction or "Weapon.basicDamage", args = event}) end    
-    if knockback and event.directionalKnockback then knockback = knockbackMomentum(knockback, event.knockbackMode, self.aimAngle, self.aimDirection) end
-
-    activeItem.setDamageSources({
+    if knockback and event.directionalKnockback then knockback = knockbackMomentum(knockback, event.knockbackMode, self.aimAngle or 0, self.aimDirection or 0) end
+    local damageSource = {
         poly = damagePoly,
         line = damageLine,
         damage = damage,
@@ -116,7 +116,11 @@ function behavior_hitbox(event) -- todo
         rayCheck = true,
         damageRepeatGroup = damageRepeatGroup(event.timeoutGroup),
         damageRepeatTimeout = event.timeout or 0.1
-    })
+    }
+    if not self.damageSources then self.damageSources = {} end
+    if not self.damageSourcesTimer then self.damageSourcesTimer = {} end
+    self.damageSources[behaviorName] = damageSource
+    self.damageSourcesTimer[behaviorName] = event.duration or event.timeout or 0.1
 end
 
 function behavior_monster(event)
@@ -156,6 +160,10 @@ end
 function behaviorEx.velocity(event)
 
 end
+
+function behaviorEx.setBehavior(event) -- used to force a behavior change for things that require it ex: a parry that change the next few attack when succesfull
+    setBehavior(event.behaviorName)
+end
 -----------------------------------------------------------------------------------
 
 -- Weapon.Lua Func
@@ -180,3 +188,20 @@ function knockbackMomentum(knockback, knockbackMode, aimAngle, aimDirection)
     end
     return knockback
 end
+
+-----------------------------------------------------------------------------------
+-- Math
+function damageMath() end -- Todo 
+
+-----------------------------------------------------------------------------------
+-- damageArea Handler
+
+function behaviorEx.damageAreaUpdate(dt)
+    local effectiveSources = {}
+    for name, timer in pairs(self.damageSourcesTimer or {}) do 
+        if timer > 0 then self.damageSourcesTimer[name] = timer - dt end
+        if timer <= 0 then self.damageSourcesTimer[name] = nil self.damageSources[name] = nil else table.insert(effectiveSources, self.damageSources[name]) end
+    end
+    activeItem.setItemDamageSources(effectiveSources or {})
+end
+-----------------------------------------------------------------------------------

@@ -1,8 +1,10 @@
 function initBehavior()
     self.behaviors = config.getParameter("behaviors", {})
     self.behavior = {}
+    self.behaviorEvents = config.getParameter("behaviorEvents", {}) -- event can be placed in this table to be directly referred to instead of copying in each behavior
     self.behaviorCooldown = {}
     self.behaviorTime = {}
+    self.behaviorCurrentTime = {}
     self.behaviorPeriodicEventTimer = {}
     self.behaviorPeriodicEventLock = {}
     self.initBehavior = config.getParameter("initBehavior", "idle")
@@ -11,9 +13,19 @@ function initBehavior()
     self.inflictedDamage_Listener = damageListener("inflictedDamage", inflictedDamage)
     self.inflictedHits_Listener = damageListener("inflictedHits", inflictedHits)
     self.damageTaken_Listener = damageListener("damageTaken", damageTaken)
+    table.insert(updateFunc, "behaviorUpdate")
+    table.insert(updateFunc, "behaviorEx.damageAreaUpdate")
+    
 end
-
-function behaviorUpdate(dt, fireMode, isShiftHeld, currentMove)
+behaviorName = ""
+local behavCheck = false
+local behavCheckTimer = 0
+local lastPlayerInput = {
+    fireMode = "none",
+    isShiftHeld = false,
+    currentMove = nil
+}
+function behaviorUpdate(dt, fireMode, isShiftHeld, currentMove) -- find a way to lower the amount of time we check for possible outcome
     self.inflictedDamage_Listener:update()
     self.inflictedHits_Listener:update()
     self.damageTaken_Listener:update()
@@ -45,57 +57,114 @@ function behaviorUpdate(dt, fireMode, isShiftHeld, currentMove)
         end
     end
     behaviorTimer(self.behaviorCooldown, "decrease")
-    behaviorTimer(self.behaviorTime, "increase")
+    behaviorTimer(self.behaviorCurrentTime, "increase", self.behaviorTime)
     behaviorTimer(self.behaviorPeriodicEventTimer, "increase")
-    if self.behavior["possibleOutcome"] then
-        for i, p in ipairs(self.behavior["possibleOutcome"]) do
-            local useBehav = true
-            local behavior = p.behavior
-            local checkResult = {}
-            for k, v in pairs(p.require) do
-                if k == "fireMode" then if useBehav then useBehav = (v == fireMode) checkResult.fireMode = useBehav end end
-                if k == "time" then 
-                    if self.behaviorTime[behavior] then
-                        if useBehav then useBehav = (self.behaviorTime[behavior] > v) end
-                    else
-                        self.behaviorTime[behavior] = dt
-                        useBehav = false
+    local checkPossibleOutcome = coroutine.create(function(dt, fireMode, isShiftHeld, currentMove)
+        if self.behavior["possibleOutcome"] then 
+            for i, p in ipairs(self.behavior["possibleOutcome"]) do
+                local useBehav = true
+                local behavior = p.behavior
+                local checkResult = {}
+                if config.getParameter("debug") then sb.logInfo("--[ behavior %s", behavior) end
+                for k, v in pairs(p.require) do
+                    if k == "fireMode" then
+                        if config.getParameter("debug") then sb.logInfo("fireMode %s", useBehav) end
+                        if useBehav then 
+                            useBehav = (v == fireMode)
+                        end 
                     end
-                    checkResult.time = useBehav
-                end
-                if k == "move" then if useBehav then useBehav = check_Move(currentMove, v, behavior) checkResult.move = useBehav end end
-                if k == "shift" then if useBehav then useBehav = (v == isShiftHeld) checkResult.shift = useBehav end end
-                if k == "stance" then if useBehav then useBehav = (v == self.stanceName) checkResult.stance = useBehav end end
-                if k == "function" then if useBehav then useBehav = not (not check_Function(v)) checkResult.functions = useBehav end end -- For use with extra scripts ex: custom function that check if a specific parameters is at a specific value while some boolean are true
-                
-                if k == "exactParam" then if useBehav then useBehav = check_ExactParam(v) checkResult.exactParam = useBehav end end
-                if k == "greaterParam" then if useBehav then useBehav = check_GreaterParam(v) checkResult.greaterParam = useBehav end end
-                if k == "lowerParam" then if useBehav then useBehav = check_LowerParam(v) checkResult.lowerParam = useBehav end end
+                    if k == "time" then 
+                        if self.behaviorCurrentTime[behavior] then
+                            if useBehav then useBehav = (self.behaviorCurrentTime[behavior] > v) end
+                        else
+                            self.behaviorTime[behavior] = v
+                            self.behaviorCurrentTime[behavior] = dt
 
-                if k == "hasLineOfSight" then if useBehav then useBehav = not check_raycastToSpawnPos(v) checkResult.hasLineOfSight = useBehav end end
+                            useBehav = false
+                        end
+                        if config.getParameter("debug") then sb.logInfo("time %s", time) end
+                    end
+                    if k == "move" then
+                        local individialCheckResult 
+                        if useBehav then useBehav, individialCheckResult = check_Move(currentMove, v, behavior) end 
+                        if config.getParameter("debug") then sb.logInfo("move %s", individialCheckResult) end
+                    end
+                    if k == "shift" then 
+                        if useBehav then useBehav = (v == isShiftHeld) end 
+                        if config.getParameter("debug") then sb.logInfo("shift %s", useBehav) end 
+                    end
+                    if k == "stance" then
+                        if useBehav then useBehav = (v == self.stanceName) end 
+                        if config.getParameter("debug") then sb.logInfo("stance %s", useBehav) end 
+                    end
+                     -- For use with extra scripts ex: custom function that check if a specific parameters is at a specific value while some boolean are true
+                    if k == "function" then 
+                        if useBehav then useBehav = check_Function(v) if useBehav then useBehav = true end end 
+                        if config.getParameter("debug") then sb.logInfo("function %s", useBehav) end 
+                    end
+                    
+                    if k == "exactParam" then 
+                        if useBehav then
+                            useBehav = check_ExactParam(v) 
+                        end 
+                        if config.getParameter("debug") then sb.logInfo("exactParam %s", useBehav) end 
+                    end
+                    if k == "greaterParam" then
+                        if useBehav then 
+                            useBehav = check_GreaterParam(v)
+                        end 
+                        if config.getParameter("debug") then sb.logInfo("greaterParam %s", useBehav) end 
+                    end
+                    if k == "lowerParam" then
+                        if useBehav then 
+                            useBehav = check_LowerParam(v)
+                        end 
+                        if config.getParameter("debug") then sb.logInfo("lowerParam %s", useBehav) end
+                    end
+    
+                    if k == "hasLineOfSight" then
+                        if useBehav then
+                            useBehav = not check_raycastToSpawnPos(v)
+                        end 
+                        if config.getParameter("debug") then sb.logInfo("hasLineOfSight %s", useBehav) end
+                    end
+                end
+                if p.cooldown then
+                    if useBehav then 
+                        useBehav = check_Cooldown(behavior) 
+                    end 
+                    if config.getParameter("debug") then sb.logInfo("cooldown %s", useBehav) end
+                end
+                if config.getParameter("debug") then sb.logInfo("--] require %s", p.require) end
+                
+                if useBehav == true then
+                    if p.cooldown then self.behaviorCooldown[behavior] = p.cooldown end
+                    setBehavior(behavior)
+                return "Switching to Behavior | " .. behavior end
             end
-            if p.cooldown then if useBehav then useBehav = check_Cooldown(behavior) end end
-            if config.getParameter("debug") then 
-                sb.logInfo("behavior %s", behavior)
-                sb.logInfo("checkResult %s", checkResult)
-            end
-            if useBehav == true then
-                if p.cooldown then self.behaviorCooldown[behavior] = p.cooldown end
-                setBehavior(behavior)
-            break end
-        end
-    end
+        end    
+    end)
+    local status, responce = coroutine.resume(checkPossibleOutcome, dt, fireMode, isShiftHeld, currentMove)
+    if not status then sb.logInfo("behaviorUpdate.checkPossibleOutcome | %s, %s", status, responce) end
+    lastPlayerInput = {
+        fireMode = fireMode,
+        isShiftHeld = isShiftHeld,
+        currentMove = currentMove
+    }
 end
 
 function uninitBehavior()
     resetBehavior()
 end
 
-function setBehavior(behaviorName)
+function setBehavior(newBehaviorName)
+    if config.getParameter("debug") then sb.logInfo("--[ newBehaviorName %s", newBehaviorName) end
     if self.behavior["eventOnUninit"] then behaviorEvents(self.behavior["eventOnUninit"]) end
     resetBehavior()
+    behaviorName = newBehaviorName
     self.behavior = self.behaviors[behaviorName]
     self.eventDone = {}
+    
     if self.behavior["eventOnStance"] then self.eventDone.stance = {} end
     if self.behavior["stance"] then setStance(self.behavior["stance"]) end
     if self.behavior["eventOnInit"] then behaviorEvents(self.behavior["eventOnInit"]) end
@@ -105,15 +174,23 @@ function resetBehavior()
     self.behavior = {}
     self.behaviorCooldown = {}
     self.behaviorTime = {}
+    self.behaviorCurrentTime = {}
     self.behaviorPeriodicEventTimer = {}
     self.behaviorPeriodicEventLock = {}
 end
 
 function behaviorEvents(events)
-    local events = events or self.behavior["events"]
+    local events = events or {}
+    if config.getParameter("debug") then sb.logInfo("events %s", sb.printJson(events, 1)) end
+    
     if events then 
         for i, e in ipairs(events) do 
-            behaviorEvent(e)
+            if type(e) == "string" then 
+                if config.getParameter("debug") then sb.logInfo("behaviorEvents %s", sb.printJson(self.behaviorEvents[e], 1)) end
+                if self.behaviorEvents[e] then behaviorEvents(self.behaviorEvents[e]) end
+            else
+                behaviorEvent(e)
+            end
         end
     end
 end
@@ -123,17 +200,29 @@ function behaviorEvent(eventCfg) -- Handle the Different Event kind|Type
     if eventCfg.event == "projectile" then behavior_projectile(eventCfg) return end
     if eventCfg.event == "function" then call(eventCfg) return end
     if eventCfg.event == "setCursor" then activeItem.setCursor(eventCfg.cursor) return end
+    if eventCfg.event == "damageArea" then behavior_hitbox(eventCfg) return end
+    if eventCfg.event == "playSound" then animator.playSound(eventCfg.soundName, eventCfg.loopNumber or 0) return end
 end
 
-function behaviorTimer(list, operation) -- increase or decrease value of time, merged into one func
+function behaviorTimer(list, operation, treshold) -- increase or decrease value of time, merged into one func
     local dt = script.updateDt()
     if operation == 'decrease' then
         for n, t in pairs(list) do
-            if t > 0 then list[n] = t - dt end
+            if t > 0 then
+                list[n] = t - dt
+            end
         end
     elseif operation == 'increase' then
         for n, t in pairs(list) do
-            list[n] = t + dt
+            if (treshold or {})[n] then
+                if t < treshold[n] then
+                    list[n] = t + dt
+                end
+            else
+                if t < 90000 then
+                    list[n] = t + dt
+                end
+            end
         end
     end
 end
@@ -170,29 +259,40 @@ end
 -- Requirement Checks
 function check_Move(currentMove, value, behavior)
     local result = true
+    local individialCheckResult = {}
     if type(value) == "table" then
         for m, b in pairs(value) do
             if not currentMove[m] then
-                if b then result = false end
+                if b then
+                    result = false
+                    individialCheckResult[m] = false
+                end
             elseif currentMove[m] ~= b then
                 result = false
+                individialCheckResult[m] = false
+            else
+                individialCheckResult[m] = true
             end
         end
     elseif type(value) == "string" then
-        if currentMove[value] then return true end
+        if currentMove[value] then individialCheckResult[value] = true return true, individialCheckResult end
     else
         sb.logError("Invalid Move Requirement Config For Behavior | %s", behavior)
     end
 
-    return result
+    return result, individialCheckResult
 end
 
 function check_Function(callbacks)
+    if config.getParameter("debug") then sb.logInfo("callbacks %s", callbacks) end
     local funcReturned = true
-    for _, func in ipairs(callbacks) do 
+    for _, func in ipairs(callbacks or {}) do 
         local args = nil
         local callback = func
-        if type(func) == "table" then callback = func.callback args = func.args end
+        if type(func) == "table" then
+            callback = func.callback
+            args = func.args
+        end
         if funcReturned then funcReturned = call({callback = callback, args = args}) end
         if not funcReturned then return funcReturned end
     end
@@ -286,14 +386,28 @@ function aimVector(inaccuracy) -- straight out of gunFire.lua with one change
     return aimVector
 end
 
-function damageMath()
-
+function arrayEqual(tableA, TableB)
+    if tableA == nil and tableB == nil then return true end
+    if tableA == nil then return false elseif tableB == nil then return false end
+    for name, value in pairs(tableA) do
+        if TableB[name] then
+            if value ~= TableB[name] then return false end
+        else
+            return false
+        end
+    end
+    return true
 end
 
--- Possible Requirement
--- [ if a requirement isn't set it will be ignored
---   "stance" : "" wait for the current stance to be of the same name
---   "timer" : 1
---   "fireMode" : "" require the player to shot using the abilitySlot key "Left|Right mouse click"
---   "isShiftHeld" : "false" require shift to be either held or not
--- ]
+function tableEqual(tableA, TableB)
+    if tableA == nil and tableB == nil then return true end
+    if tableA == nil then return false elseif tableB == nil then return false end
+    for index, value in ipairs(tableA) do 
+        if TableB[index] then
+            if value ~= TableB[index] then return false end
+        else
+            return false
+        end
+    end
+    return true
+end

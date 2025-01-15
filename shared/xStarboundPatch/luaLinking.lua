@@ -16,6 +16,9 @@ end
 
 function xCallbackSendRequest(keyName, request)
     world.setGlobal(keyName, jsonPack(request))
-    while not world.getGlobal(keyName .. ":Return", result) do end
-    return world.getGlobal(keyName .. ":Return")
+    local returningCo = coroutine.create(function()
+        wait.util(0.25)
+        return world.getGlobal(keyName .. ":Return")
+    end)
+    return coroutine.resume(returningCo)
 end

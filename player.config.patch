@@ -158,5 +158,21 @@
       "path": "/inventoryFilters/autoAddToCustomBar/categoryBlacklist/-",
       "value": "d8Weaponry_containerItem"
     }
+  ],
+  [
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_JPBAI_chauchat"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_JPBAI_glock"
+      }
+    }
   ]
 ]

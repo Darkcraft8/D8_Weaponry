@@ -10,10 +10,7 @@ initFunc = {
     "initBehavior",
     "configInit"
 }
-updateFunc = { -- just so that incase a script need to 
-    "behaviorUpdate",
-    "updateStance"
-}
+updateFunc = {}  -- just so that incase a script has a update function it can be added
 uninitFunc = {
     "uninitBehavior",
     "uninitStance"
@@ -76,6 +73,11 @@ end
 
 function activeItemCfg()
     self.coroutine = {} -- here just so that i don't have to make a new func just for it
+    local animationFile = config.getParameter("animation") 
+    if type(animationFile) == "string" then animationFile = root.assetJson(config.getParameter("animation")) end
+    local itemCfg = root.itemConfig(item.descriptor())
+    itemCfg = itemCfg["parameters"]["animationCustom"] or itemCfg["config"]["animationCustom"] or {}
+    self.animationCfg = util.mergeTable(animationFile, itemCfg) -- for quick access to the animation Config Initial Value
 end
 
 -- getParameters Replacement, modified a bit from Encyclopedia

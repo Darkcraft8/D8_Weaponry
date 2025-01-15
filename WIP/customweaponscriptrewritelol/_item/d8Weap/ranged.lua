@@ -62,14 +62,14 @@ end
 
 function d8WeapItem.consumeMag()
     if world.entityType(activeItem.ownerEntityId()) ~= "player" then return true end
-    if (player.isAdmin() or config.getParameter("admin")) then return true end
+    if (player.isAdmin() or config.getParameter("admin", config.getParameter("d8WeapMods.infAmmo", false))) then return true end
     --sb.logInfo("%s", Weapon.canConsumeItem(d8WeapItem.magazine))
     if Weapon.canConsumeItem(d8WeapItem.magazine) then return Weapon.consumeItem(d8WeapItem.magazine) else return false end
 end
 
 function d8WeapItem.canConsumeMag()
     if world.entityType(activeItem.ownerEntityId()) ~= "player" then return true end
-    if (player.isAdmin() or config.getParameter("admin")) then return true end
+    if (player.isAdmin() or config.getParameter("admin", config.getParameter("d8WeapMods.infAmmo", false))) then return true end
     return Weapon.canConsumeItem(d8WeapItem.magazine)
 end
 
@@ -92,7 +92,7 @@ end
 
 function d8WeapItem.hasSpaceInMagazine()
     local munitionCount = 0
-    for i, d in ipairs(d8WeapItem.curMagazine) do 
+    for i, d in ipairs(d8WeapItem.curMagazine or {}) do 
         if type(d) == "table" then
             for count = 1, d.count or 1 do
                 munitionCount = munitionCount + 1
@@ -197,7 +197,7 @@ end
 function d8WeapItem.munitionScaling(args) -- similar to damagePerShot except it take the projectile info into account
     local projectileCfg = sb.jsonMerge(root.projectileConfig(args.type), args.parameters or {})
     local args = args
-    args.baseDamage = (projectileCfg.power * 0.25) * (projectileCfg.speed * 0.065)
+    args.baseDamage = args.damage or (projectileCfg.power * 0.25) * (projectileCfg.speed * 0.065)
     args.knockback = (projectileCfg.speed * 0.1) + (args.baseDamage * 0.25)
     return Weapon.damagePerShot(args)
 end

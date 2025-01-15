@@ -1,10 +1,11 @@
 {
+    "devNote" : "maybe convert to JPBAI before release",
     "itemName" : "d8Weaponry_frenchWeaponPack1_famas",
     "price" : 960,
     "maxStack" : 2,
     "rarity" : "Uncommon",
     "shortdescription" : "Famas F1",
-    "description" : "Todo.",
+    "description" : "One of the most famous French weapon's.",
     "category" : "assaultRifle",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : true,

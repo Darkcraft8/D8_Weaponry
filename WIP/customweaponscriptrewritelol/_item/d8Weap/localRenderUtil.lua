@@ -36,7 +36,7 @@ function d8Weap_buildDrawable_Magazine(curMagazine, magazine, name)
         image = "/assetmissing.png",
         fullbright = true,
         scale = 0.6,
-        position = {0,-0.05}
+        position = {0, 0.05}
     }
     if curMagazine[1] then
         drawable.image = d8Weap_Magazine_Image(curMagazine, drawable.image)
@@ -47,6 +47,9 @@ function d8Weap_buildDrawable_Magazine(curMagazine, magazine, name)
         drawable.position = vec2.sub(activeItem.ownerAimPosition(), world.entityPosition(activeItem.ownerEntityId()))
         drawable.position = vec2.add(drawable.position, vec2.mul({0, -1.1}, #curMagazine))
         drawable.position = vec2.add(drawable.position, vec2.mul({5.5, -2.2}, drawable.scale))
+    else
+        drawable.position = vec2.add(drawable.position, vec2.mul({0, -1.1}, #curMagazine))
+        drawable.position = vec2.add(drawable.position, vec2.mul({0, -1.1}, drawable.scale))
     end
     drawable.size = vec2.mul(drawable.size, drawable.scale)
     return drawable

@@ -21,7 +21,6 @@ end
 function Weapon.basicDamage(args)
     local mathResult = args.baseDamage or 1
     mathResult = mathResult * (Weapon.damageLevelMultiplier or 1.0)
-    mathResult = mathResult * (Weapon.damageLevelMultiplier)
 
     return mathResult
 end

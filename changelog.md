@@ -1,11 +1,7 @@
-# 1.0.5
+# 1.0.6
 ## Addition : 
-    Glock (T1 - T3)
-    Chauchat (T1 - T3)
-    Minigun (T6)
-
-    Refinement Workbench (new object)
-        used to upgrade or downgrade weapons
+    Glock JPBAI Version (T1 - T3)
+    Chauchat JPBAI Version (T1 - T3)
 
 ## Change : 
     Physical Variant non-conversion recipe have been disabled

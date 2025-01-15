@@ -24,8 +24,8 @@
         "sounds" : {
                 "fire" : {
                     "rangeMultiplier" : 1.5,
-                    "pitchMultiplier" : 0.5,
-                    "volume" : 1.15,
+                    "pitchMultiplier" : 1.25,
+                    "volume" : 1,
                     "pool" : ["/sfx/gun/mech_flakcannon1.ogg", "/sfx/gun/mech_flakcannon2.ogg", "/sfx/gun/mech_flakcannon3.ogg"]
                 },
                 "reload1" : {
@@ -307,7 +307,7 @@
                 "temp" : 250
             },
             "cooldown" : {
-                "duration" : 0.05,
+                "duration" : 0.1,
 
                 "weaponRotation" : -6,
                 "allowFlip" : true,

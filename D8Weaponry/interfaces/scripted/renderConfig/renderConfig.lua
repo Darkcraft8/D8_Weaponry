@@ -11,6 +11,7 @@ end
 function postInit()
     load()
     initTimer = nil
+    if xsb then require "/shared/xStarboundPatch/luaLinking.lua" end
 end
 
 function update(dt)
@@ -71,7 +72,14 @@ function setProperty(propertyName, propertyValue)
     local cfg = player.getProperty("d8Weap")
     cfg["renderCfg"][propertyName] = propertyValue
     player.setProperty("d8Weap", cfg)
-    d8WeaponryUtils:updateCfg(player.uniqueId())
+    if _ENV["xCallbackSendRequest"] and player then
+        xCallbackSendRequest("d8WeapUtils:callback", {
+            Uuid = player.uniqueId(),
+            callback = "updateCfg"
+        })
+    else
+        d8WeaponryUtils:updateCfg(player.uniqueId())
+    end
 end
 
 function property(propertyName)

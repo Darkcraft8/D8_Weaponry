@@ -1,0 +1,9 @@
+{
+    "input" : [
+      { "item" : "d8Weaponry_chauchat", "count" : 1 },
+      { "item" : "paper", "count" : 5 }
+    ],
+    "output" : { "item" : "d8Weaponry_JPBAI_chauchat", "count" : 1 },
+    "groups" : [ "d8Conversion_gunsmith_lv1", "d8Conversion" ]
+}
+  
