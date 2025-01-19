@@ -5,7 +5,7 @@
     "rarity" : "Common",
     "description" : "A large handgun that packs a punch.",
     "shortdescription" : "Iron Revolver",
-    "category" : "Revolver",
+    "category" : "d8weaponry_revolver",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : false,
     "itemTags" : ["weapon","ranged","pistol"],
@@ -297,8 +297,7 @@
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-            "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-            "numberOnly" : true
+            "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png"
         }
     ],
     "cylinderCapacity" : 8,

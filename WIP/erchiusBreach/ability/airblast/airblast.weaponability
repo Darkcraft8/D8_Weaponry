@@ -1,0 +1,198 @@
+{
+    "animationCustom" : {
+    },
+
+    "ability" : {
+        "scripts" : ["/D8Weaponry/activeitem/ranged/d8weap_altfire_fork.lua"],
+        "class" : "GunFire",
+        "name" : "Airblast",
+        
+        "fireTime" : 1,
+        "baseDps" : 0,
+        "energyUsage" : 10,
+        "projectileCount" : 1,
+        "inaccuracy" : 0.025,
+        "fireType" : "auto",
+        
+        "projectileType" : "airblasttravelingswoosh",
+        "projectileParameters" : {
+            "processing" : "?multiply=ffffff75?replace;ffffff75=0000ff45"
+        },
+        "projectileOffset" : [0, 0],
+        "muzzleFlashVariants" : 1,
+        "stances" : {
+            "idle" : {
+                "weaponRotation" : 0,
+                "allowFlip" : true,
+                "armRotation" : 0,
+                "weaponOffset" : [0.5, 0.25],
+                "frontArmFrame" : "rotation?crop;6;0;43;43",
+                "allowRotate" : true,
+                "twoHanded" : true,
+                "backArmFrame" : "rotation?crop;0;0;37;42"
+            },
+            
+            "fire" : {
+                "duration" : 0,
+                "weaponRotation" : 0,
+                "allowFlip" : true,
+                "armRotation" : 0,
+                "armAngularVelocity" : 0,
+                "weaponOffset" : [0.5, 0.25],
+                "frontArmFrame" : "rotation?crop;6;0;43;43",
+                "allowRotate" : true,
+                "twoHanded" : true,
+                "backArmFrame" : "rotation?crop;0;0;37;42"
+            },
+            "cooldown" : {
+                "duration" : 0.5,
+
+                "weaponRotation" : 6,
+                "allowFlip" : true,
+                "armRotation" : 6,
+                "armAngularVelocity" : 0,
+                "weaponOffset" : [0.5, 0.25],
+                "frontArmFrame" : "rotation?crop;6;0;43;43",
+                "allowRotate" : true,
+                "twoHanded" : true,
+                "backArmFrame" : "rotation?crop;0;0;37;42"
+            },
+            
+            "reload1" : {
+                "duration" : 0.25,
+                
+                "allowFlip" : true,
+                "weaponRotation" : 50,
+                "armRotation" : 0,
+                "weaponOffset" : [-0.5, 0.25],
+                "aimAngle" : 0,
+                "frontArmFrame" : "rotation?crop;0;0;43;43",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "backArmFrame" : "run.5?crop;0;2;43;43",
+                
+                "animationStates" : {
+                    "flameprimer" : "off"
+                }
+            },
+            "reload2" : {
+                "duration" : 0.25,
+                
+                "allowFlip" : true,
+                "weaponRotation" : 50,
+                "armRotation" : 0,
+                "weaponOffset" : [-0.5, 0.25],
+                "frontArmFrame" : "walk.1?crop;3;0;43;40",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "backArmFrame" : "run.5?crop;0;2;43;43",
+                "playSounds" : ["reload1"],
+
+                "animationStates" : {
+                    "animation" : "reload1"
+                }
+            },
+            "reload3" : {
+                "duration" : 0.25,
+                
+                "allowFlip" : true,
+                "weaponRotation" : 50,
+                "armRotation" : 0,
+                "weaponOffset" : [-0.5, 0.25],
+                "frontArmFrame" : "walk.4?crop;2;0;43;43",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "backArmFrame" : "run.5?crop;0;2;43;43",
+
+                "animationStates" : {
+                    "animation" : "reload2"
+                }
+            },
+            
+            "reload4" : {
+                "duration" : 0.25,
+                
+                "allowFlip" : true,
+                "weaponRotation" : 50,
+                "armRotation" : 0,
+                "weaponOffset" : [-0.5, 0.25],
+                "frontArmFrame" : "walk.1?crop;3;0;43;40",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "backArmFrame" : "run.5?crop;0;2;43;43",
+
+                "animationStates" : {
+                    "animation" : "reload1"
+                }
+            },
+            
+            "reload5" : {
+                "duration" : 0.25,
+                
+                "allowFlip" : true,
+                "weaponRotation" : 50,
+                "armRotation" : 0,
+                "weaponOffset" : [-0.5, 0.25],
+                "aimAngle" : 0,
+                "frontArmFrame" : "rotation?crop;0;0;43;43",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "backArmFrame" : "run.5?crop;0;2;43;43",
+                "playSounds" : ["reload2"],
+                
+                "animationStates" : {
+                    "animation" : "idle"
+                }
+            },
+            
+            "reload6" : {
+                "duration" : 0.25,
+                
+                "allowFlip" : true,
+                "weaponRotation" : 50,
+                "armRotation" : 5,
+                "weaponOffset" : [-0.5, 0.25],
+                "aimAngle" : 0,
+                "frontArmFrame" : "rotation?crop;0;0;43;43",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "backArmFrame" : "run.5?crop;0;2;43;43",
+                "playSounds" : ["slide"],
+                
+                "animationStates" : {
+                    "flameprimer" : "on"
+                }
+            }
+        },
+
+        "ammoType" : "d8Weaponry_gascanister",
+        "ammoParam" : {
+            "gasKind" : "oxygen",
+            "gasAmount" : 125,
+            "gasMax" : 125,
+            
+            "durability" : 126,
+            "durabilityHit" : 125
+        },
+        "ammoName" : "Gas Canister",
+        "ammoMaxName" : "cylinderCapacity",
+        "ammoCountName" : "cylinder",
+        "reloadType" : "most",
+        "ammoCost" : 25,
+        "ammoReloadNeeded" : 1,
+
+        "ammoAnimationPart" : "flameprimer",
+        "returnedItem" : {
+            "name" : "d8Weaponry_gascanister",
+            "count" : 1,
+            "parameters" : {
+                "gasKind" : "oxygen",
+                "gasAmount" : 0,
+                "gasMax" : 125,
+                
+                "durability" : 126,
+                "durabilityHit" : 0
+            }
+        }
+    }
+}

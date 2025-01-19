@@ -1,0 +1,38 @@
+{
+  "id" : "d8Weaponry_guide",
+  "title" : "Guide des Armes",
+  "description" : "This book contain information about firearm(s)... yet it seem as if it was made by a ^#ffa100;compagny that doesn't exist?!^reset;",
+  "icon" : "d8Weaponry_guide.png",
+  "contentPages" : [
+"Table du Contenu
+- 1| Introduction
+- 2| Usage Basic
+- 3-4| Bonus: Ameliorer vaux arme
+
+Bienvenue,
+si vous lisez ce guide cela signifie que vous s'est intéresest par la procession,production et/ou utilisation d'arme a feux",
+"L'utilisation d'une arme est simple.
+Presser sur la gachette ('Attack Primaire') causera la détonation de la munition a l'interieur de la chambre.
+Pour recharger il vous suffit de détacher la magasine ou remplacer la munition si vous utiliser une arme sans magasine ('marche','Attack Primaire','haut')",
+"Vous avez peut-etre devenue attacher a une arme specific,
+Elle a possiblement sauvez votre vie ou peut-etre qu'elle a un signifiquance cher a vos yeux
+    
+Bien vous étre chanceux parce-que nous avons creer des schemat pour une table qui vous permetra de facilement amélioré vaux arme
+Oui, grace a cette table est des matériaux et outils...",
+"appropriet vous pouvez desormer amélioré n'importe quelle arme que vous poséder a l'exception de certain que nous ne pouvion trouver de moyen de les amélioré."
+
+  ],
+  "itemConfig" : {
+    "shortdescription" : "Guide des Armes offer par",
+    "description" : "This book contain information about firearms!!... yet it seem as if it was made by a ^#ffa100;compagny that doesn't exist?!^reset;",
+    "rarity" : "Legendary",
+    "price" : 60,
+    "learnBlueprintsOnPickup" : [
+      "d8Weaponry_guide_translation-codex"
+    ],
+    "tooltipFields" : {
+      "subTitle" : "^white;EP:Armory and Balistic's^reset;",
+      "rarityLabel" : "^magenta;Legendary^reset;"
+    }
+  }
+}

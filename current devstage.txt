@@ -13,6 +13,8 @@ Current Dev Stage of Weaponry : Finished for first release
 
 todo :
 --> config screen for the renderer
+--> Make a few altAbility their own abilityFile
+--> Finish Container Item Mechanic by adding object to fill/use them
 
 idea for next updates : 
 
@@ -20,10 +22,17 @@ idea for next updates :
 --> Grenade Launcher
 --> Basicaly more weapons
 
--+> Weapons Quality/Level Upgrade
 -+> Weapons Attachment through new bench or item that open a pane to change attachment
 --> New Bow
---> Crossbows... just disguising a gun should be enough
+
+++> Blessed Munition Can of St'Antioche
+desc : "BLESSED BE THE MUNITION CANS OF ANTIOCHE AND MAY THE LIGHT BE MUZZLEFLASH."
+effect : "https://youtu.be/zIViU1cVtHg?si=57AmVe1yxe3aYIdp"
+
+Survival Horror Missions idea :
+
+Erchius Mining/Space Station on BH5-GG-M12/BlackHole5-GasGiant-Moon12...
+or radiant ecounter mission...
 
 postPone :
 
@@ -31,3 +40,6 @@ postPone :
 	possibly with "isHitscan" : true has parameters... maybe make so that the projectile spawn one or two block distance from destination so that it easier to 
 	create and/or convert weapons
 	
+idea :
+
+-- > Creation of a whole new system for the mod weapon's that use modularity... would also require to make a script to convert any old weapon to new format... will try later on

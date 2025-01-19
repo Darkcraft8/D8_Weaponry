@@ -1,22 +1,40 @@
-# 1.0.5
+# 1.1.0
 ## Addition : 
-    Glock (T1 - T3)
-    Chauchat (T1 - T3)
-    Minigun (T6)
+    Tutorial Codex with translation added to shiplocker treasure pool
+        can also be bought at beakeasy or crafted at a gunsmith table
 
-    Refinement Workbench (new object)
-        used to upgrade or downgrade weapons
+    Glock JPBAI Version (T1) (Unobtainable)
+    Chauchat JPBAI Version (T1) (Unobtainable)
+    Famas Version (T1) (Unobtainable|WIP)
+    Crossbow Version (T1) (Unobtainable)
+    Wooden Bolt Version (T1) (Unobtainable)
+
+    D8 : Encyclopedia Compact
+    Added Three Category for encyclopedia
+        General, Weapon and Munition
 
 ## Change : 
-    Physical Variant non-conversion recipe have been disabled
-        to give incentive to try the new weapons
-    Rebalancing weapons damage to scale with weapons level
-        to allow player's to use their favorite weapons at almost if not any tier
 
 ## Buff :
 
 ## Nerf : 
+    A few small/minor change to damage|firing speed
 
 ## Fix : 
+    added compatibility patch to xSB
 	
 ## Work in progress :
+    Json Behavior Powered Acctive Item
+        Resources func still need to be made
+        Movement func still need to be made
+        Documentation Need to be Made
+
+    Medieval Weapon Pack 1
+        Need to make more weapon
+
+    French Weapon Pack 1
+        Need to make more weapon
+
+    Erchius Breach
+        dungeon not finished
+        weapons need to be rewriten

@@ -1,12 +1,87 @@
 {
     "itemName" : "d8Weaponry_standardbullet",
-    "price" : 1,
+    "price" : 5,
     "level" : 1,
     "maxStack" : 5000,
     "rarity" : "Common",
-    "category" : "Munition",
+    "category" : "d8Weaponry_munition",
     "description" : "a standard bullet",
     "shortdescription" : "Standard bullet",
     "itemTags" : ["munition"],
-    "inventoryIcon" : "/projectiles/guns/bullets/standardbullet/icon.png"
+    "inventoryIcon" : "/projectiles/guns/bullets/standardbullet/icon.png",
+
+    "projectileType" : "standardbullet",
+    "projectileCount" : 1,
+    "projectileParameter" : {
+        "knockback" : 10,
+        "actionOnReap" : [
+          {
+              "options" : [ "/sfx/projectiles/bullet_ricochet1.ogg", "/sfx/projectiles/bullet_ricochet3.ogg", "/sfx/projectiles/bullet_ricochet11.ogg", "/sfx/projectiles/bullet_ricochet12.ogg", "/sfx/projectiles/bullet_ricochet13.ogg" ],
+              "action" : "sound"
+          },
+          {
+              "action" : "loop",
+              "count" : 7,
+              "body" : [
+                  {
+                      "action" : "particle",
+                      "specification" : {
+                          "type" : "ember",
+                          "size" : 0.8,
+                          "color" : [20, 20, 20, 255],
+                          "fade" : 0.5,
+                          "initialVelocity" : [0, 1.5],
+                          "finalVelocity" : [0, -2],
+                          "approach" : [20, 20],
+                          "destructionTime" : 0.2,
+                          "layer" : "back",
+                          "variance" : {
+                              "initialVelocity" : [5, 5],
+                              "finalVelocity" : [0, 1.5],
+                              "size" : 0.5
+                          }
+                      }
+                  },
+                  {
+                      "action" : "particle",
+                      "specification" : {
+                          "type" : "ember",
+                          "size" : 0.8,
+                          "color" : [100, 100, 100, 255],
+                          "fade" : 0.3,
+                          "initialVelocity" : [0, 1.5],
+                          "finalVelocity" : [0, -2],
+                          "approach" : [20, 20],
+                          "destructionTime" : 0.2,
+                          "layer" : "back",
+                          "variance" : {
+                              "initialVelocity" : [5, 5],
+                              "finalVelocity" : [0, 1.5],
+                              "size" : 0.5
+                          }
+                      }
+                  },
+                  {
+                      "action" : "particle",
+                      "specification" : {
+                          "type" : "ember",
+                          "size" : 0.5,
+                          "color" : [50, 50, 50, 255],
+                          "fade" : 0.3,
+                          "initialVelocity" : [0, 1.5],
+                          "finalVelocity" : [0, -2],
+                          "approach" : [20, 20],
+                          "destructionTime" : 0.2,
+                          "layer" : "back",
+                          "variance" : {
+                              "initialVelocity" : [5, 5],
+                              "finalVelocity" : [0, 1.5],
+                              "size" : 0.5
+                          }
+                      }
+                  }
+              ]
+          }
+        ]
+    }
 }

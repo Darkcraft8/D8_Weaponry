@@ -258,45 +258,39 @@
         "stances" : {
             "idle" : {
                 "weaponRotation" : 0,
+                "allowFlip" : true,
                 "armRotation" : 0,
-                "weaponOffset" : [-0.2, 0.3],
-                "frontArmFrame" : "run.2",
-                "weaponRotationCenter" : [0, 0],
-                "backArmFrame" : "run.5",
-                "twoHanded" : true,
-                
+                "weaponOffset" : [0, 0.1],
+                "frontArmFrame" : "rotation?crop;4;0;43;43",
                 "allowRotate" : true,
-                "allowFlip" : true
+                "twoHanded" : true,
+                "backArmFrame" : "rotation?crop;0;0;39;43"
             },
             "fire" : {
                 "duration" : 0,
                 "weaponRotation" : 2,
+                "allowFlip" : false,
                 "armRotation" : 2,
-                "weaponOffset" : [-0.2, 0.3],
-                "frontArmFrame" : "run.2",
-                "weaponRotationCenter" : [0, 0],
-                "backArmFrame" : "run.5",
+                "weaponOffset" : [0, 0.1],
+                "frontArmFrame" : "rotation?crop;4;0;43;43",
+                "allowRotate" : false,
+                "twoHanded" : true,
+                "backArmFrame" : "rotation?crop;0;0;39;43",
                 "burstParticleEmitters" : ["bulletShell"],
                 "animationStates" : {
                     "animation" : "fire"
-                },
-                "twoHanded" : true,
-                
-                "allowRotate" : false,
-                "allowFlip" : false
+                }
             },
             "cooldown" : {
                 "duration" : 0.06,
-                "weaponRotation" : 2,
-                "armRotation" : 2,
-                "weaponOffset" : [-0.2, 0.3],
-                "frontArmFrame" : "run.2",
-                "weaponRotationCenter" : [0, 0],
-                "backArmFrame" : "run.5",
-                "twoHanded" : true,
-                
+                "weaponRotation" : 6,
+                "allowFlip" : false,
+                "armRotation" : 6,
+                "weaponOffset" : [0, 0.1],
+                "frontArmFrame" : "rotation?crop;4;0;43;43",
                 "allowRotate" : false,
-                "allowFlip" : false
+                "twoHanded" : true,
+                "backArmFrame" : "rotation?crop;0;0;39;43"
             },
             "reload1" : {
                 "duration" : 0.2,
@@ -525,45 +519,39 @@
         "stances" : {
             "idle" : {
                 "weaponRotation" : 0,
+                "allowFlip" : true,
                 "armRotation" : 0,
-                "weaponOffset" : [-0.2, 0.3],
-                "frontArmFrame" : "run.2",
-                "weaponRotationCenter" : [0, 0],
-                "backArmFrame" : "run.5",
-                "twoHanded" : true,
-                
+                "weaponOffset" : [0, 0.1],
+                "frontArmFrame" : "rotation?crop;4;0;43;43",
                 "allowRotate" : true,
-                "allowFlip" : true
+                "twoHanded" : true,
+                "backArmFrame" : "rotation?crop;0;0;39;43"
             },
             "fire" : {
                 "duration" : 0,
                 "weaponRotation" : 2,
+                "allowFlip" : true,
                 "armRotation" : 2,
-                "weaponOffset" : [-0.2, 0.3],
-                "frontArmFrame" : "run.2",
-                "weaponRotationCenter" : [0, 0],
-                "backArmFrame" : "run.5",
+                "weaponOffset" : [0, 0.1],
+                "frontArmFrame" : "rotation?crop;4;0;43;43",
+                "allowRotate" : true,
+                "twoHanded" : true,
+                "backArmFrame" : "rotation?crop;0;0;39;43",
                 "burstParticleEmitters" : ["bulletShell"],
                 "animationStates" : {
                     "animation" : "fire"
-                },
-                "twoHanded" : true,
-                
-                "allowRotate" : false,
-                "allowFlip" : false
+                }
             },
             "cooldown" : {
                 "duration" : 0.02,
                 "weaponRotation" : 6,
+                "allowFlip" : true,
                 "armRotation" : 6,
-                "weaponOffset" : [-0.2, 0.3],
-                "frontArmFrame" : "run.2",
-                "weaponRotationCenter" : [0, 0],
-                "backArmFrame" : "run.5",
+                "weaponOffset" : [0, 0.1],
+                "frontArmFrame" : "rotation?crop;4;0;43;43",
+                "allowRotate" : true,
                 "twoHanded" : true,
-                
-                "allowRotate" : false,
-                "allowFlip" : false
+                "backArmFrame" : "rotation?crop;0;0;39;43"
             },
             "reload1" : {
                 "duration" : 0.2,
@@ -707,8 +695,7 @@
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-            "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-            "numberOnly" : true
+            "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png"
         }
     ],
     "cylinderCapacity" : 29,

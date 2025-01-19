@@ -6,10 +6,10 @@
     "rarity" : "common",
     "description" : "American hated this one.",
     "shortdescription" : "Chauchat",
-    "category" : "Machine Gun",
+    "category" : "d8weaponry_mg",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : true,
-    "itemTags" : ["weapon","ranged","assaultrifle", "d8Weaponry_gun"],
+    "itemTags" : ["weapon","ranged","machinegun", "d8Weaponry_gun"],
     
     "inventoryIcon" : [
         { "image" : "normal.png:idle" }
@@ -24,8 +24,8 @@
         "sounds" : {
                 "fire" : {
                     "rangeMultiplier" : 1.5,
-                    "pitchMultiplier" : 0.5,
-                    "volume" : 1.5,
+                    "pitchMultiplier" : 1.25,
+                    "volume" : 1,
                     "pool" : ["/sfx/gun/mech_flakcannon1.ogg", "/sfx/gun/mech_flakcannon2.ogg", "/sfx/gun/mech_flakcannon3.ogg"]
                 },
                 "reload1" : {
@@ -179,7 +179,7 @@
     
     "baseOffset" : [0, 0],
     "muzzleOffset" : [3, 0.25],
-    "aimOffset" : 0.4,
+    "aimOffset" : 0,
     
     "scripts" : ["/items/active/weapons/ranged/gun.lua"],
     
@@ -282,7 +282,10 @@
                 "frontArmFrame" : "rotation?crop;4;0;43;43",
                 "allowRotate" : true,
                 "twoHanded" : true,
-                "backArmFrame" : "rotation?crop;0;0;39;43"
+                "backArmFrame" : "rotation?crop;0;0;39;43",
+                "animationStates" : {
+                    "animation" : "idle"
+                }
             },
             
             "fire" : {
@@ -304,7 +307,7 @@
                 "temp" : 250
             },
             "cooldown" : {
-                "duration" : 0.05,
+                "duration" : 0.1,
 
                 "weaponRotation" : -6,
                 "allowFlip" : true,
@@ -423,8 +426,7 @@
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-            "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-            "numberOnly" : true
+            "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png"
         }
     ],
 

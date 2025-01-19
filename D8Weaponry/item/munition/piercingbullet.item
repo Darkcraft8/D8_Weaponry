@@ -1,12 +1,16 @@
 {
     "itemName" : "d8Weaponry_piercingbullet",
-    "price" : 1,
+    "price" : 10,
     "level" : 1,
     "maxStack" : 5000,
     "rarity" : "Common",
-    "category" : "Munition",
+    "category" : "d8Weaponry_munition",
     "description" : "a piercing bullet",
     "shortdescription" : "Piercing Bullet",
     "itemTags" : ["munition"],
-    "inventoryIcon" : "/projectiles/guns/bullets/piercingbullet/icon.png"
+    "inventoryIcon" : "/projectiles/guns/bullets/piercingbullet/icon.png",
+
+    "projectileType" : "piercingbullet",
+    "projectileCount" : 1,
+    "projectileParameter" : {}
 }

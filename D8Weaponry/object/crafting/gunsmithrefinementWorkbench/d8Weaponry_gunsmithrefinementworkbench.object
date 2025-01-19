@@ -5,9 +5,9 @@
   "rarity" : "Uncommon",
   "shortdescription" : "^orange;Refinement Workbench",
   "description" : "Enhance your weapons by refining their part with better materials",
-  "category" : "crafting",
-  "price" : 15,
-
+  "category" : "Upgrading Station",
+  "price" : 350,
+  
   "tooltipFields" : {
     "rarityLabel" : "^green;Uncommon"
   },

@@ -14,10 +14,10 @@ function build(directory, config, parameters, level, seed)
     end
   end
   
-  if (level or configParameter("level", 1)) and not configParameter("fixedLevel", false) then
+  if (level or parameters["level"]) and not configParameter("fixedLevel", false) then
     parameters.level = (level or configParameter("level", 1))
   end
-  parameters.d8Weaponry_resetTooltipOnUpgrade = configParameter("d8Weaponry_resetTooltipOnUpgrade", true)
+  config.d8Weaponry_resetTooltipOnUpgrade = configParameter("d8Weaponry_resetTooltipOnUpgrade", true)
 
   setupAbility(config, parameters, "primary")
   setupAbility(config, parameters, "alt")
@@ -63,8 +63,10 @@ function build(directory, config, parameters, level, seed)
   if config.tooltipKind ~= "base" then
     config.tooltipFields = config.tooltipFields or {}
     config.tooltipFields.levelLabel = string.format("Level: %s", math.floor(util.round(configParameter("level", 1), 1)))
+
     local ammoCost = ((config[config.primaryAbility.ammoMaxName] or 2) - (config.primaryAbility.stances.ammoCost or 1))
-    config.tooltipFields.dpsLabel = util.round((config.primaryAbility.baseDps or 0) * config.damageLevelMultiplier, 1)
+    if ammoCost < 1 then ammoCost = 1 end
+  
     config.tooltipFields.speedLabel = util.round(1 / (config.primaryAbility.fireTime or 1.0), 1)
     local reloadTime = 0
     for stancesName, value in pairs(config.primaryAbility.stances) do 
@@ -73,16 +75,16 @@ function build(directory, config, parameters, level, seed)
       end
     end
     config.tooltipFields.reloadLabel = string.format("Reload: ~%s", reloadTime)
-    config.tooltipFields.damagePerShotLabel = util.round((config.primaryAbility.baseDamage or (config.primaryAbility.baseDps / (ammoCost / (ammoCost*(8/ammoCost) ) ) ) ) * (config.primaryAbility.baseDamageMultiplier or 1.0) * (config.primaryAbility.damageLevelMultiplier or 1.0) / (config.primaryAbility.projectileCount or 1), 1)
+    config.tooltipFields.damagePerShotLabel = util.round((config.primaryAbility.baseDamage or (config.primaryAbility.baseDps / (ammoCost / (ammoCost*(8/ammoCost) ) ) ) ) * (config.primaryAbility.baseDamageMultiplier or 1.0) * (config.primaryAbility.damageLevelMultiplier or 1.0) / (config.primaryAbility.projectileCount or 1), 1) * math.floor(util.round(configParameter("level", 1), 1))
     config.tooltipFields.energyPerShotLabel = util.round((config.primaryAbility.energyUsage or 0) * (config.primaryAbility.fireTime or 1.0), 1)
     
-    if string.lower(config.rarity) == "uncommon" then
+    if string.lower(configParameter("rarity")) == "uncommon" then
       config.tooltipFields.rarityLabel = "^green;Uncommon^reset;"
-    elseif string.lower(config.rarity) == "rare" then
+    elseif string.lower(configParameter("rarity")) == "rare" then
       config.tooltipFields.rarityLabel = "^Cyan;Rare^reset;"
-    elseif  string.lower(config.rarity) == "legendary" then
+    elseif  string.lower(configParameter("rarity")) == "legendary" then
       config.tooltipFields.rarityLabel = "^magenta;Legendary^reset;"
-    elseif  string.lower(config.rarity) == "essential" then
+    elseif  string.lower(configParameter("rarity")) == "essential" then
       config.tooltipFields.rarityLabel = "^orange;Essential^reset;"
     end
 
@@ -125,8 +127,8 @@ function build(directory, config, parameters, level, seed)
     end
   end
   -- populate parameters d8Weaponry 
-  if config.d8Weaponry then
-    parameters.d8Weaponry = config.d8Weaponry
+  if configParameter("d8Weaponry") then
+    parameters.d8Weaponry = configParameter("d8Weaponry")
   end
 
   -- set price

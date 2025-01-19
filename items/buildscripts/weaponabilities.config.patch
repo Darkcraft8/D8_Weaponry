@@ -3,5 +3,10 @@
         "op": "add",
         "path": "/d8Weaponry_switchammo",
         "value": "/D8Weaponry/activeitem/ranged/ability/ranged/switchAmmo/switchAmmo.weaponability"
+    },
+    {
+        "op": "add",
+        "path": "/d8Weaponry_airblast",
+        "value": "/WIP/erchiusBreach/ability/airblast/airblast.weaponability"
     }
 ]

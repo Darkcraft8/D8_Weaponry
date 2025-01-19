@@ -5,7 +5,7 @@
   "rarity" : "Legendary",
   "description" : "All of you will fear my giant new gun.",
   "shortdescription" : "Minigun",
-  "category" : "Gatling Gun",
+  "category" : "d8weaponry_gatlinggun",
   "tooltipKind" : "d8Weaponry_gun",
   "twoHanded" : true,
   "itemTags" : ["weapon","ranged","gatlinggun", "d8Weaponry_gun"],
@@ -529,8 +529,7 @@
           "ammoCountName" : "magasin",
           "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
           "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-		      "rotation" : -90,
-          "numberOnly" : true
+		      "rotation" : -90
         }
     ],
     "magasinCapacity" : 300,

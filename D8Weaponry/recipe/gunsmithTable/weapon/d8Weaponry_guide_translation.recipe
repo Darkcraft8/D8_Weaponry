@@ -1,0 +1,13 @@
+{
+    "input" : [
+      { "item" : "d8Weaponry_guide-codex", "count" : 1},
+      { "item" : "paper", "count" : 5 },
+      { "item" : "coalore", "count" : 1}
+    ],
+    "output" : {
+      "item" : "d8Weaponry_guide_translation-codex",
+      "count" : 1
+    },
+    "duration" : 1.5,
+    "groups" : [ "d8Weaponry_gunsmithing_lv1", "d8Weaponry_gunsmithing" ]
+}  

@@ -5,7 +5,7 @@
     "rarity" : "Uncommon",
     "description" : "Where going gansta with this one.",
     "shortdescription" : "Tommy Gun",
-    "category" : "Submachine Gun",
+    "category" : "d8weaponry_smg",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : true,
     "itemTags" : ["weapon","ranged","assaultrifle", "upgradeableWeapon", "d8Weaponry_gun"],
@@ -329,6 +329,7 @@
                 "weaponRotation" : 0,
                 "allowFlip" : false,
                 "armRotation" : 0,
+                "aimAngle" : 0,
                 "weaponOffset" : [-1.1, 0.35],
                 "animationStates" : {
                     "animation" : "reload1"
@@ -401,8 +402,7 @@
             "ammoMaxName" : "cylinderCapacity",
             "ammoCountName" : "cylinder",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-            "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-            "numberOnly" : true
+            "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png"
         }
     ],
     "cylinderCapacity" : 20,

@@ -12,12 +12,27 @@ function GunFire:init()
   self.weapon.onLeaveAbility = function()
     self.weapon:setStance(self.stances.idle)
   end
-  activeItem.setInstanceValue("durability", -config.getParameter(self.ammoMaxName))
+  if config.getParameter(self.ammoMaxName) > 5 then
+    if config.getParameter(self.ammoMaxName) % 2 ~= 0 then
+      activeItem.setInstanceValue("durability", -(config.getParameter(self.ammoMaxName) + 1))
+    else
+      activeItem.setInstanceValue("durability", -(config.getParameter(self.ammoMaxName) + 1.5))
+    end
+  else
+    activeItem.setInstanceValue("durability", -5)
+  end
   if not config.getParameter(self.ammoCountName) then
     activeItem.setInstanceValue(self.ammoCountName, config.getParameter(self.ammoMaxName))
   end
   passiveTimer = self.passiveTimer or 1
   animator.setGlobalTag("weaponDirective", "")
+end
+
+local oldUpdate = update
+local currentMoves = nil
+function update(dt, fireMode, shiftHeld, moves)
+  currentMoves = moves
+  oldUpdate(dt, fireMode, shiftHeld, moves)
 end
 
 function GunFire:update(dt, fireMode, shiftHeld)
@@ -27,6 +42,8 @@ function GunFire:update(dt, fireMode, shiftHeld)
 
   if animator.animationState("firing") ~= "fire" then
     animator.setLightActive("muzzleFlash", false)
+    animator.setLightActive("muzzleFlashPoint", false)
+    
     if self.temperature > 0 then
       self.temperature = self.temperature - (5 * dt)
     elseif self.temperature < 0 then
@@ -67,13 +84,46 @@ function GunFire:update(dt, fireMode, shiftHeld)
       activeItem.setInstanceValue(self.ammoCountName, config.getParameter(self.ammoMaxName))
     end
     if self.reloadType ~= "passive" then
-      if config.getParameter(self.ammoCountName) <= 0 and ( world.entityType(activeItem.ownerEntityId()) ~= "player" or self.reloadwithattack ) or shiftHeld then
-        if self.reloadType == "single" and config.getParameter(self.ammoCountName) < config.getParameter(self.ammoMaxName) or self.infMag then
-          self:setState(self.reloadSingle)
-        elseif self.reloadType == "most" and config.getParameter(self.ammoCountName) < config.getParameter(self.ammoMaxName) then
-          self:setState(self.reloadMost)
-        elseif config.getParameter(self.ammoCountName) < config.getParameter(self.ammoMaxName) then
-          self:setState(self.reload)
+      if config.getParameter(self.ammoCountName) <= 0 and ( world.entityType(activeItem.ownerEntityId()) ~= "player" or self.reloadwithattack ) or (shiftHeld and currentMoves["up"])then
+        local hasAmmo = false
+        if player then
+          local ammoDescriptor = {
+            name = self.ammoType,
+            parameters = self.ammoParam or {},
+            count = 1
+          }
+          if self.reloadType == "most" then
+            ammoDescriptor["count"] = (config.getParameter(self.ammoMaxName) - config.getParameter(self.ammoCountName))
+            local playerAmmo = player.hasCountOfItem(ammoDescriptor, true)
+            if playerAmmo < ammoDescriptor["count"] then
+              ammoDescriptor["count"] = playerAmmo
+            end
+          elseif self.reloadType ~= "single" then
+            ammoDescriptor["count"] = config.getParameter(self.ammoMaxName)
+          end
+
+          if self.ammoReloadNeeded then
+            ammoDescriptor["count"] = config.getParameter(self.ammoReloadNeeded, 1)
+          end
+          if self.softRequirement then
+            ammoDescriptor = self:FindValidItem(ammoDescriptor)
+          end
+          hasAmmo = player.hasItem(ammoDescriptor, true) or player.isAdmin()
+        else
+          hasAmmo = true
+        end
+        
+        if hasAmmo then
+          if self.reloadType == "single" and config.getParameter(self.ammoCountName) < config.getParameter(self.ammoMaxName) or self.infMag then
+            self:setState(self.reloadSingle)
+          elseif self.reloadType == "most" and config.getParameter(self.ammoCountName) < config.getParameter(self.ammoMaxName) then
+            self:setState(self.reloadMost)
+          elseif config.getParameter(self.ammoCountName) < config.getParameter(self.ammoMaxName) then
+            self:setState(self.reload)
+          end
+          if self.fireActive then
+            self:deactivate()
+          end
         end
       elseif not config.getParameter("postFire") then
         self:setState(self.postFireState)
@@ -89,13 +139,14 @@ function GunFire:update(dt, fireMode, shiftHeld)
     and not status.resourceLocked("energy")
     and not world.lineTileCollision(mcontroller.position(), self:firePosition()) then
     
-
-    if config.getParameter(self.ammoCountName) <= 0 and ( world.entityType(activeItem.ownerEntityId()) ~= "player" or self.reloadwithattack ) or shiftHeld then elseif config.getParameter(self.ammoCountName) >= (0 + self.ammoCost) then
+    if config.getParameter(self.ammoCountName) <= 0 and ( world.entityType(activeItem.ownerEntityId()) ~= "player" or self.reloadwithattack ) or (shiftHeld and currentMoves["up"]) then elseif config.getParameter(self.ammoCountName) >= (0 + self.ammoCost) then
       if self.fireType == "auto" and status.overConsumeResource("energy", self:energyPerShot()) then
         self:setState(self.auto)
       elseif self.fireType == "burst" then
         self:setState(self.burst)
       end
+
+      if not self.fireActive then self:activate() end -- flamethrower ability incorporation for constant sound effects
     end
   elseif not self.weapon.currentAbility
     and self.cooldownTimer == 0
@@ -109,6 +160,49 @@ function GunFire:update(dt, fireMode, shiftHeld)
         self:changeAmmoCount(1, "add", self.ammoMaxName, self.ammoCountName)
       end
     end
+
+  end
+  if not self.weapon.currentAbility and self.fireActive then
+    self:deactivate()
+  end
+  if self.reloadingInProcess then
+    status.setResourcePercentage("energyRegenBlock", 1)
+    if status.resource("energy") == status.resourceMax("energy") then
+      status.setResource("energy", status.resource("energy")-1)
+    end
+    status.setResourceLocked("energy", true)
+  end
+  if config.getParameter(self.ammoCountName) > 0 and not self.reloadingInProcess then
+    if self.ammoAnimationPart then
+      animator.setAnimationState(self.ammoAnimationPart, "on")
+    end
+  else
+    if self.ammoAnimationPart then
+      animator.setAnimationState(self.ammoAnimationPart, "off")
+    end
+  end
+end
+
+function GunFire:activate()
+  self.fireActive = true
+  if animator.hasSound("fireStart") then
+    animator.playSound("fireStart")
+  end
+  if animator.hasSound("fireLoop") then
+    animator.playSound("fireLoop", -1)
+  end
+end
+
+function GunFire:deactivate()
+  self.fireActive = false
+  if animator.hasSound("fireStart") then
+    animator.stopAllSounds("fireStart")
+  end
+  if animator.hasSound("fireLoop") then
+    animator.stopAllSounds("fireLoop")
+  end
+  if animator.hasSound("fireEnd") then
+    animator.playSound("fireEnd")
   end
 end
 
@@ -198,9 +292,12 @@ function GunFire:muzzleFlash()
   animator.setPartTag("muzzleFlash", "variant", math.random(1, self.muzzleFlashVariants or 3))
   animator.setAnimationState("firing", "fire")
   animator.burstParticleEmitter("muzzleFlash")
-  animator.playSound("fire")
+  if animator.hasSound("fire") then
+    animator.playSound("fire")
+  end
 
   animator.setLightActive("muzzleFlash", true)
+  animator.setLightActive("muzzleFlashPoint", true)
 end
 
 function GunFire:fireProjectile(projectileType, projectileParams, inaccuracy, firePosition, projectileCount)
@@ -259,16 +356,12 @@ function GunFire:energyPerShot()
 end
 
 function GunFire:damagePerShot()
-  local ammoCost = (config.getParameter(self.ammoMaxName, 2) - (self.stances.ammoCost or 1))
+  local ammoCost = util.clamp((config.getParameter(self.ammoMaxName, 2) - (self.stances.ammoCost or 1)), 1, (config.getParameter(self.ammoMaxName, 2) - (self.stances.ammoCost or 1)))
   return (self.baseDamage or (self.baseDps / (ammoCost / (ammoCost*(8/ammoCost) ) ) ) ) * (self.baseDamageMultiplier or 1.0) * config.getParameter("damageLevelMultiplier") / self.projectileCount
 end
 
 function GunFire:reload()
-    status.setResourcePercentage("energyRegenBlock", 1.0)
-    if status.resource("energy") == status.resourceMax("energy") then
-      status.setResource("energy", status.resource("energy")-1)
-    end
-    status.setResourceLocked("energy", true)
+  self.reloadingInProcess = true
     local wasEmpty = false
     if config.getParameter(self.ammoCountName) == 0 then
       wasEmpty = true
@@ -335,8 +428,14 @@ function GunFire:reload()
                 parameters = self.ammoParam or {},
                 count = config.getParameter(self.ammoMaxName)
             }
+            if self.ammoReloadNeeded then
+              ammoDescriptor.count = config.getParameter(self.ammoReloadNeeded)
+            end
             if player.consumeItem(ammoDescriptor,false,true) then
                 self:changeAmmoCount(config.getParameter(self.ammoMaxName), "set", self.ammoMaxName, self.ammoCountName)
+                if self.returnedItem then
+                  player.giveItem(self.returnedItem)
+                end
             end
         else
           self:changeAmmoCount(config.getParameter(self.ammoMaxName), "set", self.ammoMaxName, self.ammoCountName)
@@ -377,14 +476,12 @@ function GunFire:reload()
     status.setResourcePercentage("energyRegenBlock", 0.0)
     status.setResourceLocked("energy", false)
     animator.setGlobalTag("weaponDirective", "")
+    
+  self.reloadingInProcess = false
 end
 
 function GunFire:reloadMost()
-  status.setResourcePercentage("energyRegenBlock", 1.0)
-  if status.resource("energy") == status.resourceMax("energy") then
-    status.setResource("energy", status.resource("energy")-1)
-  end
-  status.setResourceLocked("energy", true)
+  self.reloadingInProcess = true
   
   local wasEmpty = false
   if config.getParameter(self.ammoCountName) == 0 then
@@ -445,22 +542,7 @@ function GunFire:reloadMost()
   end
 
   if world.entityType(activeItem.ownerEntityId()) == "player" then
-      if self.ammoType and not player.isAdmin() then
-          local ammoDescriptor = {
-              name = self.ammoType,
-              parameters = self.ammoParam or {},
-              count = (config.getParameter(self.ammoMaxName) - config.getParameter(self.ammoCountName))
-          }
-          local playerAmmo = player.hasCountOfItem(ammoDescriptor, true)
-          if playerAmmo < ammoDescriptor["count"] then
-            ammoDescriptor["count"] = playerAmmo
-          end
-          if player.consumeItem(ammoDescriptor,true,true) then
-              self:changeAmmoCount(ammoDescriptor["count"], "add", self.ammoMaxName, self.ammoCountName)
-          end
-      else
-        self:changeAmmoCount((config.getParameter(self.ammoMaxName) - config.getParameter(self.ammoCountName)), "add", self.ammoMaxName, self.ammoCountName)
-      end
+    self:playerReloadLogic()
   else
     self:changeAmmoCount((config.getParameter(self.ammoMaxName) - config.getParameter(self.ammoCountName)), "add", self.ammoMaxName, self.ammoCountName)
   end
@@ -496,14 +578,11 @@ function GunFire:reloadMost()
   end
   status.setResourcePercentage("energyRegenBlock", 0.0)
   status.setResourceLocked("energy", false)
+  self.reloadingInProcess = false
 end
 
 function GunFire:reloadSingle()
-  status.setResourcePercentage("energyRegenBlock", 1)
-  if status.resource("energy") == status.resourceMax("energy") then
-    status.setResource("energy", status.resource("energy")-1)
-  end
-  status.setResourceLocked("energy", true)
+  self.reloadingInProcess = true
   local wasEmpty = false
   if config.getParameter(self.ammoCountName) == 0 then
     wasEmpty = true
@@ -538,6 +617,9 @@ function GunFire:reloadSingle()
                     parameters = self.ammoParam or {},
                     count = 1
                 }
+                if self.ammoReloadNeeded then
+                  ammoDescriptor.count = config.getParameter(self.ammoReloadNeeded)
+                end
                 if player.consumeItem(ammoDescriptor,false,true) then
                   self:changeAmmoCount(1, "add", self.ammoMaxName, self.ammoCountName)
                 end
@@ -604,6 +686,7 @@ function GunFire:reloadSingle()
         end
       end
     end
+    self.reloadingInProcess = false
   end
 
   if self.stances["reloadAfterEmpty1"] and wasEmpty then
@@ -661,4 +744,79 @@ end
 
 function GunFire:uninit()
   animator.setGlobalTag("weaponDirective", "")
+end
+
+function GunFire:FindValidItem(ammo)
+  local result = copy(ammo)
+  local valueCheck = nil
+  for name, value in pairs(self.softRequirementParam or {}) do
+    result.parameters[name] = ammo.parameters[name]
+    if type(value) == "number" and not valueCheck then
+      valueCheck = name
+    end
+  end
+  
+  repeat
+    local hasItem = player.hasItem(result, true)
+    --sb.logInfo("hasItem %s, item %s", hasItem, result)
+    if hasItem then return result end
+    for name, value in pairs(self.softRequirementParam) do
+      if type(value) == "number" then
+        result.parameters[name] = result.parameters[name] - 1
+      end
+    end
+  until result.parameters[valueCheck] < self.softRequirementParam[valueCheck]
+
+  return result
+end
+
+function GunFire:playerReloadLogic()
+  if self.ammoType and not player.isAdmin() then
+    local returnedItemDurability = config.getParameter(self.ammoCountName)
+    local ammoDescriptor = {
+        name = self.ammoType,
+        parameters = self.ammoParam or {},
+        count = (config.getParameter(self.ammoMaxName) - config.getParameter(self.ammoCountName))
+    }
+    local playerAmmo = player.hasCountOfItem(ammoDescriptor, true)
+    if playerAmmo < ammoDescriptor["count"] then
+      ammoDescriptor["count"] = playerAmmo
+    end
+    local consumed = copy(ammoDescriptor)
+    if self.ammoReloadNeeded then
+      consumed.count = config.getParameter(self.ammoReloadNeeded, 1)
+      ammoDescriptor["count"] = config.getParameter(self.ammoMaxName)
+    end
+    if self.softRequirement then
+      consumed = self:FindValidItem(consumed)
+    end
+    if player.consumeItem(consumed,true,true) then
+        if self.softRequirement then
+          self:changeAmmoCount(consumed["parameters"][self.softRequirementAmmoParam], "add", self.ammoMaxName, self.ammoCountName)
+        else
+          self:changeAmmoCount(ammoDescriptor["count"], "add", self.ammoMaxName, self.ammoCountName)
+        end
+        if self.returnedItem then
+          player.giveItem(self:returnedItemBuild(consumed, returnedItemDurability))
+        end
+    end
+  else
+    self:changeAmmoCount((config.getParameter(self.ammoMaxName) - config.getParameter(self.ammoCountName)), "add", self.ammoMaxName, self.ammoCountName)
+  end
+end
+
+function GunFire:returnedItemBuild(consumed, returnedItemDurability)
+  for name, value in pairs(self.returnedItemAmmoParams or {}) do
+    self.returnedItem.parameters[name] = returnedItemDurability -- config.getParameter(self.ammoCountName)
+    if self.softRequirement then
+      local diff = math.abs((consumed["parameters"][self.softRequirementAmmoParam] - returnedItemDurability))
+      if (consumed["parameters"][self.softRequirementAmmoParam] - returnedItemDurability) > 0 then 
+        self.returnedItem.parameters[name] = (consumed["parameters"][self.softRequirementAmmoParam] - diff)
+      else
+        self.returnedItem.parameters[name] = (consumed["parameters"][self.softRequirementAmmoParam] - diff)
+      end
+    end
+  end
+  
+  return self.returnedItem
 end

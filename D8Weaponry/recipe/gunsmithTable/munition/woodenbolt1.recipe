@@ -1,0 +1,10 @@
+{
+  "input" : [
+    { "item" : "copperbar", "count" : 1 },
+    { "item" : "logblock", "count" : 4 }
+  ],
+  
+  "duration" : 1,
+  "output" : { "item" : "d8Weaponry_woodenbolt", "count" : 25 },
+  "groups" : [ "d8Weaponry_munition_lv1",  "d8Weaponry_munition", "all" ]
+}

@@ -1,0 +1,9 @@
+{
+  "input" : [
+    { "item" : "copperbar", "count" : 1 }
+  ],
+
+  "duration" : 0.5,
+  "output" : { "item" : "d8Weaponry_gascanister", "count" : 1 },
+  "groups" : [ "d8Weaponry_munition_lv1",  "d8Weaponry_munition", "all" ]
+}

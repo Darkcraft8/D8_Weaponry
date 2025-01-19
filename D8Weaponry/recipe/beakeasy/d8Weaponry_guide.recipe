@@ -1,0 +1,10 @@
+{
+  "input" : [
+    { "item" : "dubloon", "count" : 1 }
+  ],
+  "output" : {
+    "item" : "d8Weaponry_guide-codex",
+    "count" : 1
+  },
+  "groups" : [ "beakeasy" ]
+}

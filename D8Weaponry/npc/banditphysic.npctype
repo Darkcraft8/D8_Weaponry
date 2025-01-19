@@ -1,5 +1,5 @@
 {
-  "type" : "banditphysic",
+  "type" : "d8weaponry_banditphysic",
   "baseType" : "hostile",
 
   "dropPools" : [ "banditTreasure" ],
@@ -35,20 +35,20 @@
             "chest" : [ { "name" : "explorerchest" } ],
             "legs" : [ { "name" : "explorerlegs" } ],
             "primary" : [
-				"npcdagger",
-				"npcaxe",
-				"npcshortsword",
-				"npcbroadsword",
-				"npchammer",
-				"npcspear",
-				"d8Weaponry_ironrevolver",
-				"d8Weaponry_ironassaultrifle",
-				"d8Weaponry_tommygun",
-				"d8Weaponry_doublebarrelshotgun",
-				"d8Weaponry_tungstenshotgun",
-				"d8Weaponry_titaniumsniperrifle",
-				"d8Weaponry_titaniummachinepistol",
-				"d8Weaponry_tungstenmagnum"
+              "npcdagger",
+              "npcaxe",
+              "npcshortsword",
+              "npcbroadsword",
+              "npchammer",
+              "npcspear",
+              "d8Weaponry_ironrevolver",
+              "d8Weaponry_ironassaultrifle",
+              "d8Weaponry_tommygun",
+              "d8Weaponry_doublebarrelshotgun",
+              "d8Weaponry_tungstenshotgun",
+              "d8Weaponry_titaniumsniperrifle",
+              "d8Weaponry_titaniummachinepistol",
+              "d8Weaponry_tungstenmagnum"
             ]
           }
         ] ]

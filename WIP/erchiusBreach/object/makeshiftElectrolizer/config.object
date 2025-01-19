@@ -1,0 +1,98 @@
+{
+  "objectName" : "d8weaponry_makeshiftelectrolizer",
+  "colonyTags" : [],
+  "rarity" : "Uncommon",
+  "shortdescription" : "^orange;Makeshift Electrolizer^reset;",
+  "description" : "A makeshift electrolizer, serve to electrolise water to obtain ^gray;Hydrogen^reset; and ^blue;Oxygen^reset;.",
+  "category" : "crafting",
+  "objectType" : "container",
+  "price" : 15,
+  "printable" : false,
+  "retainObjectParametersInItem" : true,
+  "tooltipKind" : "d8MachineryShared_ResourceContainer",
+  "tooltipFields" : {
+    "rarityLabel" : "^green;Uncommon"
+  },
+  
+  "apexDescription" : "This makeshift electrolizer is connected to a water dispencer.",
+  "avianDescription" : "I probably shouldn't drink this.",
+  "floranDescription" : "Big water bottlesss connected to makessshift electrolizer",
+  "glitchDescription" : "Inquisitive. Why did someone needed to make an electrolizer?",
+  "humanDescription" : "People used to make those in their garage.",
+  "hylotlDescription" : "A crude electrolizer used to collect ^gray;Hydrogen^reset; and ^blue;Oxygen^reset;.",
+  "novakidDescription" : "While it fizz, I doubt that it would be good for the o'l head to drink this.",
+
+  "inventoryIcon" : "icon.png",
+  "orientations" : [
+    {
+      "imageLayers" : [ { "image" : "normal.png" } ],
+      "imagePosition" : [-16, 0],
+      "direction" : "left",
+      "flipImages" : true,
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ]
+    },
+    {
+      "imageLayers" : [ { "image" : "normal.png" } ],
+      "imagePosition" : [-16, 0],
+      "direction" : "right",
+      "flipImages" : false,
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ]
+    }
+  ],
+  
+  "openSounds" : [ "/sfx/objects/metalbox_open.ogg" ],
+  "closeSounds" : [ "/sfx/objects/metalbox_close.ogg" ],
+  "slotCount" : 8,
+  "uiConfig" : "/WIP/erchiusBreach/interface/crafting/electrolyzer.config",
+  "frameCooldown" : 5,
+  "autoCloseCooldown" : 3600,
+  
+  "inputNodes" : [ [-2, 0] ],
+  "outputNodes" : [ [0, 0] ],
+  "scripts" : ["/WIP/erchiusBreach/object/makeshiftElectrolizer/scripts.lua"],
+  "scriptDelta" : 5,
+  "scriptConfig" : {
+    "type" : "processor",
+    "autoRecipeSearch" : true,
+    "startPaused" : false,
+    
+    "resources" : {
+      "oxygen" : 0,
+      "hydrogen" : 0
+    },
+    "maxResources" : {
+      "oxygen" : 500,
+      "hydrogen" : 500
+    },
+    "recipes" : "/WIP/erchiusBreach/object/makeshiftElectrolizer/recipes.config",
+    "slotConfig" : {
+      "input" : [0,1,2,3],
+      "buffer" : [],
+      "output" : [4,5,6,7]
+    },
+    "node" : {
+      "resourceOutput" : 0,
+      "itemOutput" : 0
+    },
+    "recipeGroups" : [
+      "primary",
+      "secondary"
+    ]
+  },
+
+  "builder" : "/shared/darkcraft8/machinery/V0_0_1/buildscripts/D8Machinery_ResourceContainerTooltip_Buildscript.lua",
+    "buildConfig" : {
+      "resourcePath" : {
+          "resource1Amount" : "scriptStorage.scriptConfig.resources.oxygen",
+          "resource1MaxAmount" : "scriptConfig.maxResources.oxygen",
+          "resource2Amount" : "scriptStorage.scriptConfig.resources.hydrogen",
+          "resource2MaxAmount" : "scriptConfig.maxResources.hydrogen"
+      },
+      "resource1Label" : "Oxygen",
+      "resource2Label" : "Hydrogen"
+  }
+}

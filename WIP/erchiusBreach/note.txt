@@ -1,0 +1,24 @@
+erchius breach is an update with some survival horror element
+
+erchius research station, erchius mining base/colony (radiant mission world) : 
+    new type of instanced world that are mission sized dungeon that are semi random
+    similarly to ancient vault
+
+makeshift flamethrower(weapon) : new weapon use cannister filled with oxygen
+    letheia nailgun(weapon) : new weapon use core fragment as munition
+
+cannister (container item):
+    new container item used as munition for the new makeshift flamethrower
+    blueprint obtained by searching for it in the radiant missions world
+
+makeshift electrolize (machine) : 
+    consume water to produce oxygen and hydrogen
+    blueprint obtained by searching for it in the radiant missions world
+
+erchius interference (status effect):
+    player regenerate energy extremely slowly up to 15% of max,
+    made to play un tendum with new energy pack that give back some energy
+    this status effect should happen when inside of a radiant mission world of the update
+
+Todo:
+make the fire script able to reload using non empty container item

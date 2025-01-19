@@ -1,0 +1,49 @@
+{
+    "itemName" : "d8JPBAITest",
+    "price" : 50,
+    "level" : 1,
+    "maxStack" : 1,
+    "rarity" : "Common",
+    "category" : "Test Item",
+    "shortdescription" : "JPBAI",
+    "description" : "Test JPBAI",
+    "twoHanded" : true,
+    "itemTags" : [],
+    "inventoryIcon" : "/assetmissing.png",
+    "scripts" : ["/WIP/customweaponscriptrewritelol/item.lua"],
+
+    "initBehavior" : "init",
+    "stances" : {
+        "init" : {
+            "duration" : 0.1,
+            "allowRotate" : true,
+            "allowFlip" : true,
+            "transition" : "init"
+        },
+        "idle" : {
+            "allowRotate" : true,
+            "allowFlip" : true
+        }
+    },
+
+    "behaviors" : {
+        "init" : {
+            "stance" : "init",
+            "possibleOutcome" : [ { "require" : { "stance" : "idle" }, "behavior" : "idle" } ],
+            "eventOnInit" : []
+        },
+        "idle" : {
+            "stance" : "idle",
+            "possibleOutcome" : []
+        }
+    },
+
+    "builder" : "/WIP/customweaponscriptrewritelol/_item/buildscript/JPBAI/behaviorBuild.lua",
+    "buildConfig" : {
+        "behavior" : {
+            "gunFire" : "primary"
+        },
+        "inaccuracy" : 1,
+        "fireOffset" : [1, 1]
+    }
+}

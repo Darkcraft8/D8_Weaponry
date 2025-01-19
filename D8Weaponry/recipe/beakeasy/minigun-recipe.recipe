@@ -4,9 +4,6 @@
   ],
   "output" : {
     "item" : "d8Weaponry_minigun-recipe",
-    "parameters" : {
-      "description" : "Ancient firearm enhanced with ^green;refined aegisalt^reset; and ^cyan;cryonic extract^reset;."
-    },
     "count" : 1
   },
   "groups" : [ "beakeasy" ]

@@ -17,7 +17,7 @@ if type(d8WeaponryUtils) ~= "table" then
     getmetatable('').d8WeaponryUtils = d8WeaponryUtils
 end--For any external Drawable, draw before those of the weapons...
 local d8Weaponry_var = {
-    config = "replaceMe",
+    config = {},
     pixel = 0.125,
     time = 0,
     memoryClearTimer = 0,
@@ -30,8 +30,8 @@ local d8Weaponry_var = {
         }
     },
     d8WeaponryDrawableList = {},
-    weapParam = "replaceMe",
-    weapConf = "replaceMe",
+    weapParam = {},
+    weapConf = {},
     primaryConf = {},
     secondaryConf = {},
     initTimer = 2,
@@ -55,23 +55,34 @@ local d8Weaponry_var = {
 
 function init()
     vanillaInit()
+    if xsb then require "/shared/xStarboundPatch/luaLinking.lua" end
+
+    d8WeaponryUtils[player.uniqueId()] = {}
+    d8WeaponryUtils[player.uniqueId()]["drawableList"] = {}
     d8Weaponry_var.config = root.assetJson("/D8Weaponry.config")
-    if player.getProperty("d8Weaponry") then
-        d8Weaponry_var.config = util.mergeTable(d8Weaponry_var.config, player.getProperty("d8Weaponry")["renderConfig"])
+    if player.getProperty("d8Weap") then
+        d8Weaponry_var.config = util.mergeTable(d8Weaponry_var.config, player.getProperty("d8Weap")["renderCfg"] or {})
+    else
+        cfg = {}
+        cfg["renderCfg"] = d8Weaponry_var.config
+        player.setProperty("d8Weap", cfg)
     end
-    message.setHandler("d8Weaponry_updateRenderConfig", function(_, isLocal)
-        if player.getProperty("d8Weaponry") then
-            d8Weaponry_var.config = util.mergeTable(d8Weaponry_var.config, player.getProperty("d8Weaponry")["renderConfig"])
+    message.setHandler("d8Weaponry_updaterenderCfg", function(_, isLocal)
+        if player.getProperty("d8Weap") then
+            d8Weaponry_var.config = util.mergeTable(d8Weaponry_var.config, player.getProperty("d8Weap")["renderCfg"])
         end
     end)
 
     if d8Weaponry_var.config["opacityMax"] then
         d8Weaponry_var.opacityMax = d8Weaponry_var.config["opacityMax"]
+        d8Weaponry_var.opacity = d8Weaponry_var.config["opacityMax"]
     end
+    --sb.logInfo("shared %s", shared)
 end
 
 function update(dt)
     vanillaUpdate(dt)
+    if _ENV["xCallbackCheckRequest"] then xCallbackCheckRequest("d8WeapUtils:callback") end
     if d8Weaponry_var.config["customAmmoRenderer"] then
         if d8Weaponry_var.initTimer > 0 then
             d8Weaponry_var.initTimer = d8Weaponry_var.initTimer - 1
@@ -85,8 +96,8 @@ function update(dt)
             end
             d8Weaponry_var.renderIndex = 0
             d8Weaponry_var.rendereredAmount = 0
-            if d8WeaponryUtils.drawableList then
-                for name, drawable in pairs(d8WeaponryUtils.drawableList) do
+            if d8WeaponryUtils[player.uniqueId()]["drawableList"] then
+                for name, drawable in pairs(d8WeaponryUtils[player.uniqueId()]["drawableList"]) do
                     d8weaponry_drawableUpdate(drawable, name, d8Weaponry_var.renderIndex)
                 end
             end
@@ -118,7 +129,7 @@ function update(dt)
                 d8Weaponry_var.time = ( (-175) + (d8Weaponry_var.time + (12*(dt))) ) % 175
             else
                 d8Weaponry_var.time = 0
-                if d8Weaponry_var.opacity[1] > 0 or d8Weaponry_var.opacity[2] > 0 then
+                if d8Weaponry_var.opacity > 0 then
                     for index, value in ipairs(d8Weaponry_var.weapConf) do
                         local max = value[value["ammoMaxName"]]
                         local count = value[value["ammoCountName"]]
@@ -127,10 +138,12 @@ function update(dt)
                             d8Weaponry_var.memory[index]["ammoText"] = "/assetmissing.png"
                             d8Weaponry_var.memory[index]["barText"] = "/assetmissing.png"
                         end
-                        local size = d8Weaponry_var.barOffset + value.size[2]
-						
-                        d8weaponry_renderBar(0,  -size-(1*(d8Weaponry_var.rendereredAmount)), max, count, index)
-                        d8Weaponry_var.rendereredAmount = d8Weaponry_var.rendereredAmount + 1
+                        if type(value) == "table" then
+                            local size = d8Weaponry_var.barOffset + value.size[2]
+                            
+                            d8weaponry_renderBar(0,  -size-(1*(d8Weaponry_var.rendereredAmount)), max, count, index)
+                            d8Weaponry_var.rendereredAmount = d8Weaponry_var.rendereredAmount + 1
+                        end
                     end
                     if not (player.primaryHandItem() or player.altHandItem()) then
                         if d8Weaponry_var.memoryClearTimer < 0 and type(d8Weaponry_var.weapConf) == "table" then
@@ -151,18 +164,10 @@ function update(dt)
                     end
                 end
                 d8Weaponry_var.barOffset = util.clamp(d8Weaponry_var.barOffset + (4*dt), 2, 3)
-                if d8Weaponry_var.opacity[1] < d8Weaponry_var.opacityMax[1] or d8Weaponry_var.opacity[2] < d8Weaponry_var.opacityMax[2] then
-                    if d8Weaponry_var.opacity[2] == 9 then
-                        d8Weaponry_var.opacity[1] = d8Weaponry_var.opacity[1] + 4
-                        d8Weaponry_var.opacity[2] = 0
-                    else
-                        d8Weaponry_var.opacity[2] = d8Weaponry_var.opacity[2] + 4
-                    end
-                    if d8Weaponry_var.opacity[1] > d8Weaponry_var.opacityMax[1] then
-                        d8Weaponry_var.opacity[1] = d8Weaponry_var.opacityMax[1]
-                    end
-                    if (d8Weaponry_var.opacity[2] > d8Weaponry_var.opacityMax[2] and d8Weaponry_var.opacity[1] == d8Weaponry_var.opacityMax[1]) or d8Weaponry_var.opacity[2] > 9 then
-                        d8Weaponry_var.opacity[2] = d8Weaponry_var.opacityMax[2]
+                if d8Weaponry_var.opacity < d8Weaponry_var.opacityMax then
+                    d8Weaponry_var.opacity = d8Weaponry_var.opacity + 4
+                    if d8Weaponry_var.opacity > d8Weaponry_var.opacityMax then
+                        d8Weaponry_var.opacity = d8Weaponry_var.opacityMax
                     end
                 end
             else
@@ -172,28 +177,24 @@ function update(dt)
                         d8Weaponry_var.textOpacity = 0
                     end
                 end
-                if d8Weaponry_var.opacity[2] == 0 then
-                    d8Weaponry_var.opacity[1] = d8Weaponry_var.opacity[1] - 2
-                    d8Weaponry_var.opacity[2] = 9
-                else
-                    d8Weaponry_var.opacity[2] = d8Weaponry_var.opacity[2] - 2
+                if d8Weaponry_var.opacity ~= 0 then
+                    d8Weaponry_var.opacity = d8Weaponry_var.opacity - 2
                 end
-                if d8Weaponry_var.opacity[1] < 0 then
-                    d8Weaponry_var.opacity[1] = 0
-                end
-                if d8Weaponry_var.opacity[2] < 0 then
-                    d8Weaponry_var.opacity[2] = 0
+                if d8Weaponry_var.opacity < 0 then
+                    d8Weaponry_var.opacity = 0
                 end
                 d8Weaponry_var.barOffset = util.clamp(d8Weaponry_var.barOffset - (1.5*dt), 2, 4)
             end
         end
     end
 end
+
 function d8weaponry_clearMemory() -- Cleaning Scripts Memory of weapons parameters
     d8Weaponry_var.weapon["parameters"]["d8Weaponry"] = {}
     d8Weaponry_var.memory = {}
-    d8Weaponry_var.weapConf = "replaceMe"
+    d8Weaponry_var.weapConf = {}
 end
+
 function teleportOut()
     vanillaTeleportOut()
 end
@@ -312,7 +313,7 @@ end
 
 function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barText, RGB)
     local renderConf = {}
-    local useSegmentedBar = false
+    local useSegmentedBar = true
     if not amountMax then
         amountMax = 20
     end
@@ -352,6 +353,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
     if renderConf["numberOnly"] ~= nil then
         numberOnly = renderConf["numberOnly"]
     end
+    --numberOnly = true -- Setting to true until i fix the issue's with the segmented bar
     
     local sizeNumberThing = 2
     local ammoPosAMOffsetValue = (1.5 / 0.45)
@@ -389,12 +391,12 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
         
         while segmentNum > 0 do
             local drawable = {
-                image = string.format("%s:?scalenearest=%s;1?multiply=7F7F7F%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2]),
+                image = string.format("%s:?scalenearest=%s;1?multiply=7F7F7F", barText, segmentSize),
                 position = {
                     (ammoPos[1] + 0.45) + (segmentSize*segmentNum),
                     ammoPos[2]
                 },
-                color = {255,255,255},
+                color = {255,255,255, d8Weaponry_var.opacity},
                 fullbright = true,
                 rotation = 0
             }
@@ -402,13 +404,13 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                 drawable["position"][1] = (ammoPos[1] - 0.45) - (segmentSize*segmentNum)
             end
             if RGB then
-                drawable["image"] = string.format("%s:?scalenearest=%s;1?hueshift=%s?multiply=7F7F7F%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                drawable["image"] = string.format("%s:?scalenearest=%s;1?hueshift=%s?multiply=7F7F7F", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360)
             end
             if string.find(barText, ":") then
                 if RGB then
-                    drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=7F7F7F%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                    drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=7F7F7F", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360)
                 else
-                    drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=7F7F7F%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
+                    drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=7F7F7F", barText, segmentSize)
                 end
             end
             if not starExtensions or not d8Weaponry_var.config["starExtensions"]["useUiAnimator"] then
@@ -508,12 +510,12 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                     end
                 end
                 local drawable = {
-                    image = string.format("%s:?scalenearest=%s;1?multiply=FFFFFF%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2]),
+                    image = string.format("%s:?scalenearest=%s;1", barText, segmentSize),
                     position = {
                         util.clamp(slided, staticPos, slided),
                         ammoPos[2]
                     },
-                    color = {255,255,255},
+                    color = {255,255,255, d8Weaponry_var.opacity},
                     fullbright = true,
                     rotation = 0
                 }
@@ -521,14 +523,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                     drawable["position"][1] = (ammoPos[1] - 0.45) - (segmentSize*segmentNum)
                 end
                 if RGB then
-                    drawable["image"] = string.format("%s:?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
-                end
-                if string.find(barText, ":") then
-                    if RGB then
-                        drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
-                    else
-                        drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=FFFFFF%s%s", barText, segmentSize, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
-                    end
+                    drawable["image"] = drawable["image"] .. string.format("?hueshift=%s", ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360)
                 end
                 if not starExtensions or not d8Weaponry_var.config["starExtensions"]["useUiAnimator"] then
                     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
@@ -590,12 +585,12 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
             local staticPos = ((ammoPos[1] + 0.2) + (segmentSize))
             local slided = staticPos
             local drawable = {
-                image = string.format("%s:?crop;0;0;1;7?scalenearest=%s;1?multiply=FFFFFF%s%s?crop;0;0;%s;7", barText, size, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2], lastCullPercent),
+                image = string.format("%s?crop;0;0;1;7?scalenearest=%s;1?crop;0;0;%s;7", barText, size, lastCullPercent),
                 position = {
                     staticPos,
                     ammoPos[2]-0.4
                 },
-                color = {255,255,255},
+                color = {255,255,255, d8Weaponry_var.opacity},
                 fullbright = true,
                 centered = false,
                 rotation = 0
@@ -604,14 +599,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                 drawable["position"][1] = (ammoPos[1] - 0.2) - (segmentSize)
             end
             if RGB then
-                drawable["image"] = string.format("%s:?crop;0;0;1;7?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s?crop;0;0;%s;7", barText, size, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2], lastCullPercent)
-            end
-            if string.find(barText, ":") then
-                if RGB then
-                    drawable["image"] = string.format("%s?scalenearest=%s;1?hueshift=%s?multiply=FFFFFF%s%s", barText, segmentSize, ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
-                else
-                    drawable["image"] = string.format("%s?crop;0;0;1;7?scalenearest=%s;1?multiply=FFFFFF%s%s?crop;0;0;%s;7", barText, size, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2], lastCullPercent)
-                end
+                drawable["image"] = drawable["image"] .. string.format("?hueshift=%s", ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360)
             end
             localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
 
@@ -625,15 +613,12 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
     end
     
     local drawable = {
-        image = string.format("%s:?multiply=FFFFFF%s%s", ammoText, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2]),
+        image = ammoText,
         position = ammoPos,
-        color = {255,255,255},
+        color = {255,255,255, d8Weaponry_var.opacity},
         fullbright = true,
         rotation = ((math.pi/180) * Rotate)
     }
-    if string.find(ammoText, ":") then
-        drawable["image"] = string.format("%s?multiply=FFFFFF%s%s", ammoText, d8Weaponry_var.opacity[1], d8Weaponry_var.opacity[2])
-    end
     if not starExtensions or not d8Weaponry_var.config["starExtensions"]["useUiAnimator"] then
         localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     elseif not starExtensions then
@@ -676,7 +661,6 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
 
     if count > 20 and not numberOnly then
         d8weaponry_outpostSignNumber(count, ammoPos, d8Weaponry_var.opacity, segmentSize)
-        --d8weaponry_particleNumber(textOpacity, count, ammoPos, segmentSize)
     end
     
     d8Weaponry_var.memory[slot]["lastAmmoCount"] = util.clamp(count, 0, 20)
@@ -687,7 +671,6 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
     if complete then
         number = math.ceil(count)
     end
-    local numberTable = {}
     
     local digit =    number % 10
     number = number // 10
@@ -703,12 +686,12 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
         segmentOffset = 1
     end
     local drawable = {
-        image = string.format("/objects/outpost/number%s/icon.png:?multiply=FFFFFF%s%s?brightness=100", thousand, opacity[1], opacity[2]),
+        image = string.format("/objects/outpost/number%s/icon.png:?brightness=100", thousand),
         position = {
             (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*d8Weaponry_var.pixel),
             ammoPos[2]
         },
-        color = {255,255,255},
+        color = {255,255,255, d8Weaponry_var.opacity},
         fullbright = true,
         rotation = 0,
         scale = 0.5
@@ -716,12 +699,12 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     numberOffset = 8
     drawable = {
-        image = string.format("/objects/outpost/number%s/icon.png:?multiply=FFFFFF%s%s?brightness=100", hundred, opacity[1], opacity[2]),
+        image = string.format("/objects/outpost/number%s/icon.png:?brightness=100", hundred),
         position = {
             (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*d8Weaponry_var.pixel),
             ammoPos[2]
         },
-        color = {255,255,255},
+        color = {255,255,255, d8Weaponry_var.opacity},
         fullbright = true,
         rotation = 0,
         scale = 0.5
@@ -729,12 +712,12 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     numberOffset = 16
     drawable = {
-        image = string.format("/objects/outpost/number%s/icon.png:?multiply=FFFFFF%s%s?brightness=100", ten, opacity[1], opacity[2]),
+        image = string.format("/objects/outpost/number%s/icon.png:?brightness=100", ten),
         position = {
             (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*d8Weaponry_var.pixel),
             ammoPos[2]
         },
-        color = {255,255,255},
+        color = {255,255,255, d8Weaponry_var.opacity},
         fullbright = true,
         rotation = 0,
         scale = 0.5
@@ -742,43 +725,17 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     numberOffset = 24
     drawable = {
-        image = string.format("/objects/outpost/number%s/icon.png:?multiply=FFFFFF%s%s?brightness=100", digit, opacity[1], opacity[2]),
+        image = string.format("/objects/outpost/number%s/icon.png:?brightness=100", digit),
         position = {
             (ammoPos[1] + 0.45) + segmentOffset + (numberOffset*d8Weaponry_var.pixel),
             ammoPos[2]
         },
-        color = {255,255,255},
+        color = {255,255,255, d8Weaponry_var.opacity},
         fullbright = true,
         rotation = 0,
         scale = 0.5
     }
     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
-end
-
-function d8weaponry_particleNumber(textOpacity, count, ammoPos, segmentSize)
-    local particle = {
-        type = "text",
-        size = 0.5,
-        color = {0, 255, 0, textOpacity},
-        fade = 0.0,
-        initialVelocity = {0, 0.0},
-        finalVelocity = {0, 0.0},
-        approach = {0, 0},
-        timeToLive = 0.015,
-        layer = "front",
-        string = string.format("x%s", count-20),
-        variance = {
-        }
-    }
-    local ceiltest = (math.ceil(count-20) == count-20)
-    if not ceiltest then
-        particle["string"] = string.format("x~%s", math.ceil(count-20))
-    end
-    local playerPos = world.entityPosition(player.id())
-    localAnimator.spawnParticle(particle,{
-        playerPos[1] + (ammoPos[1] + 0.45) + (segmentSize*23),
-        playerPos[2] + ammoPos[2]
-    })
 end
 
 function d8weaponry_drawableUpdate(drawable, name, pos)--Way less annoing to handles effect/stat script in the renderer instead of their own scripts... maybe it not a good idea
@@ -811,6 +768,10 @@ function d8weaponry_drawableUpdate(drawable, name, pos)--Way less annoing to han
         table.insert(d8Weaponry_var.weapon["parameters"]["d8Weaponry"], pos, pendingRendering)
     end
     if drawable.isBuilt then
+        if drawable.keepPos then
+            localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
+            return 
+        end
         local size = d8Weaponry_var.barOffset + drawable.size[2]
         drawable.position[2] = drawable.position[2] -size-(1*(d8Weaponry_var.renderIndex))
         localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
@@ -819,25 +780,53 @@ function d8weaponry_drawableUpdate(drawable, name, pos)--Way less annoing to han
     end
 end
 
-function d8WeaponryUtils:add(drawable)
-    if type(drawable) ~= "table" then sb.logError("[d8WeaponryUtils:add] Following Drawable isn't a table\n"..sb.printJson(drawable, 1)) return end
-    if not drawable.name then sb.logError("[d8WeaponryUtils:remove] Following Drawable lack a name"..sb.printJson(drawable, 1)) return end
-    d8WeaponryUtils.drawableList[drawable.name] = drawable
+function xCallback(requestCfg)
+    local drawable, Uuid = requestCfg.drawable, requestCfg.Uuid
+    if requestCfg.callback == "send" then
+        if d8WeaponryUtils.drawableList[drawable.name] then
+            d8WeaponryUtils:update(drawable, Uuid)
+        else
+            d8WeaponryUtils:add(drawable, Uuid)
+        end
+    elseif requestCfg.callback == "remove" then
+        d8WeaponryUtils:remove(drawable, Uuid)
+    elseif requestCfg.callback == "updateCfg" then
+        d8WeaponryUtils:updateCfg(Uuid)
+    end
 end
 
-function d8WeaponryUtils:remove(drawable)
+function d8WeaponryUtils:add(drawable, Uuid)
+    if Uuid ~= player.uniqueId() then return end
+    if type(drawable) ~= "table" then sb.logError("[d8WeaponryUtils:add] Following Drawable isn't a table\n"..sb.printJson(drawable, 1)) return end
+    if not drawable.name then sb.logError("[d8WeaponryUtils:remove] Following Drawable lack a name"..sb.printJson(drawable, 1)) return end
+    d8WeaponryUtils[player.uniqueId()]["drawableList"][drawable.name] = drawable
+end
+
+function d8WeaponryUtils:remove(drawable, Uuid)
+    if Uuid ~= player.uniqueId() then return end
+    if type(drawable) == "string" then drawable = {name = drawable} end
     if type(drawable) ~= "table" then sb.logError("[d8WeaponryUtils:remove] Following Drawable isn't a table\n"..sb.printJson(drawable, 1)) return end
     if not drawable.name then sb.logError("[d8WeaponryUtils:remove] Following Drawable lack a name"..sb.printJson(drawable, 1)) return end
     local newList = {}
-    for name, drawable in pairs(d8WeaponryUtils.drawableList) do
+    for name, drawable in pairs(d8WeaponryUtils[player.uniqueId()]["drawableList"]) do
         if name ~= drawable.name then
             newList[name] = drawable
         end
     end
-    d8WeaponryUtils.drawableList = newList
+    d8WeaponryUtils[player.uniqueId()]["drawableList"] = newList
 end
 
-function d8WeaponryUtils:update(drawable)
+function d8WeaponryUtils:update(drawable, Uuid)
+    if Uuid ~= player.uniqueId() then return end
     self:remove(drawable)
     self:add(drawable)
+end
+
+function d8WeaponryUtils:updateCfg(Uuid)
+    if player.getProperty("d8Weap") and player.uniqueId() == Uuid then
+        d8Weaponry_var.config = util.mergeTable(d8Weaponry_var.config, player.getProperty("d8Weap")["renderCfg"])
+        
+        d8Weaponry_var.opacityMax = d8Weaponry_var.config["opacityMax"]
+        d8Weaponry_var.opacity = d8Weaponry_var.config["opacityMax"]
+    end
 end

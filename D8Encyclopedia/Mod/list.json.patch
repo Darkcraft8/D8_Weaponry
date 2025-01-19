@@ -1,0 +1,17 @@
+[
+    {
+      "op": "add",
+      "path": "/-",
+      "value": "/D8Encyclopedia/Mod/D8Weap_GeneralInfo.config"
+    },
+    {
+      "op": "add",
+      "path": "/-",
+      "value": "/D8Encyclopedia/Mod/D8Weap_Weapon.config"
+    },
+    {
+      "op": "add",
+      "path": "/-",
+      "value": "/D8Encyclopedia/Mod/D8Weap_Munition.config"
+    }
+]

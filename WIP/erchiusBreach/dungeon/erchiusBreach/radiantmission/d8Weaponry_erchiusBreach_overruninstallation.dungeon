@@ -1,0 +1,161 @@
+{
+  "metadata" : {
+    "name" : "d8Weaponry_erchiusBreach_overruninstallation",
+    "species" : "generic",
+    "rules" : [
+    ],
+    "protected" : false,
+    "breathable" : true,
+    "anchor" : [ "entrance_1", "entrance_2", "entrance_3" ],
+    "gravity" : 65,
+    "maxRadius" : 1000000,
+    "maxParts" : 50
+  },
+
+  "parts" : [
+    {
+      "name" : "entrance_1",
+      "rules" : [
+        [ "maxSpawnCount", [1] ],
+        [ "doNotCombineWith", [ "entrance_1", "entrance_2", "entrance_3" ] ]
+      ],
+      "def" : [ "tmx", "entrance_1.json" ],
+      "chance" : 1000
+    },
+    {
+      "name" : "entrance_2",
+      "rules" : [
+        [ "maxSpawnCount", [1] ],
+        [ "doNotCombineWith", [ "entrance_1", "entrance_2", "entrance_3" ] ]
+      ],
+      "def" : [ "tmx", "entrance_2.json" ],
+      "chance" : 1000
+    },
+    {
+      "name" : "entrance_3",
+      "rules" : [
+        [ "maxSpawnCount", [1] ],
+        [ "doNotCombineWith", [ "entrance_1", "entrance_2", "entrance_3" ] ]
+      ],
+      "def" : [ "tmx", "entrance_3.json" ],
+      "chance" : 1000
+    },
+
+    {
+      "name" : "door",
+      "rules" : [
+        [ "ignorePartMaximumRule" ],
+        [ "doNotConnectToPart" , [ "door" ]]
+      ],
+      "def" : [ "tmx", "door.json" ],
+      "chance" : 450
+    },
+    {
+      "name" : "door_horizontal",
+      "rules" : [
+        [ "ignorePartMaximumRule" ],
+        [ "doNotConnectToPart" , [ "door_horizontal" ]]
+      ],
+      "def" : [ "tmx", "door_horizontal.json" ],
+      "chance" : 450
+    },
+
+    {
+      "name" : "corridor_1_1",
+      "rules" : [
+        [ "maxSpawnCount", [4] ],
+        [ "doNotConnectToPart" , [ "room_1_1", "caffeteria", "sleepingQuarter", "corridor_1_1", "corridor_2_1", "corridor_2_2", "corridor_3_1", "entrance_1", "entrance_2", "entrance_3" ]]
+      ],
+      "def" : [ "tmx", "corridor_1_1.json" ],
+      "chance" : 500
+    },
+    {
+      "name" : "corridor_2_1",
+      "rules" : [
+        [ "maxSpawnCount", [4] ],
+        [ "doNotConnectToPart" , [ "room_1_1", "caffeteria", "sleepingQuarter", "corridor_1_1", "corridor_2_1", "corridor_2_2", "corridor_3_1", "entrance_1", "entrance_2", "entrance_3" ]]
+      ],
+      "def" : [ "tmx", "corridor_2_1.json" ],
+      "chance" : 500
+    },
+    {
+      "name" : "corridor_2_2",
+      "rules" : [
+        [ "maxSpawnCount", [4] ],
+        [ "doNotConnectToPart" , [ "room_1_1", "caffeteria", "sleepingQuarter", "corridor_1_1", "corridor_2_1", "corridor_2_2", "corridor_3_1", "entrance_1", "entrance_2", "entrance_3" ]]
+      ],
+      "def" : [ "tmx", "corridor_2_2.json" ],
+      "chance" : 250
+    },
+    {
+      "name" : "corridor_3_1",
+      "rules" : [
+        [ "maxSpawnCount", [4] ],
+        [ "doNotConnectToPart" , [ "room_1_1", "caffeteria", "sleepingQuarter", "corridor_1_1", "corridor_2_1", "corridor_2_2", "corridor_3_1", "entrance_1", "entrance_2", "entrance_3" ]]
+      ],
+      "def" : [ "tmx", "corridor_3_1.json" ],
+      "chance" : 500
+    },
+    {
+      "name" : "caffeteria",
+      "rules" : [
+        [ "maxSpawnCount", [4] ],
+        [ "doNotConnectToPart" , [ "room_1_1", "caffeteria", "sleepingQuarter", "corridor_1_1", "corridor_2_1", "corridor_2_2", "corridor_3_1", "entrance_1", "entrance_2", "entrance_3" ]]
+      ],
+      "def" : [ "tmx", "caffeteria.json" ],
+      "chance" : 500
+    },
+    {
+      "name" : "sleepingQuarter",
+      "rules" : [
+        [ "maxSpawnCount", [4] ],
+        [ "doNotConnectToPart" , [ "room_1_1", "caffeteria", "sleepingQuarter", "corridor_1_1", "corridor_2_1", "corridor_2_2", "corridor_3_1", "entrance_1", "entrance_2", "entrance_3" ]]
+      ],
+      "def" : [ "tmx", "sleepingQuarter.json" ],
+      "chance" : 500
+    },
+
+    {
+      "name" : "room_1_1",
+      "rules" : [
+        [ "maxSpawnCount", [4] ],
+        [ "doNotConnectToPart" , [ "room_1_1", "caffeteria", "sleepingQuarter", "corridor_1_1", "corridor_2_1", "corridor_2_2", "corridor_3_1", "entrance_1", "entrance_2", "entrance_3" ]]
+      ],
+      "def" : [ "tmx", "room_1_1.json" ],
+      "chance" : 500
+    },
+
+    {
+      "name" : "end_left",
+      "rules" : [
+        [ "ignorePartMaximumRule" ]
+      ],
+      "def" : [ "tmx", "end_left.json" ],
+      "chance" : 0
+    },
+    {
+      "name" : "end_right",
+      "rules" : [
+        [ "ignorePartMaximumRule" ]
+      ],
+      "def" : [ "tmx", "end_right.json" ],
+      "chance" : 0
+    },
+    {
+      "name" : "end_up",
+      "rules" : [
+        [ "ignorePartMaximumRule" ]
+      ],
+      "def" : [ "tmx", "end_up.json" ],
+      "chance" : 0
+    },
+    {
+      "name" : "end_down",
+      "rules" : [
+        [ "ignorePartMaximumRule" ]
+      ],
+      "def" : [ "tmx", "end_down.json" ],
+      "chance" : 0
+    }
+  ]
+}

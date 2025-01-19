@@ -1,0 +1,16 @@
+{
+    "itemName" : "d8Weaponry_woodenbolt",
+    "price" : 1,
+    "level" : 1,
+    "maxStack" : 5000,
+    "rarity" : "Common",
+    "category" : "d8Weaponry_munition",
+    "description" : "a wooden bolt, watch out for splinter's!",
+    "shortdescription" : "Wooden bolt",
+    "itemTags" : ["munition"],
+    "inventoryIcon" : "/projectiles/guns/arrows/woodenbolt/icon.png",
+
+    "projectileType" : "woodenbolt",
+    "projectileCount" : 1,
+    "projectileParameter" : {}
+}

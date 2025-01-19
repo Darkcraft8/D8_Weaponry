@@ -1,0 +1,45 @@
+{
+  "objectName" : "d8weaponry_letheiawaterdispencer",
+  "colonyTags" : [],
+  "printable" : false,
+  "rarity" : "Uncommon",
+  "shortdescription" : "Letheia Water Dispencer",
+  "description" : "A Letheia brand water dispencer.",
+  "category" : "furniture",
+  "price" : 15,
+
+  "tooltipFields" : {
+    "rarityLabel" : "^green;Uncommon"
+  },
+  
+  "apexDescription" : "Cool, clear water. Refreshing!",
+  "avianDescription" : "I could do with a drink.",
+  "floranDescription" : "Big water bottle is sstuck to the machine... Too bad.",
+  "glitchDescription" : "Observant. A water dispencer. It keeps a larger amount of water cool.",
+  "humanDescription" : "I'm so thirsty, I could drink a horse. If the horse was made of water.",
+  "hylotlDescription" : "A small container of water. To see it in such short supply makes me long for home.",
+  "novakidDescription" : "A water dispenser. Useful, if you're thirsty.",
+
+  "inventoryIcon" : "icon.png",
+  "orientations" : [
+    {
+      "imageLayers" : [ { "image" : "normal.png" } ],
+      "imagePosition" : [-8, 0],
+      "direction" : "left",
+      "flipImages" : true,
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ]
+    },
+    {
+      "imageLayers" : [ { "image" : "normal.png" } ],
+      "imagePosition" : [-8, 0],
+      "direction" : "right",
+      "flipImages" : false,
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ]
+    }
+  ]
+  
+}

@@ -1,0 +1,14 @@
+[
+	[
+		{
+			"op": "add",
+			"path": "/starterTreasure/0/1/fill/-",
+			"value": {
+				"item": [
+					"d8Weaponry_guide-codex",
+					1
+				]
+			}
+		}
+	]
+]

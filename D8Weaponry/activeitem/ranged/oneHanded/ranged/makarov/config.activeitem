@@ -3,8 +3,8 @@
     "price" : 580,
     "maxStack" : 1,
     "rarity" : "Uncommon",
-    "description" : "A large handgun that packs a punch.",
     "shortdescription" : "Makarov",
+    "description" : "A large handgun that packs a punch.",
     "category" : "pistol",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : false,
@@ -298,6 +298,7 @@
                 "duration" : 0.2,
                 "weaponRotation" : -25,
                 "armRotation" : -20,
+                "aimAngle" : 0,
                 "weaponOffset" : [-1.15, 0],
                 "frontArmFrame" : "rotation?crop;3;0;43;43",
                 "backArmFrame" : "run.5",
@@ -404,8 +405,7 @@
             "ammoCountName" : "magasin",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
             "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-			"rotation" : -90,
-            "numberOnly" : true
+			"rotation" : -90
         }
     ],
     "magasinCapacity" : 12,

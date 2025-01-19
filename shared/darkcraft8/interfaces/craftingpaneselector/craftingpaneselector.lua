@@ -327,19 +327,49 @@ function createTooltip(mousePosition)
         
         local inputs = part["tooltip"]
         tooltip = config.getParameter("tooltipLayout")
-        if part["tooltip"] then
-            local descriptionText = string.gsub(inputs["description"], '^%s*(.-)%s*$', '%1')
-            local stringLength = string.len(descriptionText)
-            local imageLength = 60
-            local imageHeight = 14
-            local imageTexturePath = "/interface/rightBarTooltipBg.png?crop;1;1;2;13?scalenearest=%s;1?border=1;ffffff;ffffff"
-            tooltip["background"]["fileBody"] = string.format(imageTexturePath, (stringLength * 4) + 12)
-            tooltip.descriptionLabel.value = descriptionText
-            tooltip.descriptionLabel.position[1] = (( (stringLength * 4) + 15 ) / 2)
-        end
+        if part["tooltip"] then return scaledTooltipText(inputs["description"]) end
     end
 
     return tooltip
+end
+
+function scaledTooltipText(tooltipText)
+    if tooltipText then
+        local tooltip = {
+            panefeature = {
+                type = "panefeature",
+                offset = {-5, 0}
+            },
+    
+            background = {
+                type = "background",
+                fileHeader = "",
+                fileBody = "/interface/rightBarTooltipBg.png?scalenearest=2;1?crop;0;0;118;14",
+                fileFooter = ""
+            },
+            
+            descriptionLabel = {
+                type = "label",
+                position = {60, 11},
+                hAnchor = "mid",
+                vAnchor = "top",
+                zlevel = 1
+            }
+        }
+        local stringLength = string.len(string.gsub(tooltipText, '^%s*(.-)%s*$', '%1'))
+        local imageLength = 60 - 1
+        local imageHeight = 14 - 1
+        local imageTexturePath = "/interface/rightBarTooltipBg.png?crop;1;1;2;2?scalenearest=%s;%s?border=1;ffffff;ffffff"
+        local extendedLength = 2 + (4.2 * (stringLength))
+        local extendedHeight = imageHeight
+        if extendedLength < imageLength then extendedLength = imageLength end
+        tooltip["background"]["fileBody"] = string.format(imageTexturePath, extendedLength, extendedHeight)
+        tooltip.descriptionLabel.value = tooltipText
+        tooltip.descriptionLabel.position[1] = 1 + (extendedLength / 2)
+        return tooltip
+    end
+    
+    return
 end
 
 function uninit()

@@ -5,7 +5,7 @@
     "rarity" : "Uncommon",
     "description" : "A large handgun that packs a punch.",
     "shortdescription" : "Titanium Machine Pistol",
-    "category" : "Magnum",
+    "category" : "d8weaponry_machinepistol",
     "tooltipKind" : "d8Weaponry_gun",
     "twoHanded" : false,
     "itemTags" : ["weapon","ranged","pistol"],
@@ -380,8 +380,7 @@
             "ammoCountName" : "magasin",
             "barText" : "/projectiles/guns/bullets/bullet-1/icon.png",
             "ammoText" : "/projectiles/guns/bullets/bullet-1/icon.png",
-			"rotation" : -90,
-            "numberOnly" : true
+			"rotation" : -90
         }
     ],
     "magasinCapacity" : 57,

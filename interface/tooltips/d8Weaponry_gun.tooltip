@@ -18,56 +18,56 @@
   },
   "altAbilityTitleLabel" : {
     "type" : "label",
-    "position" : [9, 41],
+    "position" : [9, 80],
     "hAnchor" : "left",
     "value" : ""
   },
   "altAbilityLabel" : {
     "type" : "label",
-    "position" : [180, 41],
+    "position" : [180, 80],
     "hAnchor" : "right",
     "centered" : true,
     "wrapWidth" : 126
   },
   "speedTitleLabel" : {
     "type" : "label",
-    "position" : [9, 59],
+    "position" : [9, 98],
     "hAnchor" : "left",
     "value" : "Rate of Fire:"
   },
   "speedLabel" : {
     "type" : "label",
-    "position" : [180, 59],
+    "position" : [180, 98],
     "hAnchor" : "right",
     "wrapWidth" : 126
   },
   "damagePerShotTitleLabel" : {
     "type" : "label",
-    "position" : [9, 68],
+    "position" : [9, 107],
     "hAnchor" : "left",
     "value" : "Damage Per Shot:"
   },
   "damagePerShotLabel" : {
     "type" : "label",
-    "position" : [180, 68],
+    "position" : [180, 107],
     "hAnchor" : "right",
     "wrapWidth" : 126
   },
   "energyPerShotTitleLabel" : {
     "type" : "label",
-    "position" : [9, 50],
+    "position" : [9, 89],
     "hAnchor" : "left",
     "value" : "Energy Per Shot:"
   },
   "energyPerShotLabel" : {
     "type" : "label",
-    "position" : [180, 50],
+    "position" : [180, 89],
     "hAnchor" : "right",
     "wrapWidth" : 126
   },
   "handednessLabel" : {
     "type" : "label",
-    "position" : [56, 134],
+    "position" : [61, 173],
     "hAnchor" : "right",
     "centered" : true,
     "wrapWidth" : 126
@@ -81,7 +81,7 @@
   },
   "damageKindImage" : {
     "type" : "image",
-    "position" : [120, 90],
+    "position" : [60, 127],
     "file" : "",
     "centered" : true,
     "maxSize" : [16, 16],
@@ -89,81 +89,94 @@
   },
   "objectImage" : {
     "type" : "image",
-    "position" : [37, 106],
+    "position" : [37, 145],
     "file" : "",
     "centered" : true,
     "maxSize" : [60, 60],
     "minSize" : [60, 60]
   },
 
+  "magazineImage" : {
+    "type" : "image",
+    "position" : [71, 118.5],
+    "file" : ""
+  },
   "ammo1NameLabel" : {
     "type" : "label",
-    "position" : [71, 134],
+    "position" : [71, 173],
     "hAnchor" : "left"
   },
   "ammo1CapacityTitleLabel" : {
     "type" : "label",
-    "position" : [71, 124],
+    "position" : [71, 163],
     "hAnchor" : "left"
   },
   "ammo1CapacityLabel" : {
     "type" : "label",
-    "position" : [180, 124],
+    "position" : [180, 163],
     "hAnchor" : "right",
     "wrapWidth" : 126
   },
   "ammo1TitleLabel" : {
     "type" : "label",
-    "position" : [71, 114],
+    "position" : [71, 153],
     "hAnchor" : "left"
   },
   "ammo1Label" : {
     "type" : "label",
-    "position" : [180, 114],
+    "position" : [180, 153],
     "hAnchor" : "right",
     "wrapWidth" : 126
   },
 
   "ammo2NameLabel" : {
     "type" : "label",
-    "position" : [71, 104],
+    "position" : [71, 143],
     "hAnchor" : "left"
   },
   "ammo2CapacityTitleLabel" : {
     "type" : "label",
-    "position" : [71, 94],
+    "position" : [71, 133],
     "hAnchor" : "left"
   },
   "ammo2CapacityLabel" : {
     "type" : "label",
-    "position" : [180, 94],
+    "position" : [180, 133],
     "hAnchor" : "right",
     "wrapWidth" : 126
   },
   "ammo2TitleLabel" : {
     "type" : "label",
-    "position" : [71, 84],
+    "position" : [71, 123],
     "hAnchor" : "left"
   },
   "ammo2Label" : {
     "type" : "label",
-    "position" : [180, 84],
+    "position" : [180, 123],
     "hAnchor" : "right",
     "wrapWidth" : 126
   },
   
   "levelLabel" : {
     "type" : "label",
-    "position" : [135, 163],
+    "position" : [135, 202],
     "hAnchor" : "left",
     "centered" : true,
     "wrapWidth" : 122
   },
   "reloadLabel" : {
     "type" : "label",
-    "position" : [135, 153],
+    "position" : [135, 192],
     "hAnchor" : "left",
     "centered" : true,
     "wrapWidth" : 122
+  },
+  
+  "descriptionLabel" : {
+    "type" : "label",
+    "position" : [9, 78],
+    "hAnchor" : "left",
+    "vAnchor" : "top",
+    "wrapWidth" : 175
   }
 }
