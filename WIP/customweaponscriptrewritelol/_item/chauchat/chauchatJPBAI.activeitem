@@ -878,5 +878,6 @@
         {"name" : "d8Weaponry_standardbullet", "count" : 20}
     ],
 
+
     "builder" : "/WIP/customweaponscriptrewritelol/_item/buildscript/JPBAI/behaviorBuild.lua"
 }

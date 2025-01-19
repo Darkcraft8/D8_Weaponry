@@ -23,14 +23,6 @@
       }
     },
 
-    
-    {
-      "op": "add",
-      "path": "/defaultBlueprints/tier1/-",
-      "value": {
-        "item": "d8Weaponry_woodenbolt"
-      }
-    },
     {
       "op": "add",
       "path": "/defaultBlueprints/tier1/-",
@@ -52,14 +44,7 @@
         "item": "d8Weaponry_shotgunshell"
       }
     },
-
-    {
-      "op": "add",
-      "path": "/defaultBlueprints/tier1/-",
-      "value": {
-        "item": "d8Weaponry_medievalWeaponPack1_crossbow"
-      }
-    },
+    
     {
       "op": "add",
       "path": "/defaultBlueprints/tier1/-",
@@ -149,7 +134,15 @@
           "shortdescription" : "Gunpowder"
         } 
       }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item" : "d8Weaponry_guide-codex"
+      }
     }
+    
   ],
 
   [
@@ -157,22 +150,6 @@
       "op": "add",
       "path": "/inventoryFilters/autoAddToCustomBar/categoryBlacklist/-",
       "value": "d8Weaponry_containerItem"
-    }
-  ],
-  [
-    {
-      "op": "add",
-      "path": "/defaultBlueprints/tier1/-",
-      "value": {
-        "item": "d8Weaponry_JPBAI_chauchat"
-      }
-    },
-    {
-      "op": "add",
-      "path": "/defaultBlueprints/tier1/-",
-      "value": {
-        "item": "d8Weaponry_JPBAI_glock"
-      }
     }
   ]
 ]

@@ -1,7 +1,7 @@
 {
   "id" : "d8Weaponry_guide",
   "title" : "Guide des Armes",
-  "description" : "This book contain information about firearms!!... yet it seem as if it was made by a ^#ffa100;compagny that doesn't exist?!^reset;",
+  "description" : "This book contain information about firearm(s)... yet it seem as if it was made by a ^#ffa100;compagny that doesn't exist?!^reset;",
   "icon" : "d8Weaponry_guide.png",
   "contentPages" : [
 "Table du Contenu
@@ -28,7 +28,6 @@ Oui, grace a cette table est des matériaux et outils...",
     "rarity" : "Legendary",
     "price" : 60,
     "learnBlueprintsOnPickup" : [
-      "d8Weaponry_guide-codex",
       "d8Weaponry_guide_translation-codex"
     ],
     "tooltipFields" : {

@@ -22,12 +22,8 @@ function setupBehavior(config, parameters, behaviorName, fireType)
             local param = fetchCfg(cfg, path)
             local overrideValue = configParameter("buildConfig")[override]
 
-            --sb.logInfo("path %s", path)
-            --sb.logInfo("param %s", param)
-            --sb.logInfo("overrideValue %s", overrideValue)
             if param then
                 setCfg(cfg, path, overrideValue)
-                --sb.logInfo("new value %s", fetchCfg(cfg, path))
             end
         end
     end

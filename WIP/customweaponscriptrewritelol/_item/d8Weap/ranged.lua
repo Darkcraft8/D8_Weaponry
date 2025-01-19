@@ -4,6 +4,7 @@ require("/WIP/customweaponscriptrewritelol/_item/d8Weap/localRenderUtil.lua")
 d8WeapItem = {}
 function d8WeapItem.init()
     d8WeapItem.magazine = config.getParameter("magazine", {})
+    d8WeapItem.reloadOverride = config.getParameter("reloadOverride")
     d8WeapItem.curMagazine = config.getParameter("curMagazine", {})
     d8WeapItem.magazineCapacity = config.getParameter("magazineCapacity", 1)
     table.insert(updateFunc, "d8WeapItem.update")
@@ -29,15 +30,7 @@ end
 
 function d8WeapItem.update(dt, fireMode, isShiftHeld, currentMove)
     if player then
-        local updateToolTip = function(curMagazine)
-            local tooltipFields = config.getParameter("tooltipFields", {})
-            local newImage = d8Weap_Magazine_Image(curMagazine or {})
-            if newImage ~= tooltipFields.magazineImage then
-                tooltipFields.magazineImage = newImage
-                activeItem.setInstanceValue("tooltipFields", tooltipFields)
-            end
-        end
-        updateToolTip(d8WeapItem.curMagazine)
+        d8WeapItem.updateTooltip()
     end
 
     if _ENV["xCallbackSendRequest"] and player then
@@ -64,13 +57,13 @@ function d8WeapItem.consumeMag()
     if world.entityType(activeItem.ownerEntityId()) ~= "player" then return true end
     if (player.isAdmin() or config.getParameter("admin", config.getParameter("d8WeapMods.infAmmo", false))) then return true end
     --sb.logInfo("%s", Weapon.canConsumeItem(d8WeapItem.magazine))
-    if Weapon.canConsumeItem(d8WeapItem.magazine) then return Weapon.consumeItem(d8WeapItem.magazine) else return false end
+    if Weapon.canConsumeItem(d8WeapItem.reloadOverride or d8WeapItem.magazine) then return Weapon.consumeItem(d8WeapItem.reloadOverride or d8WeapItem.magazine) else return false end
 end
 
 function d8WeapItem.canConsumeMag()
     if world.entityType(activeItem.ownerEntityId()) ~= "player" then return true end
     if (player.isAdmin() or config.getParameter("admin", config.getParameter("d8WeapMods.infAmmo", false))) then return true end
-    return Weapon.canConsumeItem(d8WeapItem.magazine)
+    return Weapon.canConsumeItem(d8WeapItem.reloadOverride or d8WeapItem.magazine)
 end
 
 function d8WeapItem.shotMunition(args)
@@ -82,9 +75,9 @@ function d8WeapItem.shotMunition(args)
         return default
     end
 
-    args.type = configParam("projectileType")
-    args.count = configParam("projectileCount", 1)
-    args.parameter = configParam("projectileParameter", {})
+    args.type = args.type or configParam("projectileType")
+    args.count = args.count or configParam("projectileCount", 1)
+    args.parameter = args.parameter or configParam("projectileParameter", {})
     if not args.type then return end
     behavior_projectile(args)
     d8WeapItem.consumeMunition()
@@ -195,9 +188,48 @@ function d8WeapItem.setParameterAsTag(args)
 end
 
 function d8WeapItem.munitionScaling(args) -- similar to damagePerShot except it take the projectile info into account
+    if not args.type then return end
     local projectileCfg = sb.jsonMerge(root.projectileConfig(args.type), args.parameters or {})
     local args = args
     args.baseDamage = args.damage or (projectileCfg.power * 0.25) * (projectileCfg.speed * 0.065)
     args.knockback = (projectileCfg.speed * 0.1) + (args.baseDamage * 0.25)
     return Weapon.damagePerShot(args)
+end
+
+function d8WeapItem.updateTooltip()
+    local tooltipFields = config.getParameter("tooltipFields", {})
+    local damageTable = {}
+    local damageValue = 0
+    for _, munition in ipairs(config.getParameter("magazine", {})) do
+        local munition = root.itemConfig(munition)
+        local configParam = function(parameter)
+            if munition.parameters[parameter] then return munition.parameters[parameter] end
+            if munition.config[parameter] then return munition.config[parameter] end
+            return default
+        end
+        local args = {}
+        args.type = configParam("projectileType")
+        args.count = configParam("projectileCount", 1)
+        args.parameter = configParam("projectileParameter", {})
+        if args.type then
+            table.insert(damageTable, d8WeapItem.munitionScaling(args))
+        end
+    end
+    for _, damage in ipairs(damageTable) do 
+        local diff = damage - damageValue
+        damageValue = damageValue + diff
+    end
+    if tooltipFields.damagePerShotLabel ~= "~"..util.round(damageValue) then
+        tooltipFields.damagePerShotLabel = "~"..util.round(damageValue)
+        activeItem.setInstanceValue("tooltipFields", tooltipFields)
+    end
+    local updateToolTip = function(curMagazine)
+        local tooltipFields = config.getParameter("tooltipFields", {})
+        local newImage = d8Weap_Magazine_Image(curMagazine or {})
+        if newImage ~= tooltipFields.magazineImage then
+            tooltipFields.magazineImage = newImage
+            activeItem.setInstanceValue("tooltipFields", tooltipFields)
+        end
+    end
+    updateToolTip(d8WeapItem.curMagazine)
 end

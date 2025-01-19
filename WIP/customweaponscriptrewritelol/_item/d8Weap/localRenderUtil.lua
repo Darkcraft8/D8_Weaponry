@@ -90,9 +90,12 @@ function d8Weap_Magazine_Image(curMagazine, image)
     image = image .. schematics[1]
     if curMagazine[1] then
         local munitionIcon = d8Weap_magazineRend:configParam(root.itemConfig(curMagazine[1]["name"]), "inventoryIcon", "")
+        local directory = root.itemConfig(curMagazine[1]["name"])["directory"]
+        if not string.find(munitionIcon, "/") then munitionIcon = directory .. munitionIcon end
         local thousand, hundred, ten, unit = d8Weap_magazineRend:decomposeNumber(curMagazine[1]["count"])
         local shiftValue = (-48 + (posShift * shiftStrength))
         image = image .. string.gsub(string.format(schematics[2], shiftValue), '<munitionIcon>', munitionIcon)
+        
         if (thousand ~= 0 or hundred ~= 0 or ten ~= 0 or unit ~= 0 ) then
             local first
             local second
@@ -131,6 +134,8 @@ function d8Weap_Magazine_Image(curMagazine, image)
         shiftValue = (-48 + (posShift * shiftStrength))
         if curMagazine[2] then
             local munitionIcon = d8Weap_magazineRend:configParam(root.itemConfig(curMagazine[2]["name"]), "inventoryIcon", "")
+            local directory = root.itemConfig(curMagazine[2]["name"])["directory"]
+            if not string.find(munitionIcon, "/") then munitionIcon = directory .. munitionIcon end
             local thousand, hundred, ten, unit = d8Weap_magazineRend:decomposeNumber(curMagazine[2]["count"])
             image = image .. string.gsub(string.format(schematics[2], shiftValue), '<munitionIcon>', munitionIcon)
             if (thousand ~= 0 or hundred ~= 0 or ten ~= 0 or unit ~= 0 ) then
@@ -174,6 +179,8 @@ function d8Weap_Magazine_Image(curMagazine, image)
         shiftValue = (-48 + (posShift * shiftStrength))
         if curMagazine[3] then
             local munitionIcon = d8Weap_magazineRend:configParam(root.itemConfig(curMagazine[3]["name"]), "inventoryIcon", "")
+            local directory = root.itemConfig(curMagazine[3]["name"])["directory"]
+            if not string.find(munitionIcon, "/") then munitionIcon = directory .. munitionIcon end
             local thousand, hundred, ten, unit = d8Weap_magazineRend:decomposeNumber(curMagazine[3]["count"])
             image = image .. string.gsub(string.format(schematics[2], shiftValue), '<munitionIcon>', munitionIcon)
             if (thousand ~= 0 or hundred ~= 0 or ten ~= 0 or unit ~= 0 ) then
@@ -216,6 +223,8 @@ function d8Weap_Magazine_Image(curMagazine, image)
         shiftValue = (-48 + (posShift * shiftStrength))
         if curMagazine[4] then
             local munitionIcon = d8Weap_magazineRend:configParam(root.itemConfig(curMagazine[4]["name"]), "inventoryIcon", "")
+            local directory = root.itemConfig(curMagazine[4]["name"])["directory"]
+            if not string.find(munitionIcon, "/") then munitionIcon = directory .. munitionIcon end
             local thousand, hundred, ten, unit = d8Weap_magazineRend:decomposeNumber(curMagazine[4]["count"])
             image = image .. string.gsub(string.format(schematics[2], shiftValue), '<munitionIcon>', munitionIcon)
             if (thousand ~= 0 or hundred ~= 0 or ten ~= 0 or unit ~= 0 ) then

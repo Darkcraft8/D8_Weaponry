@@ -12,7 +12,10 @@ end
 
 function setStance(stanceName) -- replace and expend on the old version in stances.lua
     self.stanceName = stanceName
-    self.stance = self.stances[stanceName]
+    self.stance = copy(self.stances[stanceName])
+    if self.stances[stanceName]["inherit"] then
+        self.stance = sb.jsonMerge(copy(self.stances[self.stances[stanceName]["inherit"]]), self.stances[stanceName])        
+    end
     self.stanceTimer = self.stance.duration
 
     for a, s in pairs(self.stance.animationStates or {}) do
