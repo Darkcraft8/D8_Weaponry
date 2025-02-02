@@ -12,6 +12,6 @@
 - Remove and/or Edit this license.
 
 ## The user may :
-- Use any content created directly or indirectly using the content
+- Use any content they created directly or indirectly using the content in anyway they see fit.
 
 [def]: https://github.com/Darkcraft8
