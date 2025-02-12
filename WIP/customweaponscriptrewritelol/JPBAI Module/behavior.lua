@@ -1,5 +1,6 @@
 function initBehavior()
     self.behaviors = config.getParameter("behaviors", {})
+    if type(self.behaviors) == "string" then self.behaviors = root.assetJson(self.behaviors) or {} end
     self.behavior = {}
     self.behaviorEvents = config.getParameter("behaviorEvents", {}) -- event can be placed in this table to be directly referred to instead of copying in each behavior
     self.behaviorCooldown = {}
@@ -69,7 +70,7 @@ function behaviorUpdate(dt, fireMode, isShiftHeld, currentMove) -- find a way to
                 for k, v in pairs(p.require) do
                     if k == "fireMode" then
                         if config.getParameter("debug") then sb.logInfo("fireMode %s", useBehav) end
-                        if useBehav then 
+                        if useBehav then
                             useBehav = (v == fireMode)
                         end 
                     end
@@ -164,10 +165,9 @@ function setBehavior(newBehaviorName)
     behaviorName = newBehaviorName
     self.behavior = self.behaviors[behaviorName]
     self.eventDone = {}
-    
     if self.behavior["eventOnStance"] then self.eventDone.stance = {} end
-    if self.behavior["stance"] then setStance(self.behavior["stance"]) end
     if self.behavior["eventOnInit"] then behaviorEvents(self.behavior["eventOnInit"]) end
+    if self.behavior["stance"] then setStance(self.behavior["stance"]) end
 end
 
 function resetBehavior()
@@ -183,25 +183,29 @@ function behaviorEvents(events)
     local events = events or {}
     if config.getParameter("debug") then sb.logInfo("events %s", sb.printJson(events, 1)) end
     
-    if events then 
-        for i, e in ipairs(events) do 
-            if type(e) == "string" then 
-                if config.getParameter("debug") then sb.logInfo("behaviorEvents %s", sb.printJson(self.behaviorEvents[e], 1)) end
-                if self.behaviorEvents[e] then behaviorEvents(self.behaviorEvents[e]) end
-            else
-                behaviorEvent(e)
+    if events then
+        if #events > 0 then
+            for i, e in ipairs(events) do
+                if type(e) == "string" then 
+                    if config.getParameter("debug") then sb.logInfo("behaviorEvents %s", sb.printJson(self.behaviorEvents[e], 1)) end
+                    if self.behaviorEvents[e] then behaviorEvents(self.behaviorEvents[e]) end
+                else
+                    behaviorEvent(e)
+                end
             end
+        else
+            behaviorEvent(events)
         end
     end
 end
 
 function behaviorEvent(eventCfg) -- Handle the Different Event kind|Type
-    if eventCfg.event == "monster" then behavior_monster(eventCfg) return end
-    if eventCfg.event == "projectile" then behavior_projectile(eventCfg) return end
-    if eventCfg.event == "function" then call(eventCfg) return end
-    if eventCfg.event == "setCursor" then activeItem.setCursor(eventCfg.cursor) return end
-    if eventCfg.event == "damageArea" then behavior_hitbox(eventCfg) return end
-    if eventCfg.event == "playSound" then animator.playSound(eventCfg.soundName, eventCfg.loopNumber or 0) return end
+    if string.lower(eventCfg.event) == "monster" then behavior_monster(eventCfg) return end
+    if string.lower(eventCfg.event) == "projectile" then behavior_projectile(eventCfg) return end
+    if string.lower(eventCfg.event) == "function" then call(eventCfg) return end
+    if string.lower(eventCfg.event) == "setCursor" then activeItem.setCursor(eventCfg.cursor) return end
+    if string.lower(eventCfg.event) == "damageArea" then behavior_hitbox(eventCfg) return end
+    if string.lower(eventCfg.event) == "playSound" then animator.playSound(eventCfg.soundName, eventCfg.loopNumber or 0) return end
 end
 
 function behaviorTimer(list, operation, treshold) -- increase or decrease value of time, merged into one func
@@ -358,6 +362,7 @@ end
 function check_raycastToSpawnPos(args)
     return world.lineTileCollision(mcontroller.position(), spawnPosition(args))
 end
+
 -- Other's
 function spawnPosition(cfg)
     local originPos = cfg.spawnPos -- Possible | ownerHandPos, ownerPosFaceDirection, ownerPos
@@ -367,21 +372,24 @@ function spawnPosition(cfg)
     local handPos = activeItem.handPosition()
 
     if originPos == "ownerHandPos" then
-        local pos = vec2.rotate(posOffset, aimAngle)
-              pos = vec2.mul(pos, {aimDirection, 1})
-              pos = vec2.add(vec2.add(ownerPos, handPos), pos)
-        return pos
+        return vec2.add(mcontroller.position(), activeItem.handPosition())
     elseif originPos == "ownerPosFaceDirection" then
-        return vec2.mul(vec2.add(ownerPos, posOffset), {aimDirection, 1})
+        return vec2.mul(vec2.add(ownerPos, posOffset or {0,0}), {aimDirection, 1})
     elseif originPos == "ownerPos" then
-        return vec2.add(ownerPos, posOffset)
+        return vec2.add(ownerPos, posOffset or {0,0})
     elseif originPos == "fireOffset" then
-        return vec2.add(firePosition(), vec2.mul(vec2.rotate(posOffset, aimAngle), {aimDirection, 1}))
+        if posOffset then
+            return vec2.add(mcontroller.position(), activeItem.handPosition(posOffset))
+        else
+            return firePosition()
+        end
+    elseif originPos == "cursor" then
+        return vec2.add(activeItem.ownerAimPosition(), posOffset or {0,0})
     end
 end
 
 function aimVector(inaccuracy) -- straight out of gunFire.lua with one change
-    local aimVector = vec2.rotate({1, 0}, self.aimAngle + sb.nrand(inaccuracy, 0))
+    local aimVector = vec2.rotate({1, 0}, (self.aimAngle or 0) + sb.nrand(inaccuracy, 0))
     aimVector[1] = aimVector[1] * mcontroller.facingDirection()
     return aimVector
 end

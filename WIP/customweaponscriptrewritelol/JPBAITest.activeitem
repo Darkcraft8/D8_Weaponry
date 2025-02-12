@@ -10,7 +10,48 @@
     "twoHanded" : true,
     "itemTags" : [],
     "inventoryIcon" : "/assetmissing.png",
-    "scripts" : ["/WIP/customweaponscriptrewritelol/item.lua"],
+    "scripts" : ["/WIP/customweaponscriptrewritelol/JPBAI.lua", "/WIP/customweaponscriptrewritelol/_item/weapon.lua"],
+
+    "animation" : {
+        "sounds" : {
+            "emptyChamber" : {
+                "rangeMultiplier" : 1,
+                "pitchMultiplier" : 0.85,
+                "volume" : 1,
+                "pool" : ["/sfx/gun/reload/pistol_reload_clip2.ogg"]
+            },
+            "fire" : {
+                "rangeMultiplier" : 1,
+                "pitchMultiplier" : 1.85,
+                "volume" : 1,
+                "pool" : ["/sfx/gun/uzi1.ogg"]
+            },
+            "open" : {
+                "rangeMultiplier" : 1,
+                "pitchMultiplier" : 1,
+                "volume" : 1,
+                "pool" : ["/sfx/gun/reload/pistol_reload_clip1.ogg"]
+            },
+            "reload" : {
+                "rangeMultiplier" : 1,
+                "pitchMultiplier" : 1,
+                "volume" : 1,
+                "pool" : ["/sfx/gun/reload/pistol_reload_clip2.ogg"]
+            },
+            "close" : {
+                "rangeMultiplier" : 1,
+                "pitchMultiplier" : 1,
+                "volume" : 1,
+                "pool" : ["/sfx/gun/reload/pistol_reload_clip3.ogg"]
+            },
+            "slide" : {
+                "rangeMultiplier" : 1.25,
+                "pitchMultiplier" : 1,
+                "volume" : 1,
+                "pool" : ["/sfx/gun/reload/pistol_reload_clip3.ogg"]
+            }
+        }
+    },
 
     "initBehavior" : "init",
     "stances" : {
@@ -18,11 +59,23 @@
             "duration" : 0.1,
             "allowRotate" : true,
             "allowFlip" : true,
-            "transition" : "init"
+            "transition" : "idle"
         },
         "idle" : {
             "allowRotate" : true,
             "allowFlip" : true
+        },
+        
+        "fire" : {
+            "duration" : 0.05,
+            "transition" : "cooldown",
+            "playSounds" : ["fire"]
+        },
+        "cooldown" : {
+            "duration" : 0.11,
+            "lerpTo" : true,
+            "armRotation" : 6,
+            "transition" : "init"
         }
     },
 
@@ -43,7 +96,10 @@
         "behavior" : {
             "gunFire" : "primary"
         },
-        "inaccuracy" : 1,
-        "fireOffset" : [1, 1]
+        "override" : {
+            "inaccuracy" : 1,
+            "fireOffset" : [1, 1],
+            "projectileType" : "standardbullet"
+        }
     }
 }

@@ -10,16 +10,19 @@
 	"twoHanded" : true,
 	"itemTags" : [],
 	"inventoryIcon" : [
-		{"image" : "/items/active/weapons/melee/broadsword/blade/1.png?replace;1A3249=880000;676767=d92e00;B1B1B1=ffa200;E9E9E9=fffe9f?replace;890900=b97c01;b81a22=A46E06;e5323b=E2C344;ff7060=FFFFA7"},
-		{"image" : "/items/active/weapons/melee/broadsword/handle/14.png?replace;1A3249=282828;676767=565656;B1B1B1=7a7a7a;E9E9E9=9f9f9f?replace;890900=282828;b81a22=565656;e5323b=7a7a7a;ff7060=9f9f9f?replace;053d6e=880000;0964a0=d92e00;2992bc=ffa200;60b9ff=fffe9f"}
+		{
+			"image" : "/items/active/weapons/melee/broadsword/blade/11.png?replace;1A3249=880000;676767=d92e00;B1B1B1=ffa200;E9E9E9=fffe9f?replace;890900=b97c01;b81a22=A46E06;e5323b=E2C344;ff7060=FFFFA7?flipx",
+			"position" : [-1, 2.4]
+		},
+		{"image" : "/items/active/weapons/melee/broadsword/handle/1.png?replace;1A3249=282828;676767=565656;B1B1B1=7a7a7a;E9E9E9=9f9f9f?replace;890900=282828;b81a22=565656;e5323b=7a7a7a;ff7060=9f9f9f?replace;053d6e=880000;0964a0=d92e00;2992bc=ffa200;60b9ff=fffe9f"}
 	],
 
-	"scripts" : ["/WIP/customweaponscriptrewritelol/item.lua", "/WIP/customweaponscriptrewritelol/_item/weapon.lua"],
+	"scripts" : ["/WIP/customweaponscriptrewritelol/JPBAI.lua", "/WIP/customweaponscriptrewritelol/_item/weapon.lua"],
 	"elementalType" : "fire",
 	"animation" : "/items/active/weapons/melee/broadsword/combobroadsword.animation",
 	"animationParts" : {
-		"blade" : "/items/active/weapons/melee/broadsword/blade/1.png?replace;1A3249=880000;676767=d92e00;B1B1B1=ffa200;E9E9E9=fffe9f?replace;890900=b97c01;b81a22=A46E06;e5323b=E2C344;ff7060=FFFFA7?scalebicubic=0.725;1",
-		"handle" : "/items/active/weapons/melee/broadsword/handle/14.png?replace;1A3249=282828;676767=565656;B1B1B1=7a7a7a;E9E9E9=9f9f9f?replace;890900=282828;b81a22=565656;e5323b=7a7a7a;ff7060=9f9f9f?replace;053d6e=880000;0964a0=d92e00;2992bc=ffa200;60b9ff=fffe9f"
+		"blade" : "/items/active/weapons/melee/broadsword/blade/11.png?replace;1A3249=880000;676767=d92e00;B1B1B1=ffa200;E9E9E9=fffe9f?replace;890900=b97c01;b81a22=A46E06;e5323b=E2C344;ff7060=FFFFA7?flipx",
+		"handle" : "/items/active/weapons/melee/broadsword/handle/1.png?replace;1A3249=282828;676767=565656;B1B1B1=7a7a7a;E9E9E9=9f9f9f?replace;890900=282828;b81a22=565656;e5323b=7a7a7a;ff7060=9f9f9f?replace;053d6e=880000;0964a0=d92e00;2992bc=ffa200;60b9ff=fffe9f"
 	},
 	"animationCustom" : {
 		"sounds" : {
@@ -39,11 +42,13 @@
 			"parts" : {
 				"blade" : {
 					"properties" : {
+						"offset" : [-0.1, 2.4],
 						"fullbright" : true
 					}
 				},
 				"swoosh" : {
 					"properties" : {
+						"offset" : [-0.1, 2.4],
 						"fullbright" : true
 					}
 				}
@@ -237,7 +242,13 @@
 			"allowFlip" : true,
 			"transition" : "nS_idle"
 		},
-			
+		"nS_toSheated" : {
+			"duration" : 0.25,
+			"inherit" : "nS_idle",
+            "lerpTo" : true,
+            "transition" : "sheathed"
+		},
+
 		"hS_idle" : {
 			"allowRotate" : false,
 			"allowFlip" : true,
@@ -250,6 +261,12 @@
 					"rotate" : 180
 				}
 			}
+		},
+		"hS_toSheated" : {
+			"duration" : 0.25,
+			"inherit" : "hS_idle",
+            "lerpTo" : true,
+            "transition" : "sheathed"
 		},
 			
 		"lS_idle" : {
@@ -264,6 +281,12 @@
 					"rotate" : -40
 				}
 			}
+		},
+		"lS_toSheated" : {
+			"duration" : 0.25,
+			"inherit" : "lS_idle",
+            "lerpTo" : true,
+            "transition" : "sheathed"
 		}
 	},
 
@@ -273,14 +296,73 @@
 			"possibleOutcome" : [ 
 				{ 
 					"require" : { 
-						"stance" : "nS_idle"
+						"stance" : "sheathed"
 					}, 
-					"behavior" : "nS_idle" 
+					"behavior" : "sheathed" 
 				}
 			],
 			"eventOnInit" : []
 		},
-		
+		"nS_toSheated" : {
+			"stance" : "nS_toSheated",
+			"possibleOutcome" : [ 
+				{ 
+					"require" : { 
+						"stance" : "sheathed"
+					}, 
+					"behavior" : "sheathed" 
+				}
+			]
+		},
+		"hS_toSheated" : {
+			"stance" : "hS_toSheated",
+			"possibleOutcome" : [ 
+				{ 
+					"require" : { 
+						"stance" : "sheathed"
+					}, 
+					"behavior" : "sheathed" 
+				}
+			]
+		},
+		"lS_toSheated" : {
+			"stance" : "lS_toSheated",
+			"possibleOutcome" : [ 
+				{ 
+					"require" : { 
+						"stance" : "sheathed"
+					}, 
+					"behavior" : "sheathed" 
+				}
+			]
+		},
+		"sheathed" : {
+			"stance" : "sheathed",
+			"possibleOutcome" : [
+				{
+					"require" : {
+						"fireMode" : "primary"
+					},
+					"behavior" : "nS_comboStep1"
+				},
+				{
+					"require" : { 
+						"move" : {
+							"up" : true
+						},
+						"time" : 0.5
+					},
+					"behavior" : "hS_idle"
+				},
+				{
+					"require" : { 
+						"shift" : true,
+						"time" : 0.5
+					},
+					"behavior" : "lS_idle"
+				}
+			]
+		},
 		"nS_idle" : {
 			"stance" : "nS_idle",
 			"possibleOutcome" : [
@@ -305,10 +387,17 @@
 						"time" : 0.5
 					},
 					"behavior" : "lS_idle"
-    			}
+    			},
+				{
+					"require" : {
+						"fireMode" : "none",
+						"time" : 3.5
+					},
+					"behavior" : "nS_toSheated"
+				}
 			]
 		},
-			"nS_comboStep1" : {
+		"nS_comboStep1" : {
 			"stance" : "nS_windup1",
 		    "possibleOutcome" : [
 				{ 
@@ -380,6 +469,15 @@
 						"time" : 0.25
 					},
 					"behavior" : "nS_idle"
+				},
+				{
+					"require" : {
+						"move" : {
+							"up" : false
+						},
+						"time" : 3.5
+					},
+					"behavior" : "hS_toSheated"
 				}
 			]
 		},
@@ -395,6 +493,13 @@
 						"time" : 0.25
 					},
 					"behavior" : "nS_idle"
+				},
+				{
+					"require" : {
+						"shift" : false,
+						"time" : 3.5
+					},
+					"behavior" : "lS_toSheated"
 				}
 			]
 		}

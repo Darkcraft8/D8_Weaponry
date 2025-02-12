@@ -1,6 +1,5 @@
 require "/scripts/util.lua"
 require "/objects/crafting/upgradeablecraftingobjects/upgradeablecraftingobject.lua"
-
 local upgradeInit = init
 local upgradeUninit = uninit
 
@@ -22,7 +21,6 @@ function onInteraction(args)
         config.PaneScriptConfiguration.UpgradeRecipe = intelligentInteraction.UpgradeRecipe
 
         config.PaneScriptConfiguration.objectPos = entity.position()
-
         return {Override.interactAction, config}
     else
         --sb.logInfo("%s\n%s\n%s", intelligentInteraction.interactAction, sb.printJson(intelligentInteraction.compiledInteractData, 1), entity.id())
@@ -164,7 +162,6 @@ function intelligentInteraction:basicAnalyseIntData(interactedEntity, currentSta
             end
         end
     end
-    
     --sb.logInfo("[intelligentInteraction] :\nfilter = %s", self.compiledInteractData["filter"])
 end
 

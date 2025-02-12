@@ -157,7 +157,7 @@
         }
     },
     
-    "scripts" : ["/WIP/customweaponscriptrewritelol/item.lua", "/WIP/customweaponscriptrewritelol/_item/weapon.lua", "/WIP/customweaponscriptrewritelol/_item/d8Weap/ranged.lua"],
+    "scripts" : ["/WIP/customweaponscriptrewritelol/JPBAI.lua", "/WIP/customweaponscriptrewritelol/_item/weapon.lua", "/WIP/customweaponscriptrewritelol/_item/d8Weap/ranged.lua"],
 
     "initBehavior" : "init",
 	"initFunction" : [
@@ -174,7 +174,7 @@
             "armRotation" : -90,
             "transformations" : {
                 "weapon" : {
-                    "translate" : [-1, -0.25],
+                    "translate" : [-0.85, -0.25],
                     "rotate" : 0
                 },
                 "muzzle" : {
@@ -201,7 +201,7 @@
             "backArmFrame" : "rotation",
             "transformations" : {
                 "weapon" : {
-                    "translate" : [-1, -0.25],
+                    "translate" : [-0.85, -0.25],
                     "rotate" : 0
                 }
             }
@@ -218,7 +218,7 @@
             "backArmFrame" : "rotation",
             "transformations" : {
                 "weapon" : {
-                    "translate" : [-1, -0.25],
+                    "translate" : [-0.85, -0.25],
                     "rotate" : 0
                 }
             },
@@ -234,7 +234,7 @@
             "backArmFrame" : "rotation",
             "transformations" : {
                 "weapon" : {
-                    "translate" : [-1, -0.25],
+                    "translate" : [-0.85, -0.25],
                     "rotate" : 0
                 }
             }
@@ -249,7 +249,7 @@
             "backArmFrame" : "rotation",
             "transformations" : {
                 "weapon" : {
-                    "translate" : [-1, -0.25],
+                    "translate" : [-0.85, -0.25],
                     "rotate" : 0
                 }
             },
@@ -295,7 +295,7 @@
             
             "transformations" : {
                 "weapon" : {
-                    "translate" : [-1, -0.25],
+                    "translate" : [-0.85, -0.25],
                     "rotate" : 15
                 },
                 "muzzle" : {
@@ -318,11 +318,11 @@
             "resetAim" : true,
             "transformations" : {
                 "weapon" : {
-                    "translate" : [-1.15, 0],
+                    "translate" : [-0.95, 0],
                     "rotate" : -25
                 }
             },
-            "frontArmFrame" : "rotation?crop;3;0;43;43",
+            "frontArmFrame" : "rotation",
             "backArmFrame" : "run.5",
             "allowRotate" : false,
             "twoHanded" : true,
@@ -337,7 +337,7 @@
             "animationStates" : {
                 "animation" : "reload1"
             },
-            "frontArmFrame" : "run.3?crop;4;0;43;41",
+            "frontArmFrame" : "run.3",
             "backArmFrame" : "run.5",
             "allowRotate" : false,
             "twoHanded" : true,
@@ -353,7 +353,7 @@
             "animationStates" : {
                 "animation" : "reload2"
             },
-            "frontArmFrame" : "walk.2?crop;3;0;43;41",
+            "frontArmFrame" : "walk.2",
             "backArmFrame" : "run.5",
             "allowRotate" : false,
             "twoHanded" : true,
@@ -366,7 +366,7 @@
             "allowFlip" : true,
             "armRotation" : -20,
             "weaponAngularVelocity" : 0,
-            "frontArmFrame" : "run.3?crop;4;0;43;41",
+            "frontArmFrame" : "run.3",
             "backArmFrame" : "run.5",
         
             "animationStates" : {
@@ -382,7 +382,7 @@
         "reload5" : {
             "duration" : 0.2,
             "armRotation" : -20,
-            "frontArmFrame" : "rotation?crop;3;0;43;43",
+            "frontArmFrame" : "rotation",
             "backArmFrame" : "run.5",
             "animationStates" : {
                 "animation" : "idle"
@@ -396,11 +396,11 @@
         "ReloadToIdle" : {
             "duration" : 0.1,
             "armRotation" : -20,
-            "frontArmFrame" : "rotation?crop;3;0;43;43",
+            "frontArmFrame" : "rotation",
             "backArmFrame" : "run.5",
             "transformations" : {
                 "weapon" : {
-                    "translate" : [-1.15, 0],
+                    "translate" : [-0.95, 0],
                     "rotate" : -25
                 }
             },
@@ -420,7 +420,7 @@
             },
             "playSounds" : ["slide"],
             "frontArmFrame" : "swim.4",
-            "backArmFrame" : "rotation?crop;3;0;43;43",
+            "backArmFrame" : "rotation",
             "twoHanded" : true,
             
             "allowRotate" : false,
@@ -428,7 +428,7 @@
             "resetAim" : true,
             "transformations" : {
                 "weapon" : {
-                    "translate" : [-1, -0.25],
+                    "translate" : [-0.85, -0.25],
                     "rotate" : 10
                 }
             },
@@ -445,7 +445,7 @@
             "backArmFrame" : "rotation",
             "transformations" : {
                 "weapon" : {
-                    "translate" : [-1, -0.25],
+                    "translate" : [-0.85, -0.25],
                     "rotate" : 0
                 }
             },

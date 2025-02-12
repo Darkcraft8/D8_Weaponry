@@ -1,4 +1,4 @@
-# 1.1.0
+# 1.1.1
 ## Addition : 
     Tutorial Codex with translation added to shiplocker treasure pool
         can also be bought at beakeasy or crafted at a gunsmith table
@@ -14,7 +14,7 @@
         General, Weapon and Munition
 
 ## Change : 
-
+    removed the line saying that i have written the information in the encyclopedia because i found that it seem pretentious
 ## Buff :
 
 ## Nerf : 

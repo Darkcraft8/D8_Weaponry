@@ -19,8 +19,11 @@ function build(directory, config, parameters, level, seed)
 
     if configParameter("buildConfig") then 
         for behaviorName, fireType in pairs(configParameter("buildConfig")["behavior"]) do 
-            setupBehavior(config, parameters, behaviorName, fireType)
+            config = setupBehavior(config, parameters, behaviorName, fireType)
+            --sb.logInfo("fireType %s", fireType)
+            replacePatternInData(config, nil, "<abilitySlot>", fireType)
         end
+        --sb.logInfo("cfg = %s", sb.printJson(config, 1))
     end
 
     local elementalType = configParameter("elementalType", "physical")

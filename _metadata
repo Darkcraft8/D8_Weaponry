@@ -1,13 +1,13 @@
 {
   "author" : "Darkcraft8",
-  "description" : "A mod that add it own ammo system and renderer with a bunch of weapons craftable at a Gunsmith Table!\n\n\n\nCome with :\n\n- 6 brand new weapons\n- 6 vanilla varient that use the custom ammo system\n- 1 brand new crafting station the \"Gunsmith Table\"\n- 1 brand new scripted object the \"Refinement Workbench\"\n\n",
+  "description" : "A mod that add it own ammo system and renderer with a bunch of weapons craftable at a Gunsmith Table!\n\n\nCome with :\n\n- 6 brand new weapons\n- 6 vanilla varient that use the custom ammo system\n- 1 brand new crafting station the \"Gunsmith Table\"\n- 1 brand new scripted object the \"Refinement Workbench\"",
   "friendlyName" : "D8 : Weaponry | Refinement Update",
+  "include" : ["D8MachineryLib"],
   "link" : "https://github.com/Darkcraft8/D8_Weaponry/tree/lastest_release",
   "name" : "D8Weaponry",
   "permissions" : ["window"],
-  "include" : ["D8MachineryLib"],
   "priority" : 9999999,
   "steamContentId" : "3331782262",
   "tags" : "Miscellaneous|Weapons|Furniture and Objects|Mechanics",
-  "version" : "V1.0.5"
+  "version" : "V1.1.2"
 }

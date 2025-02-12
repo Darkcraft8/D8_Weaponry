@@ -1,6 +1,7 @@
 -- This is rendered localy and not on other client screen's 
 -- information about the selected weapon if compatible (ammo, ability charge, ect)
 require "/scripts/util.lua"
+require "/scripts/vec2.lua"
 require "/scripts/interp.lua"
 
 local vanillaInit = init
@@ -78,11 +79,20 @@ function init()
         d8Weaponry_var.opacity = d8Weaponry_var.config["opacityMax"]
     end
     --sb.logInfo("shared %s", shared)
+    d8Weaponry_var.config["prevPlayerVelocity"] = world.entityVelocity(player.id())
 end
 
 function update(dt)
     vanillaUpdate(dt)
     if _ENV["xCallbackCheckRequest"] then xCallbackCheckRequest("d8WeapUtils:callback") end
+    d8Weaponry_var.config["nextPlayerVelocity"] = world.entityVelocity(player.id())
+
+    d8Weaponry_var.config["playerVelocity"] = {
+        -( (d8Weaponry_var.config["nextPlayerVelocity"][1] - d8Weaponry_var.config["nextPlayerVelocity"][1]) / dt),
+        -( (d8Weaponry_var.config["nextPlayerVelocity"][2] - d8Weaponry_var.config["nextPlayerVelocity"][2]) / dt)
+    }
+
+    d8Weaponry_var.config["prevPlayerVelocity"] = world.entityVelocity(player.id())
     if d8Weaponry_var.config["customAmmoRenderer"] then
         if d8Weaponry_var.initTimer > 0 then
             d8Weaponry_var.initTimer = d8Weaponry_var.initTimer - 1
@@ -312,6 +322,7 @@ function d8weaponry_weaponAnalisis(primary, secondary)
 end
 
 function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barText, RGB)
+    local playerVelocity = d8Weaponry_var.config["playerVelocity"]
     local renderConf = {}
     local useSegmentedBar = true
     if not amountMax then
@@ -413,6 +424,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                     drawable["image"] = string.format("%s?scalenearest=%s;1?multiply=7F7F7F", barText, segmentSize)
                 end
             end
+            drawable["position"] = vec2.sub(drawable["position"], playerVelocity)
             if not starExtensions or not d8Weaponry_var.config["starExtensions"]["useUiAnimator"] then
                 localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
             elseif not starExtensions then
@@ -525,6 +537,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
                 if RGB then
                     drawable["image"] = drawable["image"] .. string.format("?hueshift=%s", ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360)
                 end
+                drawable["position"] = vec2.sub(drawable["position"], playerVelocity)
                 if not starExtensions or not d8Weaponry_var.config["starExtensions"]["useUiAnimator"] then
                     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
                 elseif not starExtensions then
@@ -601,6 +614,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
             if RGB then
                 drawable["image"] = drawable["image"] .. string.format("?hueshift=%s", ((math.ceil(time)-((segmentNum+time)*(360/amountMax))))%360)
             end
+            drawable["position"] = vec2.sub(drawable["position"], playerVelocity)
             localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
 
             if lastCullPercent <= (cull + 0.2) and lastCullPercent >= (cull - 0.2) then
@@ -619,6 +633,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
         fullbright = true,
         rotation = ((math.pi/180) * Rotate)
     }
+    drawable["position"] = vec2.sub(drawable["position"], playerVelocity)
     if not starExtensions or not d8Weaponry_var.config["starExtensions"]["useUiAnimator"] then
         localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     elseif not starExtensions then
@@ -667,6 +682,7 @@ function d8weaponry_renderBar(barX, barY, amountMax, count, slot, ammoText, barT
 end
 
 function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, complete, numberOnly)
+    local playerVelocity = d8Weaponry_var.config["playerVelocity"]
     local number = math.ceil(count-20)
     if complete then
         number = math.ceil(count)
@@ -696,6 +712,7 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
         rotation = 0,
         scale = 0.5
     }
+    drawable["position"] = vec2.sub(drawable["position"], playerVelocity)
     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     numberOffset = 8
     drawable = {
@@ -709,6 +726,7 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
         rotation = 0,
         scale = 0.5
     }
+    drawable["position"] = vec2.sub(drawable["position"], playerVelocity)
     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     numberOffset = 16
     drawable = {
@@ -722,6 +740,7 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
         rotation = 0,
         scale = 0.5
     }
+    drawable["position"] = vec2.sub(drawable["position"], playerVelocity)
     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
     numberOffset = 24
     drawable = {
@@ -735,10 +754,12 @@ function d8weaponry_outpostSignNumber(count, ammoPos, opacity, segmentSize, comp
         rotation = 0,
         scale = 0.5
     }
+    drawable["position"] = vec2.sub(drawable["position"], playerVelocity)
     localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
 end
 
 function d8weaponry_drawableUpdate(drawable, name, pos)--Way less annoing to handles effect/stat script in the renderer instead of their own scripts... maybe it not a good idea
+    local playerVelocity = d8Weaponry_var.config["playerVelocity"]
     local ressourceName = drawable.ressourceName
     local propertyName = drawable.propertyName
     local isBar = drawable.isBar
@@ -769,11 +790,13 @@ function d8weaponry_drawableUpdate(drawable, name, pos)--Way less annoing to han
     end
     if drawable.isBuilt then
         if drawable.keepPos then
+            drawable["position"] = vec2.sub(drawable["position"], playerVelocity)
             localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
             return 
         end
         local size = d8Weaponry_var.barOffset + drawable.size[2]
         drawable.position[2] = drawable.position[2] -size-(1*(d8Weaponry_var.renderIndex))
+        drawable["position"] = vec2.sub(drawable["position"], playerVelocity)
         localAnimator.addDrawable(drawable, "ForegroundOverlay-1")
         d8Weaponry_var.renderIndex = d8Weaponry_var.renderIndex + 1
         d8Weaponry_var.rendereredAmount = d8Weaponry_var.rendereredAmount + 1

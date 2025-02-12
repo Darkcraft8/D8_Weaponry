@@ -22,12 +22,15 @@ require "/WIP/customweaponscriptrewritelol/JPBAI Module/animation.lua"
 require "/WIP/customweaponscriptrewritelol/JPBAI Module/inventory.lua"
 require "/WIP/customweaponscriptrewritelol/JPBAI Module/stance.lua"
 
+require "/shared/darkcraft8/scripts/json.lua"
+require "/shared/darkcraft8/scripts/lua.lua"
 function init()
+    JPBAIConfig = root.assetJson("/WIP/customweaponscriptrewritelol/JPBAI.config")
     for _, func in ipairs(initFunc) do
         if type(func) == "function" then
             func()
         else
-            local callback = findCallback(func)
+            local callback = findCallback(func, true)
             callback()
         end
     end
@@ -35,7 +38,7 @@ function init()
         if type(func) == "function" then
             func()
         else
-            local callback = findCallback(func)
+            local callback = findCallback(func, true)
             callback()
         end
     end
@@ -57,7 +60,7 @@ function uninit()
         if type(func) == "function" then
             func()
         else
-            local callback = findCallback(func)
+            local callback = findCallback(func, true)
             callback()
         end
     end
@@ -65,7 +68,7 @@ function uninit()
         if type(func) == "function" then
             func()
         else
-            local callback = findCallback(func)
+            local callback = findCallback(func, true)
             callback()
         end
     end
@@ -138,7 +141,11 @@ function call(eventCfg) -- because whe can't directly do _ENV[funcGroup.Func]()
     end
 end
 
-function findCallback(functionPath)
+function findCallback(functionPath, bypassBlacklist, bypassBridge)
+    if JPBAIConfig.bridgeFunc[functionPath] and not bypassBridge then
+        functionPath = JPBAIConfig.bridgeFunc[functionPath]
+    end -- swap function with their bridge variant 
+    
     local findCallback = function(path)
         local pathSegment = {}
         if string.find(path, "[.:]") then
@@ -166,5 +173,6 @@ function findCallback(functionPath)
         end
     end
     local callback = findCallback(functionPath)
+    
     return callback
 end

@@ -3,7 +3,7 @@ local pixel = 0.125
 function init()
 end
 
-function update()
+function update() --- useless will be removed
     if not root.assetJson("/D8Weaponry.config")["customAmmoRenderer"] then
         localAnimator.clearDrawables()
         local ownerPosition = activeItemAnimation.ownerPosition()

@@ -7,6 +7,7 @@ General
 --Energy Scaling Func
 --Add way to allow for movement altering event in behavior "ex: spin slash"
 --Add support for the creation of the following type of item
+--Add a func blacklist you numb nut
 * Staff|Wand
 * Magnorbs
 * Laser|Erchius Eye

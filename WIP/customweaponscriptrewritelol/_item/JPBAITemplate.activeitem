@@ -10,7 +10,7 @@
     "twoHanded" : true,
     "itemTags" : [],
     "inventoryIcon" : "/assetmissing.png",
-    "scripts" : ["/WIP/customweaponscriptrewritelol/item.lua"],
+    "scripts" : ["/WIP/customweaponscriptrewritelol/JPBAI.lua"],
 
     "initBehavior" : "init",
     "stances" : {

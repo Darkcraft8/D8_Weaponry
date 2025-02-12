@@ -13,8 +13,10 @@ end
 function setStance(stanceName) -- replace and expend on the old version in stances.lua
     self.stanceName = stanceName
     self.stance = copy(self.stances[stanceName])
-    if self.stances[stanceName]["inherit"] then
-        self.stance = sb.jsonMerge(copy(self.stances[self.stances[stanceName]["inherit"]]), self.stances[stanceName])        
+    if self.stance then
+        if self.stances[stanceName]["inherit"] then
+            self.stance = sb.jsonMerge(copy(self.stances[self.stances[stanceName]["inherit"]]), self.stances[stanceName])        
+        end
     end
     self.stanceTimer = self.stance.duration
 
@@ -80,6 +82,13 @@ function setStance(stanceName) -- replace and expend on the old version in stanc
     updateAim(self.stance.allowRotate, self.stance.allowFlip)
     if self.stance.invertDirection then
         activeItem.setFacingDirection(-1 * (self.aimDirection or 0))
+    end
+
+    if self.stance.user then
+        if self.stance.user.rotate then mcontroller.rotate(util.toRadians(self.stance.user.rotate)) end
+        if self.stance.user.angle then mcontroller.setRotation(self.stance.user.angle) end
+        if self.stance.user.resetAngle then mcontroller.setRotation(0) end
+        if self.stance.user.invertFacingDirection then mcontroller.controlFace(-1 * mcontroller.facingDirection()) end
     end
 end
 
@@ -192,6 +201,18 @@ function lerpStance(dt)
                 activeItem.setFacingDirection(-1 * (self.aimDirection or 0))
             end
         end
+
+        if to.user then
+            if to.user.angle then 
+                mcontroller.rotate(interp.linear(progress, util.toRadians(from.user.angle or 0), util.toRadians(to.user.angle or 0)))
+            end
+            if progress > 0.5 then
+                if to.user.invertFacingDirection then 
+                    mcontroller.controlFace(-1 * mcontroller.facingDirection()) 
+                end
+            end
+        end
+
         progress = math.min(1.0, progress + (dt / from.duration))
     end)
     self.armRotation = to.armRotation or 0
