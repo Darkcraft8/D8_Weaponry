@@ -66,6 +66,7 @@ function init()
     else
         cfg = {}
         cfg["renderCfg"] = d8Weaponry_var.config
+        cfg["info"] = nil
         player.setProperty("d8Weap", cfg)
     end
     message.setHandler("d8Weaponry_updaterenderCfg", function(_, isLocal)

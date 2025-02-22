@@ -2,11 +2,52 @@ require "/scripts/util.lua"
 require "/shared/darkcraft8/scripts/lua.lua"
 --require "/shared/rxi/json.lua" -- required ?
 json = json or {}
-local jsonSub = jsonSub or {}
+local jsonSubFunc = jsonSubFunc or {}
+-- Starbound Specific --
+function json.sbMerge(jA_A, jA_B) -- Trie to imitate the way parameters override config
+    local isVec2 = function(val)
+        return (type(val[1]) == "number" and type(val[2]) == "number" and #val == 2)
+    end
+    for var, val in pairs(jA_B or {}) do 
+        local typeA, typeB = preciseType(jA_A[var]), preciseType(val)
+        if typeB == "table" and typeA == "table" then
+            if isVec2(val) and isVec2(jA_A[var]) then
+                jA_A[var] = val
+            else
+                for i, v in ipairs(val) do
+                    table.insert(jA_A[var], v)
+                end
+            end
+
+        elseif typeB == "array" and typeA == "array" then
+            jA_A[var] = json.sbMerge(jA_A[var], val)
+    
+        else
+            jA_A[var] = val
+
+        end
+    end
+    return jA_A
+end
 
 -- Merge, Patch and Other --
-function json.merge(jsonArray_A, jsonArray_B)
+function json.merge(jA_A, jA_B)
+    for var, val in pairs(jA_B or {}) do 
+        local typeA, typeB = preciseType(jA_A[var]), preciseType(val)
+        if typeB == "table" and typeA == "table" then
+            for i, v in ipairs(val) do
+                table.insert(jA_A[var], v)
+            end
+
+        elseif typeB == "array" and typeA == "array" then
+            jA_A[var] = json.merge(jA_A[var], val)
     
+        else
+            jA_A[var] = val
+
+        end
+    end
+    return jA_A
 end
 
 function json.patch() -- do i really need to make this function ?
@@ -28,7 +69,7 @@ end
 
 function json.luaToPatch(old, new)
     --sb.logInfo("[lua to json Patch] : start")
-    local newPatch = jsonSub:luaToPatch_Analyse(new, old)
+    local newPatch = jsonSubFunc:luaToPatch_Analyse(new, old)
 
     --sb.logInfo("[lua to json Patch] : result\n\n%s\n", sb.printJson(newPatch, 1))
     --sb.logInfo("[lua to json Patch] : end")
@@ -36,7 +77,7 @@ function json.luaToPatch(old, new)
 end
 
 -- Local Sub Functions --
-function jsonSub.varIsTableOrArray(_, var, jsonArray)
+function jsonSubFunc.varIsTableOrArray(_, var, jsonArray)
     local type = preciseType((jsonArray or old)[var])
     if type == "table" or type == "array" then
         return true
@@ -45,11 +86,11 @@ function jsonSub.varIsTableOrArray(_, var, jsonArray)
     end
 end
 
-function jsonSub.varExist(_, var, jsonArray)
+function jsonSubFunc.varExist(_, var, jsonArray)
     if (jsonArray or {})[var] then return true else return false end
 end
 
-function jsonSub.luaToPatch_Analyse(_, new, old, parent)
+function jsonSubFunc.luaToPatch_Analyse(_, new, old, parent)
     local patch = {}
     local path = "/"
     if parent then
@@ -71,7 +112,7 @@ function jsonSub.luaToPatch_Analyse(_, new, old, parent)
             newVar = { op = "add", path = path .. var, value = {_null = nil}}
         }
 
-        if jsonSub:varExist(var, old) then
+        if jsonSubFunc:varExist(var, old) then
             local type = preciseType(val)
             --sb.logInfo("type %s", type)
             if type == "table" then
@@ -96,7 +137,7 @@ function jsonSub.luaToPatch_Analyse(_, new, old, parent)
                 table.insert(patch, patchSection)
 
                 --sb.logInfo("[lua to json Patch] : arrays %s,\n%s", val, sb.printJson(patchSection))
-                for index, patchSection in ipairs(jsonSub:luaToPatch_Analyse(val, old[var], path .. var)) do 
+                for index, patchSection in ipairs(jsonSubFunc:luaToPatch_Analyse(val, old[var], path .. var)) do 
                     table.insert(patch, patchSection)
                 end
             elseif type == "string" or type == "number" then
@@ -159,7 +200,7 @@ function jsonSub.luaToPatch_Analyse(_, new, old, parent)
                 newVar = { op = "add", path = path .. var, value = {_null = nil}}
             }
 
-            if not jsonSub:varExist(var, new) then
+            if not jsonSubFunc:varExist(var, new) then
                 local patchSection = {}    
                 table.insert(patchSection, opp.test)
                 table.insert(patchSection, opp.remove)

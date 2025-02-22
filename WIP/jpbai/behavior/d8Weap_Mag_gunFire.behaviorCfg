@@ -1,0 +1,555 @@
+{
+    "scripts" : ["/WIP/jpbai/module/specialised/weapon.lua", "/WIP/jpbai/module/specialised/d8Weap/ranged.lua"],
+    "animationCustom" : {
+        "sounds" : {
+            "emptyChamber" : [],
+            "fire" : [],
+            "open" : [],
+            "reload" : [],
+            "close" : [],
+            "slide" : []
+        },
+        "particleEmitters" : {
+            "bulletShell" : {
+                "active" : false,
+                "transformationGroups" : ["weapon"],
+                "emissionRate" : 1,
+                "burstCount" : 1,
+                "particles" : []
+            }
+        }
+    },
+
+    "stances" : {
+        "init" : {
+            "duration" : 0.25,
+            "armRotation" : -90,
+            "transformations" : {
+                "weapon" : {
+                    "translate" : [-0.85, -0.25],
+                    "rotate" : 0
+                }
+            },
+            "animationStates" : {
+                "animation" : "idle"
+            },
+
+            "allowFlip" : true,
+            "lerpTo" : true,
+            "transition" : "idle"
+        },
+        
+        "idle" : {
+            "allowFlip" : true,
+            "armRotation" : -25,
+            "allowRotate" : false,
+            "resetAim" : true,
+            "twoHanded" : true,
+            "frontArmFrame" : "rotation",
+            "backArmFrame" : "rotation",
+            "transformations" : {
+                "weapon" : {
+                    "translate" : [-0.85, -0.25],
+                    "rotate" : 0
+                },
+                "muzzle" : {
+                    "inherit" : "weapon",
+                    "translate" : [3, 1.25]
+                }
+            }
+        },
+        
+        "idleToAim" : {
+            "duration" : 0.05,
+            "inherit" : "idle",
+
+            "lerpTo" : true,
+            "transition" : "aim"
+        },
+        "aim" : {
+            "allowFlip" : true,
+            "armRotation" : 0,
+            "allowRotate" : true,
+            "twoHanded" : true,
+            "frontArmFrame" : "rotation",
+            "backArmFrame" : "rotation",
+            "transformations" : {
+                "weapon" : {
+                    "translate" : [-0.85, -0.25],
+                    "rotate" : 0
+                }
+            }
+        },
+        "aimToIdle" : {
+            "duration" : 0.05,
+            "inherit" : "aim",
+            "allowRotate" : false,
+
+            "lerpTo" : true,
+            "transition" : "idle"
+        },
+        
+        "fire" : {
+            "duration" : 0.05,
+            "allowFlip" : true,
+            "armRotation" : 0,
+            "allowRotate" : true,
+            "twoHanded" : true,
+            "backArmFrame" : "rotation",
+
+            "burstParticleEmitters" : ["bulletShell"],
+            "animationStates" : {
+                "animation" : "fire",
+                "firing" : "fire",
+                "barrelSmoke" : "on"
+            },
+            "lightFlash" : {
+                "muzzleFlash" : 2.5,
+                "muzzleFlashPoint" : 2.5
+            },
+            "playSounds" : ["fire"],
+            "transition" : "cooldown"
+        },
+        "cooldown" : {
+            "duration" : 0.11,
+
+            "allowFlip" : true,
+            "armRotation" : 6,
+            "armAngularVelocity" : 0,
+            "allowRotate" : true,
+            "twoHanded" : true,
+            
+            "transformations" : {
+                "weapon" : {
+                    "translate" : [-0.85, -0.25],
+                    "rotate" : 15
+                }
+            },
+            "frontArmFrame" : "rotation",
+            "backArmFrame" : "rotation",
+
+            "lerpTo" : true,
+            "transition" : "aim"
+        },
+
+        "reload1" : {
+            "duration" : 0.2,
+            
+            "allowFlip" : true,
+            "armRotation" : -20,
+            "resetAim" : true,
+            "transformations" : {
+                "weapon" : {
+                    "translate" : [-0.95, 0],
+                    "rotate" : -25
+                }
+            },
+            "frontArmFrame" : "rotation",
+            "backArmFrame" : "run.5",
+            "allowRotate" : false,
+            "twoHanded" : true,
+
+            "transition" : "reload2"
+        },
+        "reload2" : {
+            "duration" : 0.2,
+            
+            "allowFlip" : true,
+            "armRotation" : -20,
+            "animationStates" : {
+                "animation" : "reload1"
+            },
+            "frontArmFrame" : "run.3",
+            "backArmFrame" : "run.5",
+            "allowRotate" : false,
+            "twoHanded" : true,
+            "playSounds" : ["open"],
+
+            "transition" : "reload3"
+        },
+        "reload3" : {
+            "duration" : 0.2,
+            
+            "allowFlip" : true,
+            "armRotation" : -20,
+            "animationStates" : {
+                "animation" : "reload2"
+            },
+            "frontArmFrame" : "walk.2",
+            "backArmFrame" : "run.5",
+            "allowRotate" : false,
+            "twoHanded" : true,
+
+            "transition" : "reload4"
+        },
+        "reload4" : {
+            "duration" : 0.2,
+            
+            "allowFlip" : true,
+            "armRotation" : -20,
+            "weaponAngularVelocity" : 0,
+            "frontArmFrame" : "run.3",
+            "backArmFrame" : "run.5",
+        
+            "animationStates" : {
+                "animation" : "reload1"
+            },
+            "allowRotate" : false,
+            "twoHanded" : true,
+            "playSounds" : ["reload"],
+            
+            "transition" : "reload5"
+        },
+        
+        "reload5" : {
+            "duration" : 0.2,
+            "armRotation" : -20,
+            "frontArmFrame" : "rotation",
+            "backArmFrame" : "run.5",
+            "animationStates" : {
+                "animation" : "idle"
+            },
+            "twoHanded" : true,
+
+            "allowRotate" : false,
+            "allowFlip" : false,
+            "transition" : "ReloadToIdle"
+        },
+        "ReloadToIdle" : {
+            "duration" : 0.1,
+            "armRotation" : -20,
+            "frontArmFrame" : "rotation",
+            "backArmFrame" : "run.5",
+            "transformations" : {
+                "weapon" : {
+                    "translate" : [-0.95, 0],
+                    "rotate" : -25
+                }
+            },
+            "twoHanded" : true,
+
+            "allowRotate" : false,
+            "allowFlip" : false,
+            "lerpTo" : true,
+            "transition" : "idle"
+        },
+
+        "chamberMunition" : {            
+            "duration" : 0.15,
+            "armRotation" : 0,
+            "animationStates" : {
+                "animation" : "slide"
+            },
+            "playSounds" : ["slide"],
+            "frontArmFrame" : "swim.4",
+            "backArmFrame" : "rotation",
+            "twoHanded" : true,
+            
+            "allowRotate" : true,
+            "allowFlip" : false,
+            "resetAim" : true,
+            "transformations" : {
+                "weapon" : {
+                    "translate" : [-0.85, -0.25],
+                    "rotate" : 10
+                }
+            },
+            
+            "transition" : "chamberMunition2"
+        },
+        "chamberMunition2" : {            
+            "duration" : 0.25,
+            "allowFlip" : true,
+            "armRotation" : 0,
+            "allowRotate" : true,
+            "twoHanded" : true,
+            "frontArmFrame" : "rotation",
+            "backArmFrame" : "rotation",
+            "transformations" : {
+                "weapon" : {
+                    "translate" : [-0.85, -0.25],
+                    "rotate" : 0
+                }
+            },
+            
+            "transition" : "aim"
+        }
+    },
+    
+	"initFunction" : [
+		"Weapon.init",
+		"d8WeapItem.init"
+	],
+    "uninitFunction" : [
+        "d8WeapItem.uninit"
+    ],
+
+    "initBehavior" : "init",
+    "behaviors" : {
+        "init" : {
+            "stance" : "init",
+            "possibleOutcome" : [ { "require" : { "stance" : "idle" }, "behavior" : "idle" } ],
+            "eventOnInit" : ["init"]
+        },
+        
+        "idle" : {
+            "stance" : "idle",
+            "possibleOutcome" : [
+                {
+                    "require" : {
+                        "fireMode" : "<abilitySlot>",
+                        "move" : {
+                            "up" : true
+                        },
+                        "function" : [
+                            "d8WeapItem.hasSpaceInMagazine",
+                            "d8WeapItem.canConsumeMag"
+                        ]
+                    },
+                    "behavior" : "reload"
+                },
+                {
+                    "require" : {
+                        "fireMode" : "<abilitySlot>",
+                        "function" : [
+                            "d8WeapItem.curMagEmpty"
+                        ]
+                    },
+                    "behavior" : "reload"
+                },
+                {
+                    "require" : {
+                        "fireMode" : "<abilitySlot>"
+                    },
+                    "behavior" : "idleToAim"
+                }
+            ]
+        },
+        "idleToAim" : {
+            "stance" : "idleToAim",
+            "possibleOutcome" : [
+                { "require" : { "stance" : "aim" }, "behavior" : "aim" }
+            ]
+        },
+        
+        "aim" : {
+            "stance" : "aim",
+            "possibleOutcome" : [
+                {
+                    "require" : {
+                        "fireMode" : "<abilitySlot>",
+                        "function" : [
+                            "d8WeapItem.nextMunition"
+                        ],
+                        "lowerParam" : {
+                            "munitionInChamber" : true
+                        },
+                        "time" : 0.1
+                    },
+                    "behavior" : "chamberMunition"
+                },
+                {
+                    "require" : {
+                        "fireMode" : "<abilitySlot>",
+                        "function" : [
+                            "d8WeapItem.curMagEmpty"
+                        ],
+                        "time" : 0.1
+                    },
+                    "behavior" : "reload"
+                },
+                {
+                    "require" : {
+                        "fireMode" : "<abilitySlot>",
+                        "function" : [
+                            "d8WeapItem.nextMunition"
+                        ],
+                        "hasLineOfSight" : {
+                            "spawnPos" : "fireOffset",
+                            "spawnOffset" : "<fireOffset>"
+                        },
+                        "time" : 0.1
+                    },
+                    "behavior" : "<fireBehavior>"
+                },
+                { 
+                    "require" : {
+                        "fireMode" : "none",
+                        "time" : 0.1
+                    },
+                    "behavior" : "aimToIdle"
+                }
+            ]
+        },
+        "aimToIdle" : {
+            "stance" : "aimToIdle",
+            "possibleOutcome" : [
+                { "require" : { "stance" : "idle" }, "behavior" : "idle" }
+            ]
+        },
+        
+        "fire" : {
+            "stance" : "fire",
+            "possibleOutcome" : [
+                { "require" : { "stance" : "aim", "function" : [ "d8WeapItem.curMagEmpty" ] }, "behavior" : "empty" },
+                { "require" : { "stance" : "aim" }, "behavior" : "aim" }
+            ],
+            "periodicEvent" : [],
+            "eventOnInit" : [
+                "fireBullet"
+            ]
+        },
+        "empty" : {
+            "possibleOutcome" : [
+                {
+                    "require" : { "time" : 0.175},
+                    "behavior" : "aim"
+                }
+            ],
+            "eventOnInit" : [
+                {
+                    "event" : "function",
+                    "callback" : "animationEx.pitchShift",
+                    "args" : {
+                        "soundName" : "emptyChamber"
+                    }
+                },
+                {
+                    "event" : "function",
+                    "callback" : "behaviorEx.setParameter",
+                    "args" : {
+                        "parameter" : "munitionInChamber",
+                        "value" : false
+                    }
+                },
+                {
+                    "event" : "playSound",
+                    "soundName" : "emptyChamber"
+                }
+            ]
+        },
+        
+        "reload" : {
+            "stance" : "reload1",
+            "possibleOutcome" : [
+                { "require" : { "stance" : "idle" }, "behavior" : "idle" }
+            ],
+            "eventOnInit" : [
+                "pitchReload"
+            ],
+            "eventOnUninit" : [
+                {
+                    "event" : "function",
+                    "callback" : "d8WeapItem.consumeMag"
+                },
+                {
+                    "event" : "function",
+                    "callback" : "d8WeapItem.refillCurMag"
+                }
+            ]
+        },
+        "chamberMunition" : {
+            "stance" : "chamberMunition",
+            "possibleOutcome" : [
+                { "require" : { "stance" : "aim" }, "behavior" : "aim" }
+            ],
+            "eventOnStance" : {
+                "chamberMunition" : [
+                    {
+                        "event" : "function",
+                        "callback" : "behaviorEx.setParameter",
+                        "args" : {
+                            "parameter" : "munitionInChamber",
+                            "value" : true
+                        }
+                    }
+                ]
+            },
+            "eventOnInit" : [
+                {
+                    "event" : "function",
+                    "callback" : "animationEx.pitchShift",
+                    "args" : {
+                        "soundName" : "slide"
+                    }
+                }
+            ]
+        }
+    },
+
+    "behaviorEvents" : {
+        "pitchReload" : [
+            {
+                "event" : "function",
+                "callback" : "animationEx.pitchShift",
+                "args" : {
+                    "soundName" : "open"
+                }
+            },
+            {
+                "event" : "function",
+                "callback" : "animationEx.pitchShift",
+                "args" : {
+                    "soundName" : "reload"
+                }
+            },
+            {
+                "event" : "function",
+                "callback" : "animationEx.pitchShift",
+                "args" : {
+                    "soundName" : "close"
+                }
+            },
+            {
+                "event" : "function",
+                "callback" : "animationEx.pitchShift",
+                "args" : {
+                    "soundName" : "slide"
+                }
+            }
+        ],
+		"fireBullet" : [
+            {
+                "event" : "function",
+                "callback" : "animationEx.pitchShift",
+                "args" : {
+                    "soundName" : "fire"
+                }
+            },
+            {
+                "event" : "function",
+                "callback" : "animationEx:randPartTag",
+                "args" : {
+                    "partType" : "muzzleFlash",
+                    "tagName" : "variant",
+                    "varNum" : 3
+                }
+            },
+            {
+                "event" : "function",
+                "callback" : "d8WeapItem.shotMunition",
+                "args" : {
+                    "spawnPos" : "fireOffset",
+                    "spawnOffset" : "<fireOffset>",
+
+                    "scalingFunction" : "d8WeapItem.munitionScaling",
+                    "damage" : 8,
+                    "inaccuracy" : "<inaccuracy>"
+                }
+            }
+		],
+		"init" : [
+            {
+                "event" : "setCursor",
+                "cursor" : "/cursors/reticle0.cursor"
+            }
+        ]
+    },
+
+    "magazineCapacity"  : 0,
+    "magazine" : [],
+
+    "defaultOverride" : {
+        "fireBehavior" : "fire"
+    }
+}

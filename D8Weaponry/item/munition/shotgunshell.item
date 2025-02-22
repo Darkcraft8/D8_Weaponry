@@ -12,5 +12,6 @@
 
     "projectileType" : "standardbullet",
     "projectileCount" : 8,
-    "projectileParameter" : {}
+    "projectileParameter" : {},
+    "projectileInaccuracy" : 0.05
 }
