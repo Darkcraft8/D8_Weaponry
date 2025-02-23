@@ -207,12 +207,14 @@ function behaviorEvents(events)
 end
 
 function behaviorEvent(eventCfg) -- Handle the Different Event kind|Type
-    if string.lower(eventCfg.event) == "monster" then behavior_monster(eventCfg) return end
-    if string.lower(eventCfg.event) == "projectile" then behavior_projectile(eventCfg) return end
-    if string.lower(eventCfg.event) == "function" then call(eventCfg) return end
-    if string.lower(eventCfg.event) == "setcursor" then activeItem.setCursor(eventCfg.cursor) return end
-    if string.lower(eventCfg.event) == "damagearea" then behavior_hitbox(eventCfg) return end
-    if string.lower(eventCfg.event) == "playsound" then animator.playSound(eventCfg.soundName, eventCfg.loopNumber or 0) return end
+    if eventCfg.event then
+        if string.lower(eventCfg.event) == "monster" then behavior_monster(eventCfg) return end
+        if string.lower(eventCfg.event) == "projectile" then behavior_projectile(eventCfg) return end
+        if string.lower(eventCfg.event) == "function" then call(eventCfg) return end
+        if string.lower(eventCfg.event) == "setcursor" then activeItem.setCursor(eventCfg.cursor) return end
+        if string.lower(eventCfg.event) == "damagearea" then behavior_hitbox(eventCfg) return end
+        if string.lower(eventCfg.event) == "playsound" then animator.playSound(eventCfg.soundName, eventCfg.loopNumber or 0) return end
+    end
 end
 
 function behaviorTimer(list, operation, treshold) -- increase or decrease value of time, merged into one func

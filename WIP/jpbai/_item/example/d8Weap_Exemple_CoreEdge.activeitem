@@ -17,7 +17,7 @@
 		{"image" : "/items/active/weapons/melee/broadsword/handle/1.png?replace;1A3249=282828;676767=565656;B1B1B1=7a7a7a;E9E9E9=9f9f9f?replace;890900=282828;b81a22=565656;e5323b=7a7a7a;ff7060=9f9f9f?replace;053d6e=880000;0964a0=d92e00;2992bc=ffa200;60b9ff=fffe9f"}
 	],
 
-	"scripts" : ["/WIP/customweaponscriptrewritelol/JPBAI.lua", "/WIP/customweaponscriptrewritelol/_item/weapon.lua"],
+	"scripts" : ["/WIP/jpbai/JPBAI.lua", "/WIP/jpbai/module/specialised/weapon.lua"],
 	"elementalType" : "fire",
 	"animation" : "/items/active/weapons/melee/broadsword/combobroadsword.animation",
 	"animationParts" : {
@@ -69,7 +69,7 @@
 			"armRotation" : 40,				
 			"transformations" : {
 				"weapon" : {
-					"translate" : [0, 1],
+					"translate" : [0.1, 1],
 					"rotate" : 60
 				}
 			},
@@ -86,7 +86,7 @@
 			"armRotation" : 40,				
 			"transformations" : {
 				"weapon" : {
-					"translate" : [0, 1],
+					"translate" : [0.1, 1],
 					"rotate" : 60
 				}
 			}
@@ -97,6 +97,8 @@
 			"allowFlip" : true,
 			"twoHanded" : false,
            
+            "frontArmFrame" : "rotation",
+            "backArmFrame" : "rotation",
 			"armRotation" : -30,
 			"transformations" : {
 				"weapon" : {
@@ -110,13 +112,16 @@
 			"armRotation" : 90,
 			"transformations" : {
 				"weapon" : {
-					"translate" : [0, 0.4],
 					"rotate" : -10
 				}
-		},
+			},
+            "frontArmFrame" : "rotation",
+            "backArmFrame" : "rotation",
+
 			"twoHanded" : true,
-				"allowRotate" : false,
-				"allowFlip" : true,
+			"allowRotate" : false,
+			"allowFlip" : true,
+			
 			"transition" : "nS_preslash1"
 		},
 		"nS_preslash1" : {
@@ -124,21 +129,20 @@
 			"armRotation" : 55,
 			"transformations" : {
 				"weapon" : {
-					"translate" : [0, 0.4],
 					"rotate" : -45
 				}
 			},
 			"twoHanded" : true,
 			"allowRotate" : false,
 			"allowFlip" : false,
-				"transition" : "nS_fire1"
+			
+			"transition" : "nS_fire1"
 		},
 		"nS_fire1" : {
 			"duration" : 0.15,
 			"armRotation" : -45,
 			"transformations" : {
 				"weapon" : {
-					"translate" : [0, 0.4],
 			        "rotate" : -55
 				},
 				"swoosh" : {
@@ -169,7 +173,6 @@
 			"armRotation" : -15,
 			"transformations" : {
 				"weapon" : {
-					"translate" : [0, 0.4],
 					"rotate" : -60
 				}
 			},
@@ -183,13 +186,10 @@
 			"armRotation" : -150,
 			"transformations" : {
 				"weapon" : {
-					"translate" : [0, 0.4],
 					"rotate" : 55
 				},
 				"swoosh" : {
-					"translate" : [0.4, -0.4],
-					"rotate" : 150,
-					"rotationCenter" : [0, 0.4]
+					"rotate" : 150
 				}
 			},
 			"animationStates" : {
@@ -223,7 +223,6 @@
 			"armRotation" : 0,
 			"transformations" : {
 				"weapon" : {
-					"translate" : [0, 0.4],
 					"rotate" : -90
 				},
 				"swoosh" : {
@@ -257,8 +256,7 @@
 			"armRotation" : 75,				
 			"transformations" : {
 				"weapon" : {
-					"translate" : [0, 0.4],
-					"rotate" : 180
+					"rotate" : -180
 				}
 			}
 		},
@@ -277,7 +275,6 @@
 			"armRotation" : -30,				
 			"transformations" : {
 				"weapon" : {
-					"translate" : [0, 0.4],
 					"rotate" : -40
 				}
 			}
@@ -355,7 +352,10 @@
 					"behavior" : "hS_idle"
 				},
 				{
-					"require" : { 
+					"require" : {
+						"move" : {
+							"up" : true
+						},
 						"shift" : true,
 						"time" : 0.5
 					},
@@ -377,12 +377,16 @@
 						"move" : {
 							"up" : true
 						},
+						"shift" : false,
 						"time" : 0.5
 					},
 					"behavior" : "hS_idle"
 				},
 				{ 
 					"require" : { 
+						"move" : {
+							"up" : true
+						},
 						"shift" : true,
 						"time" : 0.5
 					},
@@ -465,6 +469,9 @@
 			"possibleOutcome" : [
 				{ 
 					"require" : { 
+						"move" : {
+							"up" : true
+						},
 						"shift" : true,
 						"time" : 0.25
 					},
@@ -490,6 +497,7 @@
 						"move" : {
 							"up" : true
 						},
+						"shift" : false,
 						"time" : 0.25
 					},
 					"behavior" : "nS_idle"

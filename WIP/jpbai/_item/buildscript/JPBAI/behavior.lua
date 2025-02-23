@@ -34,7 +34,7 @@ function setupBehavior(config, parameters, behaviorName, fireType)
     for stanceName, stanceCfg in pairs(config.stances or {}) do 
         merge.stances[stanceName] = stanceCfg
     end
-
+    merge.behaviorName = nil -- remove the behaviorName, doesn't serve a purpose outside of the oSb Script
     --sb.logInfo("[json.sbMerge] %s : %s", config.shortdescription, sb.printJson(merge, 1))
     --sb.logInfo("[util.mergeTable] %s", sb.printJson(util.mergeTable(cfg, config), 1))
     local newConfig = merge--util.mergeTable(cfg, config)

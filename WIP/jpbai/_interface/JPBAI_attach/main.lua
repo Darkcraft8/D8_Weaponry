@@ -20,7 +20,7 @@ end
 
 function giveCurrentItemBack()
     if not player.swapSlotItem() then
-        player.setSwapSlotItem(swapSlotItem)
+        player.giveItem(swapSlotItem)--player.setSwapSlotItem(swapSlotItem)
     else
         player.giveItem(swapSlotItem)
     end

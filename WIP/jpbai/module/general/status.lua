@@ -3,8 +3,8 @@ statusEx = statusEx or {}
 function statusEx.hasResources(args) -- return if the resources in the table are available
     if not args then return end
     for i, cfg in ipairs(args) do
-        if cfg.count then
-            if not status.resource(cfg.resource) >= cfg.count then return false end
+        if cfg.amount then
+            if not status.resource(cfg.resource) >= cfg.amount then return false end
         else
             if not status.resourcePositive(cfg.resource) then return false end
         end

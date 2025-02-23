@@ -550,6 +550,10 @@
     "magazine" : [],
 
     "defaultOverride" : {
+        "inaccuracy" : 0.01,
+        "fireOffset" : [3, 0.5],
         "fireBehavior" : "fire"
-    }
+    },
+    
+    "behaviorName" : "d8Weap_Ballistic_gunFire"
 }

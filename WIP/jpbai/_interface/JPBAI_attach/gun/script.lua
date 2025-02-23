@@ -75,7 +75,7 @@ function attachCfgSelected()
                         else
                             table.insert(swapSlotItem["parameters"]["magazine"], curSwapSlotItem)
                         end
-                        player.setSwapSlotItem(returnedItem)
+                        --player.setSwapSlotItem(returnedItem)
                     end
                 end
             elseif data.index then
@@ -87,7 +87,7 @@ function attachCfgSelected()
                     count = 1
                 }
                 swapSlotItem["parameters"]["magazine"][index]["count"] = swapSlotItem["parameters"]["magazine"][index]["count"] - 1
-                player.giveItem(item)
+                --player.giveItem(item)
                 if swapSlotItem["parameters"]["magazine"][index]["count"] <= 0 then
                     table.remove(swapSlotItem["parameters"]["magazine"], index)
                 end

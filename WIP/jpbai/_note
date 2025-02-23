@@ -3,12 +3,12 @@ to be presentable as a preview of what to come
 
 --List of thing needed to be Done
 General
---Resource requirement/manipulation
---Energy Scaling Func
---Add way to allow for movement altering event in behavior "ex: spin slash"
+--Resource requirement/manipulation : Done
+--Energy Scaling Func : Done
+--Add way to allow for movement altering event in behavior "ex: spin slash" : To be Tested
 --Add support for the creation of the following type of item
 * Staff|Wand
-* Magnorbs
+* Magnorbs|Boomerang|Chakram
 * Laser|Erchius Eye
 
 D8Weap Part

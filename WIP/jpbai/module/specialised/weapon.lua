@@ -10,11 +10,11 @@ end
 
 function Weapon_uninit() end
 
--- Damage Scaling
+-- Scaling
 function Weapon.damagePerShot(args)
     local mathResult = args.baseDamage or 1
     mathResult = mathResult * (Weapon.damageLevelMultiplier or 1.0)
-    mathResult = mathResult * (Weapon.damageLevelMultiplier / (args.count or 1))
+    mathResult = mathResult * ((Weapon.damageLevelMultiplier or 1.0) / (args.count or 1.0))
 
     return mathResult
 end
@@ -22,6 +22,14 @@ function Weapon.basicDamage(args)
     local mathResult = args.baseDamage or 1
     mathResult = mathResult * (Weapon.damageLevelMultiplier or 1.0)
 
+    return mathResult
+end
+
+function Weapon.energyPerAction(args)
+    local mathResult = args.baseCost or 1
+    if mathResult ~= 0 then 
+        mathResult = mathResult * (1.0 / (args.count or 1.0))
+    end
     return mathResult
 end
 
@@ -39,6 +47,7 @@ function Weapon.canConsumeItem(ItemNameOrTable)
         end
     end
 end
+
 function Weapon.consumeItem(ItemNameOrTable)
     if type(ItemNameOrTable) == "string" then
         return player.consumeItem(ItemNameOrTable , true, true)

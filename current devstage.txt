@@ -43,3 +43,10 @@ postPone :
 idea :
 
 -- > Creation of a whole new system for the mod weapon's that use modularity... would also require to make a script to convert any old weapon to new format... will try later on
+Devlog
+added : 
+- simple broadswordCombo for jpbai
+- required shared tooltip util "/shared/darkcraft8/"
+
+change :
+- the behavior list for jpbai now register any named ("behaviorName") file with .jpbaiBehaviorCfg extension

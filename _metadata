@@ -9,5 +9,7 @@
   "priority" : 9999999,
   "steamContentId" : "3331782262",
   "tags" : "Miscellaneous|Weapons|Furniture and Objects|Mechanics",
-  "version" : "V1.1.2"
+  "version" : "V1.1.2",
+
+  "scripts": {"postLoad": ["/WIP/jpbai/_item/buildscript/JPBAI/behaviorList_postload.lua"]}
 }

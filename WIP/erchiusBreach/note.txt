@@ -2,13 +2,17 @@ erchius breach is an update with some survival horror element
 
 erchius research station, erchius mining base/colony (radiant mission world) : 
     new type of instanced world that are mission sized dungeon that are semi random
-    similarly to ancient vault
+    similarly to ancient vault with the exception that they aren't reset,
+    each entrance/distress signal has their own world that can be used after defeating it danger as base
 
-makeshift flamethrower(weapon) : new weapon use cannister filled with oxygen
-    letheia nailgun(weapon) : new weapon use core fragment as munition
+makeshift flamethrower(weapon) : 
+    new weapon use cannister filled with oxygen
+
+letheia nailgun(weapon) : 
+    new weapon use core fragment as munition
 
 cannister (container item):
-    new container item used as munition for the new makeshift flamethrower
+    new container item used as munition for the new makeshift flamethrower or to transport ressource that don't have their own item
     blueprint obtained by searching for it in the radiant missions world
 
 makeshift electrolize (machine) : 
@@ -21,4 +25,4 @@ erchius interference (status effect):
     this status effect should happen when inside of a radiant mission world of the update
 
 Todo:
-make the fire script able to reload using non empty container item
+turn the weapons to the new jpbai system
