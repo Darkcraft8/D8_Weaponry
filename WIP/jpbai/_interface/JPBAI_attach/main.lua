@@ -1,6 +1,8 @@
+require '/shared/darkcraft8/util/item.lua'
 
 swapSlotItem = nil
 function init()
+    D8Shared_BuildItemFunction()
     getCurrentItem()
 end
 
@@ -13,8 +15,11 @@ function updateItemIcon()
 end
 
 function getCurrentItem()
-    swapSlotItem = player.swapSlotItem()
-    player.setSwapSlotItem(nil)
+    swapSlotItem = swapSlotItem 
+    if not swapSlotItem then
+        swapSlotItem = player.swapSlotItem()
+        player.setSwapSlotItem(nil)
+    end
     updateItemIcon()
 end
 
@@ -24,12 +29,4 @@ function giveCurrentItemBack()
     else
         player.giveItem(swapSlotItem)
     end
-end
-
-function getParameter(variable, defaultValue) -- return the value of the variable in "parameters" or nil otherwise
-    return swapSlotItem["parameters"][variable] or defaultValue
-end
-
-function getConfig(variable, defaultValue) -- return the value of the variable in "config" or nil otherwise
-    return root.itemConfig(swapSlotItem)["config"][variable] or defaultValue
 end

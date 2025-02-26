@@ -1,11 +1,13 @@
 require("/WIP/jpbai/_interface/JPBAI_attach/main.lua")
-require "/shared/darkcraft8/D8TooltipUtil.lua"
+require "/shared/darkcraft8/d8ToolTipUtil/tooltips.lua"
 
 local listContent = {}
 local attachList = {}
 local cfgListMode = "default"
+item = {}
 
 function init()
+    D8Shared_BuildItemFunction()
     getCurrentItem()
     buildAttachList()
 end
@@ -40,7 +42,7 @@ function attachCfgSelected()
     if selected then
         local data = widget.getData(list .. "." .. selected)
         if cfgListMode == "munition" then
-            local magCap = getParameter("magazineCapacity", getConfig("magazineCapacity", 0))
+            local magCap = root.getItemVariable(swapSlotItem, "magazineCapacity", 0)
             local slotItem = widget.itemSlotItem(list .. "." .. selected .. ".itemIcon")
             local curSwapSlotItem = player.swapSlotItem()
             local returnedItem
@@ -50,7 +52,8 @@ function attachCfgSelected()
                         name = curSwapSlotItem["name"],
                         parameters = curSwapSlotItem["parameters"]
                     }
-                    local curMag = getParameter("magazine", getConfig("magazine", {}))
+                    local curMag = descriptMag(root.getItemVariable(swapSlotItem, "magazine", {}))
+
                     local munitionAmount = d8WeapItem.munitionAmount()
                     if magCap > munitionAmount then
                         if curSwapSlotItem["count"] > (magCap - munitionAmount) then
@@ -61,7 +64,7 @@ function attachCfgSelected()
                             }
                             curSwapSlotItem["count"] = (magCap - munitionAmount)
                         end
-                        if not swapSlotItem["parameters"]["magazine"] then swapSlotItem["parameters"]["magazine"] = getConfig("magazine", {}) end
+                        if not swapSlotItem["parameters"]["magazine"] then swapSlotItem["parameters"]["magazine"] = descriptMag(root.getItemConfig(swapSlotItem, "magazine", {})) end
                         if munitionAmount > 0 then
                             local itemToString = sb.printJson({
                                 name = curMag[1]["name"],
@@ -79,7 +82,7 @@ function attachCfgSelected()
                     end
                 end
             elseif data.index then
-                if not swapSlotItem["parameters"]["magazine"] then swapSlotItem["parameters"]["magazine"] = getConfig("magazine", {}) end
+                if not swapSlotItem["parameters"]["magazine"] then swapSlotItem["parameters"]["magazine"] = descriptMag(root.getItemConfig(swapSlotItem, "magazine", {})) end
                 local index = data.index
                 local item = {
                     name = swapSlotItem["parameters"]["magazine"][index]["name"],
@@ -99,11 +102,11 @@ function attachCfgSelected()
 end
 
 function buildAttachList()
-    local attachCfg = getParameter("attachCfg", getConfig("attachCfg", {}))
-    local attach = getParameter("attach", getConfig("attach", {}))
+    local attachCfg = root.getItemVariable(swapSlotItem, "attachCfg", {})
+    local attach = root.getItemVariable(swapSlotItem, "attach", {})
     attachCfg.munition = {
         kind = "munition",
-        name = "Munition Arrangement : " .. d8WeapItem.munitionAmount() .. "/" .. getParameter("magazineCapacity", getConfig("magazineCapacity", {})),
+        name = "Munition Arrangement : " .. d8WeapItem.munitionAmount() .. "/" .. root.getItemVariable(swapSlotItem, "magazineCapacity", {}),
         func = "munition",
         icon = "/WIP/jpbai/_interface/JPBAI_attach/gun/icon/munition.png"
     }
@@ -141,14 +144,14 @@ function munition()
 end
 
 function buildMagazine()
-    local magCap = getParameter("magazineCapacity", getConfig("magazineCapacity", 0))
-    local curMag = getParameter("magazine", getConfig("magazine", {}))
+    local magCap = root.getItemVariable(swapSlotItem, "magazineCapacity", 0)
+    local curMag = descriptMag(root.getItemVariable(swapSlotItem, "magazine", {}))
     local list = "attachCfg.list"
     widget.clearListItems(list)
     for index, itemDescriptor in ipairs(curMag) do 
         local id = widget.addListItem(list)
         local path = list .. "." .. id
-        local shortDescription = item.getParameter(itemDescriptor, "shortDescription", item.getConfig(itemDescriptor, "shortDescription", "<Error 404> : ShortDescription Not Found"))
+        local shortDescription = root.getItemVariable(itemDescriptor, "shortDescription", "<Error 404> : ShortDescription Not Found")
         widget.setItemSlotItem(path .. ".itemIcon", itemDescriptor)
         widget.setText(path .. ".itemName", shortDescription)
         widget.setData(path, {
@@ -177,7 +180,7 @@ end
 -- d8Weap --
 d8WeapItem = d8WeapItem or {}
 function d8WeapItem.munitionAmount()
-    local curMag = getParameter("magazine", getConfig("magazine", {}))
+    local curMag = descriptMag(root.getItemVariable(swapSlotItem, "magazine", {}))
     local amount = 0
     for _, item in ipairs(curMag) do 
         if type(item) == "table" then 
@@ -190,17 +193,23 @@ function d8WeapItem.munitionAmount()
 end
 
 function d8WeapItem.isMunition(itemDesc)
-    return item.getParameter(itemDesc, "projectileType", item.getConfig(itemDesc, "projectileType", false))
+    return root.getItemVariable(itemDesc, "projectileType", false)
 end
 
--- item --
-item = item or {}
-function item.getParameter(itemDesc, variable, defaultValue) -- return the value of the variable in "parameters" or nil otherwise
-    return root.createItem(itemDesc)["parameters"][variable] or defaultValue
-end
-
-function item.getConfig(itemDesc, variable, defaultValue) -- return the value of the variable in "config" or nil otherwise
-    return root.itemConfig(itemDesc)["config"][variable] or defaultValue
+function descriptMag(curMag)
+    for i = 1, #curMag do 
+        if type(curMag[i]) == "string" then
+            curMag[i] = root.createItem(curMag[i])
+        elseif type(curMag[i]) == "table" then
+            if not curMag[i].parameters then
+                curMag[i].parameters = {}
+            end
+            if not curMag[i].count then
+                curMag[i].count = 1
+            end
+        end
+    end
+    return curMag
 end
 
 -- tooltip --

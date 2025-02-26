@@ -62,7 +62,99 @@ function behaviorUpdate(dt, fireMode, isShiftHeld, currentMove) -- find a way to
     behaviorTimer(self.behaviorPeriodicEventTimer, "increase")
     local checkPossibleOutcome = coroutine.create(function(dt, fireMode, isShiftHeld, currentMove)
         if self.behavior["possibleOutcome"] then 
-            for i, p in ipairs(self.behavior["possibleOutcome"]) do
+            if not (#self.behavior["possibleOutcome"] > 0) then return end
+            if not self.behavior["random"] then
+                for i, p in ipairs(self.behavior["possibleOutcome"]) do
+                    local useBehav = true
+                    local behavior = p.behavior
+                    local checkResult = {}
+                    if config.getParameter("debug") then sb.logInfo("--[ behavior %s", behavior) end
+                    for k, v in pairs(p.require) do
+                        if player then -- player specific check
+                            if k == "inSwapSlot" and not player.swapSlotItem() then
+                                if useBehav then
+                                    useBehav = false
+                                end  
+                            end
+                        end
+                        if k == "fireMode" then
+                            if config.getParameter("debug") then sb.logInfo("fireMode %s", useBehav) end
+                            if useBehav then
+                                useBehav = (v == fireMode)
+                            end 
+                        end
+                        if k == "time" then 
+                            if self.behaviorCurrentTime[behavior] then
+                                if useBehav then useBehav = (self.behaviorCurrentTime[behavior] > v) end
+                            else
+                                self.behaviorTime[behavior] = v
+                                self.behaviorCurrentTime[behavior] = dt
+
+                                useBehav = false
+                            end
+                            if config.getParameter("debug") then sb.logInfo("time %s", time) end
+                        end
+                        if k == "move" then
+                            local individialCheckResult 
+                            if useBehav then useBehav, individialCheckResult = check_Move(currentMove, v, behavior) end 
+                            if config.getParameter("debug") then sb.logInfo("move %s", individialCheckResult) end
+                        end
+                        if k == "shift" then 
+                            if useBehav then useBehav = (v == isShiftHeld) end 
+                            if config.getParameter("debug") then sb.logInfo("shift %s", useBehav) end 
+                        end
+                        if k == "stance" then
+                            if useBehav then useBehav = (v == self.stanceName) end 
+                            if config.getParameter("debug") then sb.logInfo("stance %s", useBehav) end 
+                        end
+                        -- For use with extra scripts ex: custom function that check if a specific parameters is at a specific value while some boolean are true
+                        if k == "function" then 
+                            if useBehav then useBehav = check_Function(v) if useBehav then useBehav = true end end 
+                            if config.getParameter("debug") then sb.logInfo("function %s", useBehav) end 
+                        end
+                        
+                        if k == "exactParam" then 
+                            if useBehav then
+                                useBehav = check_ExactParam(v) 
+                            end 
+                            if config.getParameter("debug") then sb.logInfo("exactParam %s", useBehav) end 
+                        end
+                        if k == "greaterParam" then
+                            if useBehav then 
+                                useBehav = check_GreaterParam(v)
+                            end 
+                            if config.getParameter("debug") then sb.logInfo("greaterParam %s", useBehav) end 
+                        end
+                        if k == "lowerParam" then
+                            if useBehav then 
+                                useBehav = check_LowerParam(v)
+                            end 
+                            if config.getParameter("debug") then sb.logInfo("lowerParam %s", useBehav) end
+                        end
+        
+                        if k == "hasLineOfSight" then
+                            if useBehav then
+                                useBehav = not check_raycastToSpawnPos(v)
+                            end 
+                            if config.getParameter("debug") then sb.logInfo("hasLineOfSight %s", useBehav) end
+                        end
+                    end
+                    if p.cooldown then
+                        if useBehav then 
+                            useBehav = check_Cooldown(behavior) 
+                        end 
+                        if config.getParameter("debug") then sb.logInfo("cooldown %s", useBehav) end
+                    end
+                    if config.getParameter("debug") then sb.logInfo("--] require %s", p.require) end
+                    
+                    if useBehav == true then
+                        if p.cooldown then self.behaviorCooldown[behavior] = p.cooldown end
+                        setBehavior(behavior)
+                    return "Switching to Behavior | " .. behavior end
+                end
+            else
+                local randomizedIndex = math.random(#self.behavior["possibleOutcome"])
+                local i, p = randomizedIndex, self.behavior["possibleOutcome"][randomizedIndex]
                 local useBehav = true
                 local behavior = p.behavior
                 local checkResult = {}
@@ -105,7 +197,7 @@ function behaviorUpdate(dt, fireMode, isShiftHeld, currentMove) -- find a way to
                         if useBehav then useBehav = (v == self.stanceName) end 
                         if config.getParameter("debug") then sb.logInfo("stance %s", useBehav) end 
                     end
-                     -- For use with extra scripts ex: custom function that check if a specific parameters is at a specific value while some boolean are true
+                    -- For use with extra scripts ex: custom function that check if a specific parameters is at a specific value while some boolean are true
                     if k == "function" then 
                         if useBehav then useBehav = check_Function(v) if useBehav then useBehav = true end end 
                         if config.getParameter("debug") then sb.logInfo("function %s", useBehav) end 
@@ -144,7 +236,7 @@ function behaviorUpdate(dt, fireMode, isShiftHeld, currentMove) -- find a way to
                     if config.getParameter("debug") then sb.logInfo("cooldown %s", useBehav) end
                 end
                 if config.getParameter("debug") then sb.logInfo("--] require %s", p.require) end
-                
+                    
                 if useBehav == true then
                     if p.cooldown then self.behaviorCooldown[behavior] = p.cooldown end
                     setBehavior(behavior)

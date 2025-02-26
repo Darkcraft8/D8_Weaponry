@@ -23,10 +23,6 @@ require "/WIP/jpbai/module/general/status.lua"
 require "/WIP/jpbai/module/general/behavior.lua"
 require "/WIP/jpbai/module/general/behaviorEX.lua"
 
-require "/shared/darkcraft8/scripts/json.lua"
-require "/shared/darkcraft8/scripts/lua.lua"
-require "/shared/darkcraft8/scripts/item.lua"
-
 local playerInteractTimer = 0
 function init()
     JPBAIConfig = root.assetJson("/WIP/jpbai/JPBAI.config")

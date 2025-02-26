@@ -1,11 +1,14 @@
 require("/WIP/jpbai/module/specialised/weapon.lua")
 require("/WIP/jpbai/module/specialised/d8Weap/localRenderUtil.lua")
+require "/shared/darkcraft8/util/item.lua"
 
 d8WeapItem = {}
 function d8WeapItem.init()
-    d8WeapItem.magazine = config.getParameter("magazine", {})
+    D8Shared_BuildItemFunction()
+
+    d8WeapItem.magazine = descriptMag(config.getParameter("magazine", {}))
     d8WeapItem.reloadOverride = config.getParameter("reloadOverride")
-    d8WeapItem.curMagazine = config.getParameter("curMagazine", {})
+    d8WeapItem.curMagazine = descriptMag(config.getParameter("curMagazine", {}))
     d8WeapItem.magazineCapacity = config.getParameter("magazineCapacity", 1)
     table.insert(updateFunc, "d8WeapItem.update")
     --d8WeapItem.addMunition({item = "d8Weaponry_standardbullet"})
@@ -105,7 +108,7 @@ end
 
 function d8WeapItem.refillCurMag()
     --sb.logInfo("%s", d8WeapItem.curMagazine)
-    d8WeapItem.curMagazine = copy(d8WeapItem.magazine)
+    d8WeapItem.curMagazine = descriptMag(copy(d8WeapItem.magazine))
     activeItem.setInstanceValue("curMagazine", d8WeapItem.curMagazine)
     --sb.logInfo("%s", d8WeapItem.curMagazine)
 end
@@ -149,6 +152,7 @@ function d8WeapItem.consumeMunition()
         end
         d8WeapItem.curMagazine = newMagazine
     end
+    d8WeapItem.curMagazine = descriptMag(d8WeapItem.curMagazine)
     activeItem.setInstanceValue("curMagazine", d8WeapItem.curMagazine)
 end
 
@@ -180,7 +184,7 @@ function d8WeapItem.setMag(args)
     if args then 
         if args.itemTable then 
             if root.createItem(args.itemTable[1]) then
-                d8WeapItem.curMagazine = args.itemTable
+                d8WeapItem.curMagazine = descriptMag(args.itemTable)
             else sb.logError("%s Item Table not found/valid", args.itemTable) end
         else sb.logError("%s Item Table not found/valid", args.itemTable) end
     end
@@ -203,7 +207,7 @@ function d8WeapItem.munitionScaling(args) -- similar to damagePerShot except it 
 end
 
 function d8WeapItem.updateTooltip()
-    local tooltipFields = getParameter("tooltipFields", {})
+    local tooltipFields = item.getItemParameter("tooltipFields", {})
     local damageTable = {}
     local damageValue = 0
     for _, munition in ipairs(config.getParameter("magazine", {})) do
@@ -231,7 +235,7 @@ function d8WeapItem.updateTooltip()
         activeItem.setInstanceValue("tooltipFields", tooltipFields)
     end
     local updateToolTip = function(curMagazine)
-        local tooltipFields = getParameter("tooltipFields", {})
+        local tooltipFields = item.getItemParameter("tooltipFields", {})
         local newImage = d8Weap_Magazine_Image(curMagazine or {})
         if newImage ~= tooltipFields.magazineImage then
             tooltipFields.magazineImage = newImage
@@ -239,4 +243,20 @@ function d8WeapItem.updateTooltip()
         end
     end
     updateToolTip(d8WeapItem.curMagazine)
+end
+
+function descriptMag(curMag)
+    for i = 1, #curMag do 
+        if type(curMag[i]) == "string" then
+            curMag[i] = root.createItem(curMag[i])
+        elseif type(curMag[i]) == "table" then
+            if not curMag[i].parameters then
+                curMag[i].parameters = {}
+            end
+            if not curMag[i].count then
+                curMag[i].count = 1
+            end
+        end
+    end
+    return curMag
 end

@@ -1,5 +1,6 @@
 local behaviorCfgs = assets.byExtension("jpbaiBehaviorCfg")
-local behaviorList = assets.json("/WIP/jpbai/_item/buildscript/JPBAI/behaviorList.config")
+local listPath = "/WIP/jpbai/_item/buildscript/JPBAI/behaviorList.config"
+local behaviorList = assets.json(listPath)
 local count = 0
 local registered = {}
 
@@ -15,10 +16,10 @@ for i = 1, #behaviorCfgs do
   end
 end
 
-local path = "/WIP/jpbai/_item/buildscript/JPBAI/behaviorList.config.patch"
+local path = listPath .. ".patch"
 assets.add(path, registered)
-assets.patch("/WIP/jpbai/_item/buildscript/JPBAI/behaviorList.config", path)
+assets.patch(listPath, path)
 
 if count > 0 then
-  sb.logInfo("[BehaviorList Postload] Registered %s named jpbai behavior into /WIP/jpbai/_item/buildscript/JPBAI/behaviorList.config", count)
+  sb.logInfo("[JPBAI | BehaviorList Postload] Registered %s named behavior into %s", count, listPath)
 end
