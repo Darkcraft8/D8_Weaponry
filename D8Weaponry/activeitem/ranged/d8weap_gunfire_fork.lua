@@ -1,8 +1,14 @@
 require "/scripts/util.lua"
 require "/scripts/interp.lua"
 
+require "/shared/darkcraft8/localScript/deployment/rendererUtil.lua"
+require "/D8Weaponry/activeitem/JPBAI/module/specialised/d8Weap/localRenderUtil.lua"
 -- gunFire ability forked from gunfire.lua
 GunFire = WeaponAbility:new()
+local oldUpdate = update
+local currentMoves = nil
+local identifier
+local drawable = {}
 
 function GunFire:init()
   self.weapon:setStance(self.stances.idle)
@@ -26,17 +32,23 @@ function GunFire:init()
   end
   passiveTimer = self.passiveTimer or 1
   animator.setGlobalTag("weaponDirective", "")
+  drawable.init(self)
 end
 
-local oldUpdate = update
-local currentMoves = nil
 function update(dt, fireMode, shiftHeld, moves)
   currentMoves = moves
   oldUpdate(dt, fireMode, shiftHeld, moves)
 end
 
+local _uninit = uninit
+function uninit()
+  if _uninit then _uninit() end
+  drawable.uninit()
+end
+
 function GunFire:update(dt, fireMode, shiftHeld)
   WeaponAbility.update(self, dt, fireMode, shiftHeld)
+  drawable.update(self)
 
   self.cooldownTimer = math.max(0, self.cooldownTimer - self.dt)
 
@@ -819,4 +831,46 @@ function GunFire:returnedItemBuild(consumed, returnedItemDurability)
   end
   
   return self.returnedItem
+end
+
+function drawable.init(GunFireCfg)
+  if player then
+    identifier = (GunFireCfg.activatingFireMode or GunFireCfg.abilitySlot or "ability") .. "_weapon_" .. item.friendlyName()
+    local drawable = {}
+    drawable.image = d8Weap_Magazine_Image({
+      {
+          name = GunFireCfg.ammoType,
+          count = config.getParameter(GunFireCfg.ammoCountName) or 0
+      }
+    })
+    drawable.position = vec2.sub(activeItem.ownerAimPosition(), world.entityPosition(activeItem.ownerEntityId()))
+    drawable.color = {255, 255, 255, 200}
+    drawable.scale = 0.65
+    d8SharedRendererUtil.addDrawable(drawable, 0, identifier)
+  end
+end
+
+function drawable.update(GunFireCfg)
+  if player then
+    local drawable = {}
+    drawable.image = d8Weap_Magazine_Image({
+      {
+          name = GunFireCfg.ammoType,
+          count = config.getParameter(GunFireCfg.ammoCountName) or 0
+      }
+    })
+    drawable.position = vec2.sub(activeItem.ownerAimPosition(), world.entityPosition(activeItem.ownerEntityId()))
+    drawable.position = vec2.sub(drawable.position, {-3.5, 3})
+    drawable.color = {255, 255, 255, 200}
+    drawable.scale = 0.65
+    if not d8SharedRendererUtil.updateDrawable(drawable, identifier) then
+      d8SharedRendererUtil.addDrawable(drawable, 0, identifier)
+    end
+  end
+end
+
+function drawable.uninit()
+  if player then
+    d8SharedRendererUtil.removeDrawable(identifier)
+  end
 end

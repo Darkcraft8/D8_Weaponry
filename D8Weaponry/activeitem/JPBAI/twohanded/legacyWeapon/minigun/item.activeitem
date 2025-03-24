@@ -1,0 +1,25 @@
+{
+  "itemName" : "d8Weaponry_JPBAI_minigun",
+  "price" : 960,
+  "maxStack" : 1,
+  "rarity" : "Uncommon",
+  "shortdescription" : "Minigun",
+  "description" : "WIP | does nothing currently",
+  "category" : "d8weaponry_smg",
+  "tooltipKind" : "d8Weaponry_gun",
+  "twoHanded" : true,
+  "itemTags" : ["weapon","ranged","assaultrifle", "d8Weaponry_gun"],
+  
+  "inventoryIcon" : [
+    { "image" : "normal.png:idle" }
+  ],
+  "tooltipFields" : {
+    "rarityLabel" : "^green;Uncommon"
+  },
+  
+  "animation" : "/D8Weaponry/activeitem/ranged/gun.animation",
+  "animationParts" : {
+    "middle" : "normal.png",
+    "muzzleFlash" : "/items/active/weapons/ranged/muzzleflash.png"
+  }
+}

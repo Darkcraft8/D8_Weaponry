@@ -1,5 +1,6 @@
 require("/jpbai/module/specialised/weapon.lua")
 require("/D8Weaponry/activeitem/JPBAI/module/specialised/d8Weap/localRenderUtil.lua")
+require "/shared/darkcraft8/localScript/deployment/rendererUtil.lua"
 require "/shared/darkcraft8/util/item.lua"
 
 d8WeapItem = {}
@@ -12,48 +13,23 @@ function d8WeapItem.init()
     d8WeapItem.magazineCapacity = config.getParameter("magazineCapacity", 1)
     table.insert(updateFunc, "d8WeapItem.update")
     --d8WeapItem.addMunition({item = "d8Weaponry_standardbullet"})
-    if xsb then require "/shared/xStarboundPatch/luaLinking.lua" end
+    if player then
+        d8SharedRendererUtil.addDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), 0,  "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
+    end
 end
 
 function d8WeapItem.uninit()
     if d8WeapItem.curMagazine then activeItem.setInstanceValue("curMagazine", d8WeapItem.curMagazine) end
-    if _ENV["xCallbackSendRequest"] and player then
-        local drawable = d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem" .."-".. config.getParameter("shortdescription", "") .."-".. activeItem.hand())
-        xCallbackSendRequest("d8WeapUtils:callback", {
-            drawable = drawable,
-            Uuid = player.uniqueId(),
-            callback = "remove"
-        })
-    else
-        if d8WeaponryUtils and player then
-            d8WeaponryUtils:remove("d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand(), player.uniqueId())
-        end
+    if player then
+        d8SharedRendererUtil.removeDrawable("d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
     end
 end
 
 function d8WeapItem.update(dt, fireMode, isShiftHeld, currentMove)
     if player then
         d8WeapItem.updateTooltip()
+        d8SharedRendererUtil.updateDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
     end
-
-    if _ENV["xCallbackSendRequest"] and player then
-        local drawable = d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem" .."-".. config.getParameter("shortdescription", "") .."-".. activeItem.hand())
-        xCallbackSendRequest("d8WeapUtils:callback", {
-            drawable = drawable,
-            Uuid = player.uniqueId(),
-            callback = "send"
-        })
-    else
-        if d8WeaponryUtils and player then
-            local drawable = d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem" .."-".. config.getParameter("shortdescription", "") .."-".. activeItem.hand())
-            if d8WeaponryUtils.drawableList[drawable.name] then
-                d8WeaponryUtils:update(drawable, player.uniqueId())
-            else
-                d8WeaponryUtils:add(drawable, player.uniqueId())
-            end
-        end
-    end
-
 end
 
 function d8WeapItem.consumeMag()

@@ -290,7 +290,7 @@
                 "allowFlip" : true,
                 "armRotation" : 0,
                 "weaponOffset" : [-1.1, 0.35],
-                "frontArmFrame" : "run.1?crop;4;0;43;43",
+                "frontArmFrame" : "run.1",
                 "animationStates" : {
                     "animation" : "idle"
                 },
@@ -304,7 +304,7 @@
                 "allowFlip" : false,
                 "armRotation" : 0,
                 "weaponOffset" : [-1.1, 0.35],
-                "frontArmFrame" : "run.1?crop;4;0;43;43",
+                "frontArmFrame" : "run.1",
                 "burstParticleEmitters" : ["bulletShell"],
                 "animationStates" : {
                     "animation" : "fire"
@@ -319,7 +319,7 @@
                 "allowFlip" : false,
                 "armRotation" : 6,
                 "weaponOffset" : [-1.1, 0.35],
-                "frontArmFrame" : "run.1?crop;4;0;43;43",
+                "frontArmFrame" : "run.1",
                 "allowRotate" : false,
                 "twoHanded" : true,
                 "weaponRotationCenter" : [-0.3, 0.3]
@@ -334,7 +334,7 @@
                 "animationStates" : {
                     "animation" : "reload1"
                 },
-                "frontArmFrame" : "run.3?crop;4;0;43;40",
+                "frontArmFrame" : "run.3",
                 "allowRotate" : false,
                 "twoHanded" : true,
                 "backArmFrame" : "rotation",
@@ -350,7 +350,7 @@
                 "animationStates" : {
                     "animation" : "reload2"
                 },
-                "frontArmFrame" : "run.4?crop;2;0;43;41",
+                "frontArmFrame" : "run.4",
                 "allowRotate" : false,
                 "twoHanded" : true,
                 "backArmFrame" : "rotation"
@@ -365,7 +365,7 @@
                 "animationStates" : {
                     "animation" : "reload1"
                 },
-                "frontArmFrame" : "run.3?crop;4;0;43;40",
+                "frontArmFrame" : "run.3",
                 "allowRotate" : false,
                 "twoHanded" : true,
                 "backArmFrame" : "rotation"
@@ -376,7 +376,7 @@
                 "allowFlip" : false,
                 "armRotation" : 0,
                 "weaponOffset" : [-1.1, 0.35],
-                "frontArmFrame" : "run.1?crop;4;0;43;43",
+                "frontArmFrame" : "run.1",
                 "animationStates" : {
                     "animation" : "idle"
                 },

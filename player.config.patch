@@ -1,12 +1,4 @@
-[
-  [
-    { 
-      "op" : "add",
-      "path" : "/deploymentConfig/scripts/-",
-      "value" : "/D8Weaponry/localscript/weapInfoRenderer.lua"
-    }
-  ],
- 
+[ 
   [
     {
       "op": "add",

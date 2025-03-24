@@ -1,9 +1,5 @@
 -- A bunch of function for using the renderer through item lua instead of parameters auto detect
 -- D8Weaponry Render Compat
-d8WeaponryUtils = getmetatable''.d8WeaponryUtils
-function sharedFix_d8Weap()
-end
-
 local d8Weap_magazineRend = {}
 
 function d8Weap_buildDrawable_ResourceBar(resource, resourceMax, resourceName, directive)
