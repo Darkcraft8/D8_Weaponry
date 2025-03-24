@@ -20,61 +20,68 @@ It currently add :
 - [Mod Compatibility](#ModCompatibility)
 
 ---
+<a name="Required"></a>
 
-#### Requirement <a name="Required"></a>
+#### Requirement
   - [JPBAI Framework][JPBAIFramework]
   - [Darkcraft8 Shared Files][D8SharedFiles]
 
 ---
+<a name="DevelopementPhilosophy"></a>
 
-#### Developement Philosophy <a name="DevelopementPhilosophy"></a>
+#### Developement Philosophy
 - The current developement phylosophy is
   - allow players to use their weapon effectively no matter their current tier
 through a level centric calculation of damage and the new upgrade station "Refinement Workbench"
   - keep the strengh based around vanilla scaling
 
 ---
+<a name="Item"></a>
 
-#### [Item][ItemInfo] <a name="Item"></a>
+#### [Item][ItemInfo]
 - when it come to [item][ItemList] the mod currently add
   - 6 new unique weapon
   - 4 new `munition` item
 
----
+--- 
+<a name="Object"></a>
 
-#### [Object][ObjectInfo] <a name="Object"></a>
+#### [Object][ObjectInfo]
 - when it come to [object][ObjectList] the mod currently add
   - 1 new crafting station
   - 1 new upgrade station
 
 ---
+<a name="System"></a>
 
-#### [System][SystemInfo] <a name="System"></a>
+#### [System][SystemInfo]
 - when it come to system the mod currently add
   - a attachment and part system for the new jpbai weapons
 
----
+--- 
+<a name="ModCompact"></a>
 
-#### [Mod Compact][ModCompactInfo] <a name="ModCompact"></a>
+#### [Mod Compact][ModCompactInfo]
 - D8 Encyclopedia | The mod come with a few category for the mod
   - General
   - Munition
   - Weaopn
 
----
+--- 
+<a name="ModCompatibility"></a>
 
-#### [Mod Compatibility Issues][ModCompatibilityInfo] <a name="ModCompatibility"></a>
+#### [Mod Compatibility Issues][ModCompatibilityInfo]
 - There is currently no repetoried issue
 ---
 
-[ItemInfo]: /_information/item.md 'Click to access documentation'
-[ObjectInfo]: /_information/object.md 'Click to access documentation'
-[SystemInfo]: /_information/system.md 'Click to access documentation'
-[ModCompactInfo]: /_information/mod%20compact.md 'Click to access documentation'
-[ModCompatibilityInfo]: /_information/mod%20compatibility.md 'Click to access documentation'
+[ItemInfo]: _doc/item.md 'Click to access documentation'
+[ObjectInfo]: _doc/object.md 'Click to access documentation'
+[SystemInfo]: _doc/system.md 'Click to access documentation'
+[ModCompactInfo]: _doc/mod%20compact.md 'Click to access documentation'
+[ModCompatibilityInfo]: _doc/mod%20compatibility.md 'Click to access documentation'
 
-[ItemList]: /_information/list/item.md 'Click to access list'
-[ObjectList]: /_information/list/object.md 'Click to access list'
+[ItemList]: _doc/list/item.md 'Click to access list'
+[ObjectList]: _doc/list/object.md 'Click to access list'
 
-[D8SharedFiles]: /changelog.md 'Go to Mod Page'
-[JPBAIFramework]: /changelog.md 'Go to Mod Page'
+[D8SharedFiles]: <https://github.com/Darkcraft8/Darkcraft8_Shared> 'Go to Mod Page'
+[JPBAIFramework]: <https://github.com/Darkcraft8/JPBAI-Framework> 'Go to Mod Page'
