@@ -1,1 +1,0 @@
--- function for gappling hook type capability

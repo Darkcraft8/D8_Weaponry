@@ -1,9 +1,0 @@
-[
-    [
-        { 
-          "op" : "add",
-          "path" : "/d8Weap_Ballistic_gunFire",
-          "value" : "/WIP/jpbai/behavior/d8Weap_Mag_gunFire.jpbaiBehaviorCfg"
-        }
-    ]
-]

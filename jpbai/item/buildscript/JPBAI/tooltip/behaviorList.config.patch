@@ -1,0 +1,9 @@
+[
+    [
+        { 
+          "op" : "add",
+          "path" : "/d8Weaponry_gun",
+          "value" : "/jpbai/item/buildscript/JPBAI/tooltip/d8Weaponry_gun.lua"
+        }
+    ]
+]
