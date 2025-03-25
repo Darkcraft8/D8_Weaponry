@@ -12,7 +12,7 @@ It currently add :
 
 ### Table of Content
 - [**`Requirement`**](#Required)
-- [Developement Philosophy](#DevelopementPhilosophy)
+- [Development Philosophy](#DevelopementPhilosophy)
 - [Item](#Item)
 - [Object](#Object)
 - [System](#System)
@@ -29,11 +29,11 @@ It currently add :
 ---
 <a name="DevelopementPhilosophy"></a>
 
-#### Developement Philosophy
-- The current developement phylosophy is
+#### Development Philosophy
+- The current development philosophy is
   - allow players to use their weapon effectively no matter their current tier
 through a level centric calculation of damage and the new upgrade station "Refinement Workbench"
-  - keep the strengh based around vanilla scaling
+  - keep the strength based around vanilla scaling
 
 ---
 <a name="Item"></a>
@@ -65,13 +65,13 @@ through a level centric calculation of damage and the new upgrade station "Refin
 - D8 Encyclopedia | The mod come with a few category for the mod
   - General
   - Munition
-  - Weaopn
+  - Weapon
 
 --- 
 <a name="ModCompatibility"></a>
 
 #### [Mod Compatibility Issues][ModCompatibilityInfo]
-- There is currently no repetoried issue
+- There is currently no issue that has been found
 ---
 
 [ItemInfo]: _doc/item.md 'Click to access documentation'

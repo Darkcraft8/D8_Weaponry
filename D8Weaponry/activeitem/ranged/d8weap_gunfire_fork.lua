@@ -32,14 +32,14 @@ function GunFire:init()
   end
   passiveTimer = self.passiveTimer or 1
   animator.setGlobalTag("weaponDirective", "")
-  drawable.init(self)
+  
 end
 
 function update(dt, fireMode, shiftHeld, moves)
   currentMoves = moves
   oldUpdate(dt, fireMode, shiftHeld, moves)
 end
-
+local initTimer = 2
 local _uninit = uninit
 function uninit()
   if _uninit then _uninit() end
@@ -48,7 +48,13 @@ end
 
 function GunFire:update(dt, fireMode, shiftHeld)
   WeaponAbility.update(self, dt, fireMode, shiftHeld)
-  drawable.update(self)
+  if initTimer > 0 then initTimer = initTimer - 1 else
+    if not identifier then
+      drawable.init(self)
+    else
+      drawable.update(self)
+    end
+  end
 
   self.cooldownTimer = math.max(0, self.cooldownTimer - self.dt)
 
@@ -835,7 +841,11 @@ end
 
 function drawable.init(GunFireCfg)
   if player then
-    identifier = (GunFireCfg.activatingFireMode or GunFireCfg.abilitySlot or "ability") .. "_weapon_" .. item.friendlyName()
+    local renderCfg = {}
+    if player.getProperty("d8Weap") then if player.getProperty("d8Weap")["renderCfg"] then
+      renderCfg = player.getProperty("d8Weap")["renderCfg"]
+    end end
+    identifier = (GunFireCfg.activatingFireMode or GunFireCfg.abilitySlot or "ability") .. "_weapon_" .. item.name()
     local drawable = {}
     drawable.image = d8Weap_Magazine_Image({
       {
@@ -843,7 +853,14 @@ function drawable.init(GunFireCfg)
           count = config.getParameter(GunFireCfg.ammoCountName) or 0
       }
     })
-    drawable.position = vec2.sub(activeItem.ownerAimPosition(), world.entityPosition(activeItem.ownerEntityId()))
+    if renderCfg.mousePos then
+      drawable.position = vec2.sub(activeItem.ownerAimPosition() or {0,0}, world.entityPosition(activeItem.ownerEntityId()) or {0,0})
+      drawable.position = vec2.sub(drawable.position, {-3.5, 3})
+      drawable.position = vec2.add(drawable.position, renderCfg.posOffset or {0, 0})
+    else
+      drawable.position = {0, -5}
+      drawable.position = vec2.add(drawable.position, renderCfg.posOffset or {0, 0})
+    end
     drawable.color = {255, 255, 255, 200}
     drawable.scale = 0.65
     d8SharedRendererUtil.addDrawable(drawable, 0, identifier)
@@ -852,6 +869,10 @@ end
 
 function drawable.update(GunFireCfg)
   if player then
+    local renderCfg = {}
+    if player.getProperty("d8Weap") then if player.getProperty("d8Weap")["renderCfg"] then
+      renderCfg = player.getProperty("d8Weap")["renderCfg"]
+    end end
     local drawable = {}
     drawable.image = d8Weap_Magazine_Image({
       {
@@ -859,8 +880,15 @@ function drawable.update(GunFireCfg)
           count = config.getParameter(GunFireCfg.ammoCountName) or 0
       }
     })
-    drawable.position = vec2.sub(activeItem.ownerAimPosition(), world.entityPosition(activeItem.ownerEntityId()))
-    drawable.position = vec2.sub(drawable.position, {-3.5, 3})
+    drawable.fullbright = true
+    if renderCfg.mousePos then
+      drawable.position = vec2.sub(activeItem.ownerAimPosition(), world.entityPosition(activeItem.ownerEntityId()))
+      drawable.position = vec2.sub(drawable.position, {-3.5, 3})
+      drawable.position = vec2.add(drawable.position, renderCfg.posOffset or {0, 0})
+    else
+      drawable.position = {0, -5}
+      drawable.position = vec2.add(drawable.position, renderCfg.posOffset or {0, 0})
+    end
     drawable.color = {255, 255, 255, 200}
     drawable.scale = 0.65
     if not d8SharedRendererUtil.updateDrawable(drawable, identifier) then

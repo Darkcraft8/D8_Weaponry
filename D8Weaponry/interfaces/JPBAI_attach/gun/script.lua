@@ -81,7 +81,7 @@ function attachCfgSelected()
                         --player.setSwapSlotItem(returnedItem)
                     end
                 end
-            elseif data.index then
+            elseif data then if data.index then
                 if not data then return end
                 if not swapSlotItem["parameters"]["magazine"] then swapSlotItem["parameters"]["magazine"] = descriptMag(root.getItemConfig(swapSlotItem, "magazine", {})) end
                 local index = data.index
@@ -95,7 +95,7 @@ function attachCfgSelected()
                 if swapSlotItem["parameters"]["magazine"][index]["count"] <= 0 then
                     table.remove(swapSlotItem["parameters"]["magazine"], index)
                 end
-            end
+            end end
             buildMagazine()
             buildAttachList()
         end

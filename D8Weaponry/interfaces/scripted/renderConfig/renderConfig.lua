@@ -1,17 +1,8 @@
 local initTimer = 0.2
-local d8WeaponryUtils = getmetatable('').d8WeaponryUtils
-if type(d8WeaponryUtils) ~= "table" then
-    d8WeaponryUtils = {
-        drawableList = {
-        }
-    }
-    getmetatable('').d8WeaponryUtils = d8WeaponryUtils
-end
 
 function postInit()
     load()
     initTimer = nil
-    if xsb then require "/shared/xStarboundPatch/luaLinking.lua" end
 end
 
 function update(dt)
@@ -72,14 +63,6 @@ function setProperty(propertyName, propertyValue)
     local cfg = player.getProperty("d8Weap")
     cfg["renderCfg"][propertyName] = propertyValue
     player.setProperty("d8Weap", cfg)
-    if _ENV["xCallbackSendRequest"] and player then
-        xCallbackSendRequest("d8WeapUtils:callback", {
-            Uuid = player.uniqueId(),
-            callback = "updateCfg"
-        })
-    else
-        d8WeaponryUtils:updateCfg(player.uniqueId())
-    end
 end
 
 function property(propertyName)

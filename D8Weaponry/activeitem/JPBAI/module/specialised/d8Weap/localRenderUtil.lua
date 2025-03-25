@@ -40,7 +40,7 @@ function d8Weap_buildDrawable_Magazine(curMagazine, magazine, name)
     --sb.logInfo("%s%s%s%s", thousand, hundred, ten, unit)
     if player.getProperty("d8Weap")["renderCfg"]["mousePos"] then
         drawable.keepPos = true
-        drawable.position = vec2.sub(activeItem.ownerAimPosition(), world.entityPosition(activeItem.ownerEntityId()))
+        drawable.position = vec2.sub(activeItem.ownerAimPosition() or {0,0}, world.entityPosition(activeItem.ownerEntityId()) or {0,0})
         drawable.position = vec2.add(drawable.position, {0, -1.1})
         drawable.position = vec2.add(drawable.position, vec2.mul({5.5, -2.2}, drawable.scale))
     else
