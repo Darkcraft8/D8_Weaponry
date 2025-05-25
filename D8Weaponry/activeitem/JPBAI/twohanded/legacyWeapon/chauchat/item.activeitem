@@ -87,7 +87,7 @@
                       }
                    }
                 }
-              },
+            },
             "parts" : {
                 "middle" : {
                     "properties" : {
@@ -334,7 +334,7 @@
                 },
                 "muzzle" : {
                     "inherit" : "weapon",
-                    "translate" : [3, 0]
+                    "translate" : [2.8, 0.25]
                 }
             }
 		},
@@ -652,33 +652,33 @@
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "reload1"
-                }
+                "args" : [
+                    "reload1"
+                ]
             },
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "reload2"
-                }
+                "args" : [
+                    "reload2"
+                ]
             },
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "slide"
-                }
+                "args" : [
+                    "slide"
+                ]
             }
         ],
         "openPane" : [
             {
                 "event" : "function",
                 "callback" : "player.interact",
-                "args" : {
-                    "type" : "scriptPane",
-                    "pane" : "/D8Weaponry/interfaces/JPBAI_attach/gun/pane.config"
-                }
+                "args" : [
+                    "scriptPane", 
+                    "/D8Weaponry/interfaces/JPBAI_attach/gun/pane.config"
+                ]
             }
         ]
 	},

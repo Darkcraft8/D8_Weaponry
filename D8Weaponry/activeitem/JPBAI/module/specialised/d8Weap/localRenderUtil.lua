@@ -37,15 +37,26 @@ function d8Weap_buildDrawable_Magazine(curMagazine, magazine, name)
     if curMagazine[1] then
         drawable.image = d8Weap_Magazine_Image(curMagazine, drawable.image)
     end
-    --sb.logInfo("%s%s%s%s", thousand, hundred, ten, unit)
-    if player.getProperty("d8Weap")["renderCfg"]["mousePos"] then
+    local mousePos = function()
         drawable.keepPos = true
         drawable.position = vec2.sub(activeItem.ownerAimPosition() or {0,0}, world.entityPosition(activeItem.ownerEntityId()) or {0,0})
         drawable.position = vec2.add(drawable.position, {0, -1.1})
         drawable.position = vec2.add(drawable.position, vec2.mul({5.5, -2.2}, drawable.scale))
+    end
+    --sb.logInfo("%s%s%s%s", thousand, hundred, ten, unit)
+    if player.getProperty("d8Weap") then
+        if player.getProperty("d8Weap")["renderCfg"] then
+            if player.getProperty("d8Weap")["renderCfg"]["mousePos"] then
+                mousePos()
+            else
+                drawable.position = vec2.add(drawable.position, {0, -1.1})
+                drawable.position = vec2.add(drawable.position, vec2.mul({0, -1.1}, drawable.scale))
+            end
+        else
+            mousePos()
+        end
     else
-        drawable.position = vec2.add(drawable.position, {0, -1.1})
-        drawable.position = vec2.add(drawable.position, vec2.mul({0, -1.1}, drawable.scale))
+        mousePos()
     end
     drawable.size = vec2.mul(drawable.size, drawable.scale)
     return drawable

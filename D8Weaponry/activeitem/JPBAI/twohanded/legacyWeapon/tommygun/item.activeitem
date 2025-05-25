@@ -150,7 +150,7 @@
                         "firing" : {
                             "fire" : {
                                 "properties" : {
-                                    "image" : "/items/active/weapons/ranged/muzzleflash.png:1.<frame>?scalenearest=0.5;1"
+                                    "image" : "/items/active/weapons/ranged/muzzleflash.png:1.<frame>?scalenearest=0.5;1?replace=#fff0"
                                 }
                             }
                         }
@@ -244,7 +244,7 @@
                 },
                 "muzzle" : {
                     "inherit" : "weapon",
-                    "translate" : [2.3, 0]
+                    "translate" : [3.5, 0]
                 }
             }
 		},
@@ -265,7 +265,7 @@
             "transition" : "cooldown"
         },
         "cooldown" : {
-            "duration" : 0.05,
+            "duration" : 0.025,
             "allowFlip" : false,
             "armRotation" : 2,
             "transformations" : {
@@ -282,7 +282,7 @@
             "transition" : "aimLocked"
         },
 		"aimLocked" : {
-            "duration" : 0.05,
+            "duration" : 0.025,
             "inherit" : "aim",
             "allowFlip" : false,
             "allowRotate" : false,
@@ -395,50 +395,9 @@
                         "fireMode" : "alt"
                     },
                     "behavior" : "openPane"
-                },
-                {
-                    "require" : {
-                        "shift" : true,
-                        "move" : {
-                            "up" : true
-                        }
-                    },
-                    "behavior" : "idle_Shoulder"
                 }
             ]
         },
-		"idle_Shoulder" : {
-			"stance" : "idleToShoudler",
-			"possibleOutcome" : [
-                {
-                    "require" : {
-						"shift" : true,
-                        "fireMode" : "primary",
-						"stance" : "idle_Shoulder"
-					},
-                    "behavior" : "shoulderToIdle"
-                },
-                {
-                    "require" : {
-                        "fireMode" : "primary",
-						"stance" : "idle_Shoulder"
-					},
-                    "behavior" : "shoulderToAim"
-                }
-            ]
-		},
-		"shoulderToIdle" : {
-			"stance" : "shoulderToIdle",
-			"possibleOutcome" : [
-                { "require" : { "stance" : "idle" }, "behavior" : "idle" }
-            ]
-		},
-		"shoulderToAim" : {
-			"stance" : "shoulderToAim",
-			"possibleOutcome" : [
-                { "require" : { "stance" : "aim" }, "behavior" : "aim" }
-            ]
-		},
 
         "openPane" : {
             "possibleOutcome" : [
@@ -455,33 +414,33 @@
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "reload1"
-                }
+                "args" : [
+                    "reload1"
+                ]
             },
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "reload4"
-                }
+                "args" : [
+                    "reload4"
+                ]
             },
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "slide"
-                }
+                "args" : [
+                    "slide"
+                ]
             }
         ],
         "openPane" : [
             {
                 "event" : "function",
                 "callback" : "player.interact",
-                "args" : {
-                    "type" : "scriptPane",
-                    "pane" : "/D8Weaponry/interfaces/JPBAI_attach/gun/pane.config"
-                }
+                "args" : [
+                    "scriptPane", 
+                    "/D8Weaponry/interfaces/JPBAI_attach/gun/pane.config"
+                ]
             }
         ]
 	},

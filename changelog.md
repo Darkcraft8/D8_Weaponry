@@ -1,26 +1,16 @@
-# 1.1.5
+# 1.2.0
 ## Addition :
-- Makarov JPBAI Version (T1) (Unobtainable)
+- Gunsmithing
 
-## Change : 
-- JPBAI Framework is now it own mod! this mean that you no longer need d8Weaponry to use it and that it in a stable state
-- now require two dependency : 
-  - [JPBAI Framework][JPBAIFramework]
-  - [Darkcraft8 Shared Files][D8SharedFiles]
-- `Darkcraft8 Shared Files`
-  - the old local renderer has been deleted and d8Weaponry now use the one from *Darkcraft8 Shared Files*, this one use message handlers to receive(if sent localy) drawable to be drawn that get added to a list (also come with a util script that has 3 functions to effortlessly communicate with the renderer)
+## Change :
 
 ## Buff :
 
 ## Nerf : 
 
 ## Fix : 
-	- `JPBAI Framework`
-    - fixed issue's with the buildscript
-      - would crash if a tooltip script didn't exist
-    - `oSb and it fork(this include xSb) exclusive`
-      - there is now a postLoad script that fetch any named JPBAI behavior with the `jpbaiBehaviorCfg` file extension (those are written in json still) and add them to the buildscript list of behavior
-
+  Fixed bug causing the renderer call to not be sent when loading a character that hold a weapon
+  
 ## Work in progress :
 - Medieval Weapon Pack 1
   - Crossbow (T1)

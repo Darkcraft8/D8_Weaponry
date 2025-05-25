@@ -34,11 +34,7 @@ Survival Horror Missions idea :
 Erchius Mining/Space Station on BH5-GG-M12/BlackHole5-GasGiant-Moon12...
 or radient ecounter mission...
 
-postPone :
-
--- > allow to override the projectile action with hitscan for insanely fast projectile representation (a laser or sniper round for exemple)...
-	possibly with "isHitscan" : true has parameters... maybe make so that the projectile spawn one or two block distance from destination so that it easier to 
-	create and/or convert weapons
+postPoned :
 	
 idea :
 

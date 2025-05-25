@@ -4,8 +4,8 @@
 
 #### Basic Information
 most item added by this mod are either weapon or munition
-the weapon of this mod require munition to recharge their usage
-and are crafted at an `Gunsmith Table`, it also used to craft the munitions
+the weapon of this mod requires munition to recharge their usage
+and are crafted at a `Gunsmith Table`, it also used to craft the munitions
 
 #### Quick Access
 - [Weapon List][weaponList]

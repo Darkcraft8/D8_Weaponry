@@ -453,33 +453,33 @@
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "reload1"
-                }
+                "args" : [
+                    "reload1"
+                ]
             },
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "reload4"
-                }
+                "args" : [
+                    "reload4"
+                ]
             },
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "slide"
-                }
+                "args" : [
+                    "slide"
+                ]
             }
         ],
         "openPane" : [
             {
                 "event" : "function",
                 "callback" : "player.interact",
-                "args" : {
-                    "type" : "scriptPane",
-                    "pane" : "/D8Weaponry/interfaces/JPBAI_attach/gun/pane.config"
-                }
+                "args" : [
+                    "scriptPane", 
+                    "/D8Weaponry/interfaces/JPBAI_attach/gun/pane.config"
+                ]
             }
         ]
 	},

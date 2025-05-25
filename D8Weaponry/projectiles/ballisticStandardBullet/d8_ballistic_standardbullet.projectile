@@ -1,0 +1,20 @@
+{
+  "projectileName" : "d8_ballistic_standardbullet",
+  "image" : "/projectiles/guns/bullets/standardbullet/standardbullet.png",
+  "physics" : "d8Weap_ballisticBullet",
+  "animationCycle" : 0.25,
+  "frameNumber" : 1,
+  "damageKind" : "standardbullet",
+  "pointLight" : false,
+  "flippable" : true,
+  "actionOnReap" : [
+    {
+      "action" : "config",
+      "file" : "/D8Weaponry/projectiles/cinematicBulletExplosion.config"
+    }
+  ],
+  "statusEffects" : [ ],
+  "power" : 5.0,
+  "speed" : 150,
+  "knockback" : 0
+}

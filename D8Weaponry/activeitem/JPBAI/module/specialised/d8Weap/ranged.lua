@@ -14,7 +14,7 @@ function d8WeapItem.init()
     table.insert(updateFunc, "d8WeapItem.update")
     --d8WeapItem.addMunition({item = "d8Weaponry_standardbullet"})
     if player then
-        d8SharedRendererUtil.addDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), 0,  "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
+        rpcAddedDrawable = d8SharedRendererUtil.addDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), 0,  "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
     end
 end
 
@@ -28,7 +28,17 @@ end
 function d8WeapItem.update(dt, fireMode, isShiftHeld, currentMove)
     if player then
         d8WeapItem.updateTooltip()
-        d8SharedRendererUtil.updateDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
+        if rpcAddedDrawable then
+            if rpcAddedDrawable:finished() then
+                if not rpcAddedDrawable:result() then
+                    rpcAddedDrawable = d8SharedRendererUtil.addDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), 0,  "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
+                else
+                    d8SharedRendererUtil.updateDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
+                end
+            end
+        else
+            rpcAddedDrawable = d8SharedRendererUtil.addDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), 0,  "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
+        end
     end
 end
 
@@ -45,25 +55,30 @@ function d8WeapItem.canConsumeMag()
     return Weapon.canConsumeItem(d8WeapItem.reloadOverride or d8WeapItem.magazine)
 end
 
-function d8WeapItem.shotMunition(_args)
-    if not _args then return end
-    local args = copy(_args)
+function d8WeapItem.shotMunition(spawnPos, spawnOffset, scalingFunction, damage, inaccuracy, projectileType, projectileCount, projectileParameter)
+    local spawnPos, spawnOffset, scalingFunction, damage, inaccuracy, projectileType, projectileCount, projectileParameter = copy(spawnPos), copy(spawnOffset), copy(scalingFunction), copy(damage), copy(inaccuracy), copy(projectileType), copy(projectileCount), copy(projectileParameter)
     local munition = root.itemConfig(d8WeapItem.nextMunition(), default)
     local configParam = function(parameter)
         if munition.parameters[parameter] then return munition.parameters[parameter] end
         if munition.config[parameter] then return munition.config[parameter] end
         return default
     end
+    local args = {}
+    args.spawnPos = spawnPos
+    args.spawnOffset = spawnOffset
+    args.scalingFunction = scalingFunction
+    args.damage = damage
 
-    args.type = args.type or configParam("projectileType")
-    args.count = args.count or configParam("projectileCount", 1)
-    args.parameter = args.parameter or configParam("projectileParameter", {})
+    args.type = projectileType or configParam("projectileType")
+    args.count = projectileCount or configParam("projectileCount", 1)
+    args.parameter = projectileParameter or configParam("projectileParameter", {})
     if configParam("projectileInaccuracy") then
-        args.inaccuracy = args.inaccuracy + configParam("projectileInaccuracy", 0)
+        args.inaccuracy = inaccuracy + configParam("projectileInaccuracy", 0)
     else
-        args.inaccuracy = (args.inaccuracy * args.count)
+        args.inaccuracy = (inaccuracy * args.count)
     end
     if not args.type then return end
+    --sb.logInfo("%s", args.damage)
     behavior_projectile(args)
     d8WeapItem.consumeMunition()
 end
@@ -173,12 +188,17 @@ function d8WeapItem.setParameterAsTag(args)
     end
 end
 
-function d8WeapItem.munitionScaling(args) -- similar to damagePerShot except it take the projectile info into account
-    if not args.type then return end
-    local projectileCfg = sb.jsonMerge(root.projectileConfig(args.type), args.parameters or {})
-    local args = args
-    args.baseDamage = args.damage or (projectileCfg.power * 0.25) * (projectileCfg.speed * 0.065)
+function d8WeapItem.munitionScaling(_args) -- similar to damagePerShot except it take the projectile info into account
+    if not _args then return end
+    if not _args.type then return end
+
+    local projectileCfg = sb.jsonMerge(root.projectileConfig(_args.type), _args.parameters or {})
+    local args = copy(_args)
+    
+    args.baseDamage = ((args.damage or projectileCfg.power) * 0.25) * (projectileCfg.speed * 0.065)
     args.knockback = (projectileCfg.speed * 0.1) + (args.baseDamage * 0.25)
+    --sb.logInfo("baseDamage %s", args.baseDamage)
+    --sb.logInfo("damagePerShot %s", Weapon.damagePerShot(args))
     return Weapon.damagePerShot(args)
 end
 

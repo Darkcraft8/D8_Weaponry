@@ -342,8 +342,7 @@
                         ],
                         "lowerParam" : {
                             "munitionInChamber" : true
-                        },
-                        "time" : 0.1
+                        }
                     },
                     "behavior" : "chamberMunition"
                 },
@@ -352,8 +351,7 @@
                         "fireMode" : "<abilitySlot>",
                         "function" : [
                             "d8WeapItem.curMagEmpty"
-                        ],
-                        "time" : 0.1
+                        ]
                     },
                     "behavior" : "reload"
                 },
@@ -366,8 +364,7 @@
                         "hasLineOfSight" : {
                             "spawnPos" : "fireOffset",
                             "spawnOffset" : "<fireOffset>"
-                        },
-                        "time" : 0.1
+                        }
                     },
                     "behavior" : "<fireBehavior>"
                 },
@@ -409,17 +406,17 @@
                 {
                     "event" : "function",
                     "callback" : "animationEx.pitchShift",
-                    "args" : {
-                        "soundName" : "emptyChamber"
-                    }
+                    "args" : [
+                        "emptyChamber"
+                    ]
                 },
                 {
                     "event" : "function",
-                    "callback" : "behaviorEx.setParameter",
-                    "args" : {
-                        "parameter" : "munitionInChamber",
-                        "value" : false
-                    }
+                    "callback" : "activeItem.setInstanceValue",
+                    "args" : [
+                        "munitionInChamber",
+                        false
+                    ]
                 },
                 {
                     "event" : "playSound",
@@ -456,11 +453,11 @@
                 "chamberMunition" : [
                     {
                         "event" : "function",
-                        "callback" : "behaviorEx.setParameter",
-                        "args" : {
-                            "parameter" : "munitionInChamber",
-                            "value" : true
-                        }
+                        "callback" : "activeItem.setInstanceValue",
+                        "args" : [
+                            "munitionInChamber",
+                            true
+                        ]
                     }
                 ]
             },
@@ -468,9 +465,9 @@
                 {
                     "event" : "function",
                     "callback" : "animationEx.pitchShift",
-                    "args" : {
-                        "soundName" : "slide"
-                    }
+                    "args" : [
+                        "slide"
+                    ]
                 }
             ]
         }
@@ -481,67 +478,70 @@
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "open"
-                }
+                "args" : [
+                    "open"
+                ]
             },
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "reload"
-                }
+                "args" : [
+                    "reload"
+                ]
             },
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "close"
-                }
+                "args" : [
+                    "close"
+                ]
             },
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "slide"
-                }
+                "args" : [
+                    "slide"
+                ]
             }
         ],
-		"fireBullet" : [
+        "randMuzzleFlashAndPitch" : [
             {
                 "event" : "function",
                 "callback" : "animationEx.pitchShift",
-                "args" : {
-                    "soundName" : "fire"
-                }
+                "args" : [
+                    "fire"
+                ]
             },
             {
                 "event" : "function",
                 "callback" : "animationEx:randPartTag",
-                "args" : {
-                    "partType" : "muzzleFlash",
-                    "tagName" : "variant",
-                    "varNum" : 3
-                }
-            },
+                "args" : [
+                    "muzzleFlash",
+                    "variant",
+                    3
+                ]
+            }
+		],
+		"fireBullet" : [
+            "randMuzzleFlashAndPitch",
             {
                 "event" : "function",
                 "callback" : "d8WeapItem.shotMunition",
-                "args" : {
-                    "spawnPos" : "fireOffset",
-                    "spawnOffset" : "<fireOffset>",
-
-                    "scalingFunction" : "d8WeapItem.munitionScaling",
-                    "damage" : 8,
-                    "inaccuracy" : "<inaccuracy>"
-                }
+                "args" : [
+                    "fireOffset",
+                    "<fireOffset>",
+                    "d8WeapItem.munitionScaling",
+                    null,
+                    "<inaccuracy>"
+                ]
             }
 		],
 		"init" : [
             {
                 "event" : "setCursor",
                 "cursor" : "/cursors/reticle0.cursor"
-            }
+            },
+            "randMuzzleFlashAndPitch"
         ]
     },
 

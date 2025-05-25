@@ -863,7 +863,7 @@ function drawable.init(GunFireCfg)
     end
     drawable.color = {255, 255, 255, 200}
     drawable.scale = 0.65
-    d8SharedRendererUtil.addDrawable(drawable, 0, identifier)
+    rpcAddedDrawable = d8SharedRendererUtil.addDrawable(drawable, 0, identifier)
   end
 end
 
@@ -891,9 +891,19 @@ function drawable.update(GunFireCfg)
     end
     drawable.color = {255, 255, 255, 200}
     drawable.scale = 0.65
-    if not d8SharedRendererUtil.updateDrawable(drawable, identifier) then
-      d8SharedRendererUtil.addDrawable(drawable, 0, identifier)
+    
+    if rpcAddedDrawable then
+      if rpcAddedDrawable:finished() then
+        if not rpcAddedDrawable:result() then
+          rpcAddedDrawable = d8SharedRendererUtil.addDrawable(drawable, 0, identifier)
+        else
+          d8SharedRendererUtil.updateDrawable(drawable, identifier)
+        end
+      end
+    else
+      rpcAddedDrawable = d8SharedRendererUtil.addDrawable(drawable, 0, identifier)
     end
+
   end
 end
 
