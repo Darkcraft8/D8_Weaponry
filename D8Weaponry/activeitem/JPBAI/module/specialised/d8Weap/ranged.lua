@@ -28,16 +28,10 @@ end
 function d8WeapItem.update(dt, fireMode, isShiftHeld, currentMove)
     if player then
         d8WeapItem.updateTooltip()
-        if rpcAddedDrawable then
-            if rpcAddedDrawable:finished() then
-                if not rpcAddedDrawable:result() then
-                    rpcAddedDrawable = d8SharedRendererUtil.addDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), 0,  "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
-                else
-                    d8SharedRendererUtil.updateDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
-                end
-            end
-        else
+        if not rpcAddedDrawable then
             rpcAddedDrawable = d8SharedRendererUtil.addDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), 0,  "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
+        else
+            d8SharedRendererUtil.updateDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
         end
     end
 end

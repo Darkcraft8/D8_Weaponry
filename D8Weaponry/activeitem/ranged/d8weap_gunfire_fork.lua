@@ -892,23 +892,17 @@ function drawable.update(GunFireCfg)
     drawable.color = {255, 255, 255, 200}
     drawable.scale = 0.65
     
-    if rpcAddedDrawable then
-      if rpcAddedDrawable:finished() then
-        if not rpcAddedDrawable:result() then
-          rpcAddedDrawable = d8SharedRendererUtil.addDrawable(drawable, 0, identifier)
-        else
-          d8SharedRendererUtil.updateDrawable(drawable, identifier)
-        end
-      end
-    else
+    if not rpcAddedDrawable then
       rpcAddedDrawable = d8SharedRendererUtil.addDrawable(drawable, 0, identifier)
+    else
+      d8SharedRendererUtil.updateDrawable(drawable, identifier)
     end
 
   end
 end
 
 function drawable.uninit()
-  if player then
+  if player and rpcAddedDrawable then
     d8SharedRendererUtil.removeDrawable(identifier)
   end
 end
