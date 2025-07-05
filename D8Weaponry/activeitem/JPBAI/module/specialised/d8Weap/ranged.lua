@@ -14,6 +14,10 @@ function d8WeapItem.init()
     table.insert(updateFunc, "d8WeapItem.update")
     --d8WeapItem.addMunition({item = "d8Weaponry_standardbullet"})
     if player then
+        local property = player.getProperty("d8Weap")
+        property[activeItem.hand()] = true
+        player.setProperty("d8Weap", property)
+
         rpcAddedDrawable = d8SharedRendererUtil.addDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), 0,  "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
     end
 end
@@ -21,6 +25,10 @@ end
 function d8WeapItem.uninit()
     if d8WeapItem.curMagazine then activeItem.setInstanceValue("curMagazine", d8WeapItem.curMagazine) end
     if player then
+        local property = player.getProperty("d8Weap")
+        property[activeItem.hand()] = false
+        player.setProperty("d8Weap", property)
+
         d8SharedRendererUtil.removeDrawable("d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
     end
 end
@@ -50,7 +58,7 @@ function d8WeapItem.canConsumeMag()
 end
 
 function d8WeapItem.shotMunition(spawnPos, spawnOffset, scalingFunction, damage, inaccuracy, projectileType, projectileCount, projectileParameter)
-    local spawnPos, spawnOffset, scalingFunction, damage, inaccuracy, projectileType, projectileCount, projectileParameter = copy(spawnPos), copy(spawnOffset), copy(scalingFunction), copy(damage), copy(inaccuracy), copy(projectileType), copy(projectileCount), copy(projectileParameter)
+    local spawnPos, spawnOffset, scalingFunction, damage, inaccuracy, projectileType, projectileCount, projectileParameter = copy(spawnPos), copy(spawnOffset), copy(scalingFunction), copy(damage), copy(inaccuracy or 0), copy(projectileType), copy(projectileCount), copy(projectileParameter)
     local munition = root.itemConfig(d8WeapItem.nextMunition(), default)
     local configParam = function(parameter)
         if munition.parameters[parameter] then return munition.parameters[parameter] end
@@ -78,6 +86,7 @@ function d8WeapItem.shotMunition(spawnPos, spawnOffset, scalingFunction, damage,
 end
 
 function d8WeapItem.hasSpaceInMagazine()
+    if (player.isAdmin() or config.getParameter("admin", config.getParameter("d8WeapMods.infAmmo", false))) then return true end
     local munitionCount = 0
     for i, d in ipairs(d8WeapItem.curMagazine or {}) do 
         if type(d) == "table" then

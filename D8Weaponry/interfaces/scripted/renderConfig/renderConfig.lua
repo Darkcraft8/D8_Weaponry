@@ -16,11 +16,11 @@ function update(dt)
 end
 
 function load()
-    widget.setText("opacityMax", property("opacityMax")) 
-    widget.setText("positionX", property("posOffset")[1]) 
-    widget.setText("positionY", property("posOffset")[2])
-    widget.setChecked("numberOnly", property("numberOnly"))
-    widget.setChecked("mousePos", property("mousePos"))
+    widget.setText("opacityMax", property("opacityMax") or 255) 
+    widget.setText("positionX", (property("posOffset") or {})[1] or 0) 
+    widget.setText("positionY", (property("posOffset") or {})[2] or 0)
+    widget.setChecked("numberOnly", property("numberOnly") or false)
+    widget.setChecked("mousePos", property("mousePos") or false)
 end
 
 function confirm_box()
@@ -60,13 +60,15 @@ end
 -- Property Function
 
 function setProperty(propertyName, propertyValue)
-    local cfg = player.getProperty("d8Weap")
+    local cfg = player.getProperty("d8Weap") or {}
+    if not cfg["renderCfg"] then cfg["renderCfg"] = {} end
     cfg["renderCfg"][propertyName] = propertyValue
     player.setProperty("d8Weap", cfg)
 end
 
 function property(propertyName)
-    local cfg = player.getProperty("d8Weap")
+    local cfg = player.getProperty("d8Weap") or {}
+    if not cfg["renderCfg"] then cfg["renderCfg"] = {} end
     return cfg["renderCfg"][propertyName]
 end
 
