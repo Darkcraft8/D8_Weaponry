@@ -8,7 +8,6 @@
   "tooltipKind" : "d8Weaponry_gun",
   "shortdescription" : "Makarov",
   "description" : "A large handgun that packs a punch.",
-  "twoHanded" : true,
   "itemTags" : ["weapon","ranged","pistol", "d8Weaponry_gun"],
   "inventoryIcon" : [
     { "image" : "normal.png:idle" }

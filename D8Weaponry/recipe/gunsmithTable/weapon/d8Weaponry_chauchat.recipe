@@ -6,6 +6,6 @@
   ],
 
   "duration" : 2,
-  "output" : { "item" : "d8Weaponry_chauchat", "count" : 1 },
+  "output" : { "item" : "d8Weaponry_JPBAI_chauchat", "count" : 1 },
   "groups" : [ "d8Weaponry_gunsmithing_lv1", "d8Weaponry_gunsmithing" ]
 }

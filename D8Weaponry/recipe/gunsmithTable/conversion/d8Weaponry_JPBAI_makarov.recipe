@@ -1,0 +1,9 @@
+{
+    "input" : [
+      { "item" : "d8Weaponry_makarov", "count" : 1 },
+      { "item" : "paper", "count" : 5 }
+    ],
+    "output" : { "item" : "d8Weaponry_JPBAI_makarov", "count" : 1 },
+    "groups" : [ "d8Conversion_gunsmith_lv2", "d8Conversion" ]
+}
+  
