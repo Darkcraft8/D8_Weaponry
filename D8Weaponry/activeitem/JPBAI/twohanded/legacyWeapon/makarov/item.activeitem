@@ -181,7 +181,7 @@
   "builder" : "/jpbai/item/buildscript/JPBAI/behaviorBuild.lua",
   "buildConfig" : {
     "behavior" : {
-      "d8Weap_Ballistic_gunFire_oneHanded" : "primary"
+      "d8Weap_Ballistic_gunFire" : "primary"
     },
     "override" : {
       "inaccuracy" : 0.02,

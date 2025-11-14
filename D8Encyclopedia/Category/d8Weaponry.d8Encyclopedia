@@ -1,0 +1,45 @@
+{
+    "priority" : 0,
+    "name" : "d8Weaponry",
+    "title" : "D8:Weaponry",
+    "subTitle" : "Wasn't this supposed to be about weapons that use munitions ?",
+    "icon" : "/D8Encyclopedia/Pane/new/icon.png",
+    "zoom" : 0,
+        
+    "unloadEvent" : [
+        {
+            "type" : "function",
+            "call" : "clickEventType.resetMusic",
+            "args" : [1]
+        }
+    ],
+    "loadEvent" : [
+        {
+            "type" : "function",
+            "call" : "clickEventType.setMusic",
+            "args" : [["/music/home-concept-loop.ogg"], 1]
+        }
+    ],
+    "background" : {
+        "background_1" : {
+            "parallax" : 0.95,
+            "image" : "/celestial/sector/bg.png",
+            "frame" : 1,
+            "position" : [0, 0],
+            "positionLocked" : false,
+            "anchor" : "center",
+            "tiled" : true
+        },
+        "background_2" : {
+            "parallax" : 0.75,
+            "image" : "/interface/cockpit/bgstars.png",
+            "frame" : 1,
+            "position" : [0, 0],
+            "positionLocked" : false,
+            "anchor" : "center",
+            "tiled" : true
+        }
+    },
+    "btn" : {
+    }
+}

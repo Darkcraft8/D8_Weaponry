@@ -10,6 +10,7 @@
     "itemTags" : ["munition"],
     "inventoryIcon" : "/projectiles/guns/arrows/woodenbolt/icon.png",
 
+    "munitionType" : "crossbowBolt",
     "projectileType" : "woodenbolt",
     "projectileCount" : 1,
     "projectileParameter" : {}

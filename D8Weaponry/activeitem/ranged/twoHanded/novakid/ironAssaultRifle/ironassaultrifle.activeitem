@@ -420,6 +420,7 @@
         },
 
         "postFire" : true,
+        "reloadwithattack" : true,
         "ammoType" : "d8Weaponry_standardbullet",
         "ammoName" : "Standard Bullet",
         "ammoMaxName" : "cylinderCapacity",

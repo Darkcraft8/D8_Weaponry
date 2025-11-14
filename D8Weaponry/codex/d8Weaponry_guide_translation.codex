@@ -10,16 +10,16 @@
 - 3| Bonus: Enhancing your weapon(s)
 
 Welcome,
-if you are reading this it mean that you are interested by the fabrication, ownerShip or usage of firearms",
+if you are reading this, it means that you are interested in the fabrication, ownership, or usage of ballistic weapons",
 "The usage of a weapon is simple.
-Press on the trigger ('Primary') will cause the fireing of the munition inside of the chamber.
-To Reload you simply need to detach the magazine or remplace the munition if your using a magazineless weapon ('Walk','Primary','Up')",
+Pressing on the trigger ('Primary') will cause the firing of the munition inside of the chamber.
+To reload you simply need to detach the magazine or replace the munition if you're using a magazineless weapon ('Walk', 'Primary', 'Up')",
 "Maybe you became attached to a specific weapon,
-It possibly saved your life or it bear significance in your eye(s).
+It possibly saved your life or it bears significance in your eye(s).
   
-Good your lucky because wes created schematics for a table that allow the upgrading of weapon(s),
-Yes, thank to this table and some fitting materials and tools
-you can now upgrade any weapon you own, with the exception of a few we couldn't find a way to upgrade them."
+Good! You're lucky because we created schematics for a table that allows the upgrading of weapon(s),
+Indeed, thanks to this table and some fitting materials and tools
+You can now upgrade any weapon you own, with the exception of a few we couldn't find a way to upgrade them."
   ],
   "itemConfig" : {
     "rarity" : "Legendary",

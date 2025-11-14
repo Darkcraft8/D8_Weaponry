@@ -70,7 +70,7 @@ function d8WeapItem.shotMunition(spawnPos, spawnOffset, scalingFunction, damage,
     args.spawnOffset = spawnOffset
     args.scalingFunction = scalingFunction
     args.damage = damage
-
+    
     args.type = projectileType or configParam("projectileType")
     args.count = projectileCount or configParam("projectileCount", 1)
     args.parameter = projectileParameter or configParam("projectileParameter", {})
@@ -81,7 +81,36 @@ function d8WeapItem.shotMunition(spawnPos, spawnOffset, scalingFunction, damage,
     end
     if not args.type then return end
     --sb.logInfo("%s", args.damage)
-    behavior_projectile(args)
+    --sb.logInfo("projectileConfig(%s) %s", args.type, root.projectileConfig(args.type))
+    local useHitscan = (args.parameter.speed or root.projectileConfig(args.type).speed or 0) >= 250--disabledbecausehitscanfuncisnotfinished--
+    if useHitscan then
+        --[[ simulated
+        if args.scalingFunction or Weapon then -- Scale based on weapon stat or scaling function
+            local callback = call({callback = args.scalingFunction or "Weapon.basicDamage", args = args})
+            args.parameter.power = args.parameter.power or callback
+            args.parameter.powerMultiplier = args.parameter.powerMultiplier or activeItem.ownerPowerMultiplier()
+        end
+
+        Weapon.hitscan(args.type, args.parameter, range, spawnPosition(args), args.inaccuracy)
+        --]]
+        --[[ speed-up projectile]]
+        local speed = 700
+        local projectileConfig = root.projectileConfig(args.type)
+        local configParam = function(paramName, defaultValue)
+            return args.parameter[paramName] or projectileConfig[paramName] or defaultValue
+        end
+        args.parameter.movementSettings = configParam("movementSettings", {})
+        args.parameter.movementSettings.maximumCorrection = 10
+        args.parameter.movementSettings.speedLimit = speed
+        args.parameter.speed = speed
+        args.parameter.periodicAction = configParam("periodicActions", {})
+        
+        --args.type = "d8weap_physicalHitscan"
+        behavior_projectile(args)
+        --]]
+    else
+        behavior_projectile(args)
+    end
     d8WeapItem.consumeMunition()
 end
 

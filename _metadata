@@ -6,7 +6,6 @@
   "require" : ["d8_sharedFiles", "D8JPBAI"],
   "link" : "https://github.com/Darkcraft8/D8_Weaponry/tree/lastest_release",
   "name" : "D8Weaponry",
-  "permissions" : ["window"],
   "priority" : 9000,
   "steamContentId" : "3331782262",
   "tags" : "Miscellaneous|Weapons|Furniture and Objects|Mechanics",

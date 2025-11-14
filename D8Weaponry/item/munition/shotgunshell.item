@@ -10,6 +10,7 @@
     "itemTags" : ["munition"],
     "inventoryIcon" : "/D8Weaponry/item/munition/shotgunshell.png",
 
+    "munitionType" : "shotgunshell",
     "projectileType" : "standardbullet",
     "projectileCount" : 8,
     "projectileParameter" : {},

@@ -62,6 +62,11 @@
       "op": "add",
       "path": "/labels/d8weaponry_crossbow",
       "value": "Crossbow"
+    },
+    {
+      "op": "add",
+      "path": "/labels/d8weaponry_firearm",
+      "value": "Firearm"
     }
   ],
 
@@ -71,7 +76,13 @@
       "path": "/labels/d8weaponry_bridgepole",
       "value": "Brigde Pole"
     }
-  ]
+  ],
 
-  
+  [
+    {
+      "op": "add",
+      "path": "/labels/d8Weaponry_attachment",
+      "value": "^blue;Attachment^reset;"
+    }
+  ]
 ]

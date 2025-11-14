@@ -3,7 +3,7 @@
         { 
           "op" : "add",
           "path" : "/d8Weap_Ballistic_gunFire",
-          "value" : "/D8Weaponry/activeitem/JPBAI/behavior/d8Weap_Mag_gunFire.jpbaiBehaviorCfg"
+          "value" : "/D8Weaponry/activeitem/JPBAI/behavior/d8Weap_Ballistic_gunFire.jpbaiBehaviorCfg"
         }
     ]
 ]

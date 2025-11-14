@@ -387,6 +387,7 @@
             }
         },
 
+        "reloadwithattack" : true,
         "postFire" : true,
         "ammoType" : "d8Weaponry_standardbullet",
         "ammoName" : "Standard Bullet",

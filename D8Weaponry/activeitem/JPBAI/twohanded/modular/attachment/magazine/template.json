@@ -1,0 +1,21 @@
+{
+    "itemName" : "d8Weaponry_attachment_magazine_template",
+    "price" : 1,
+    "level" : 1,
+    "maxStack" : 1,
+    "rarity" : "Common",
+    "category" : "d8Weaponry_attachment",
+    "description" : "A template for magazine attachment",
+    "shortdescription" : "Magazine Template",
+    "itemTags" : ["munition"],
+    "inventoryIcon" : "/projectiles/guns/arrows/woodenbolt/icon.png",
+    
+    "attachment" : {
+        "type" : "magazine",
+        "allowedMunitionType" : [
+            "universal"
+        ],
+        "munitionCapacityAdd" : 20
+    }
+    
+}

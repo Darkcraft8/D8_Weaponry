@@ -10,6 +10,7 @@
     "itemTags" : ["munition"],
     "inventoryIcon" : "/projectiles/guns/bullets/standardbullet/icon.png",
 
+    "munitionType" : "universal",
     "projectileType" : "d8_ballistic_standardbullet",
     "projectileCount" : 1,
     "projectileParameter" : {

@@ -20,6 +20,14 @@
         }
     },
 
+    "uninitEvent" : [
+        {
+            "event" : "function",
+            "callback" : "status.clearPersistentEffects",
+            "args" : [ "JPBAIBlock" ]
+        }
+    ],
+
     "stances" : {
         "init" : {
             "duration" : 0.25,
@@ -44,7 +52,7 @@
             "armRotation" : -25,
             "allowRotate" : false,
             "resetAim" : true,
-            "twoHanded" : true,
+            "twoHanded" : false,
             "frontArmFrame" : "rotation",
             "backArmFrame" : "rotation",
             "transformations" : {
@@ -66,7 +74,7 @@
             "allowFlip" : true,
             "armRotation" : 0,
             "allowRotate" : true,
-            "twoHanded" : true,
+            "twoHanded" : false,
             "frontArmFrame" : "rotation",
             "backArmFrame" : "rotation",
             "transformations" : {
@@ -94,7 +102,7 @@
             "allowFlip" : true,
             "armRotation" : 0,
             "allowRotate" : true,
-            "twoHanded" : true,
+            "twoHanded" : false,
             "backArmFrame" : "rotation",
 
             "burstParticleEmitters" : ["bulletShell"],
@@ -117,7 +125,7 @@
             "armRotation" : 6,
             "armAngularVelocity" : 0,
             "allowRotate" : true,
-            "twoHanded" : true,
+            "twoHanded" : false,
             
             "transformations" : {
                 "weapon" : {
@@ -287,10 +295,50 @@
     "behaviors" : {
         "init" : {
             "stance" : "init",
-            "possibleOutcome" : [ { "require" : { "stance" : "idle" }, "behavior" : "idle" } ],
+            "possibleOutcome" : [
+                { "require" : { "stance" : "idle" }, "behavior" : "idle" },
+                {
+                    "require" : {
+                        "inSwapSlot" : true
+                    },
+                    "behavior" : "inSwapSlot"
+                }
+
+            ],
             "eventOnInit" : ["init"]
         },
         
+        "inSwapSlot" : {
+            "possibleOutcome" : {
+                "require" : {
+                    "fireMode" : "primary",
+                    "function" : {
+						"callback" : "config.getParameter",
+						"args" : ["openAttachPaneInSwapSlot"]
+					}
+                },
+                "behavior" : "openPane"
+            },
+            "eventOnInit" : [
+                {
+                    "event" : "function",
+                    "callback" : "activeItem.setHoldingItem",
+                    "args" : [
+                        true
+                    ]
+                }
+            ]
+        },
+
+        "openPane" : {
+            "possibleOutcome" : [
+                { "require" : {}, "behavior" : "inSwapSlot" }
+            ],
+            "eventOnInit" : [
+                "openPane1"
+            ]
+        },
+
         "idle" : {
             "stance" : "idle",
             "possibleOutcome" : [
@@ -302,7 +350,11 @@
                         },
                         "function" : [
                             "d8WeapItem.hasSpaceInMagazine",
-                            "d8WeapItem.canConsumeMag"
+                            "d8WeapItem.canConsumeMag",
+                            {
+								"callback" : "statusEx.statNegative",
+								"args" : ["JPBAIBlock"]
+							}
                         ]
                     },
                     "behavior" : "reload"
@@ -311,7 +363,12 @@
                     "require" : {
                         "fireMode" : "<abilitySlot>",
                         "function" : [
-                            "d8WeapItem.curMagEmpty"
+                            "d8WeapItem.curMagEmpty",
+                            "d8WeapItem.canConsumeMag",
+                            {
+								"callback" : "statusEx.statNegative",
+								"args" : ["JPBAIBlock"]
+							}
                         ]
                     },
                     "behavior" : "reload"
@@ -338,7 +395,11 @@
                     "require" : {
                         "fireMode" : "<abilitySlot>",
                         "function" : [
-                            "d8WeapItem.nextMunition"
+                            "d8WeapItem.nextMunition",
+                            {
+								"callback" : "statusEx.statNegative",
+								"args" : ["JPBAIBlock"]
+							}
                         ],
                         "lowerParam" : {
                             "munitionInChamber" : true
@@ -350,7 +411,12 @@
                     "require" : {
                         "fireMode" : "<abilitySlot>",
                         "function" : [
-                            "d8WeapItem.curMagEmpty"
+                            "d8WeapItem.curMagEmpty",
+                            "d8WeapItem.canConsumeMag",
+                            {
+								"callback" : "statusEx.statNegative",
+								"args" : ["JPBAIBlock"]
+							}
                         ]
                     },
                     "behavior" : "reload"
@@ -359,7 +425,11 @@
                     "require" : {
                         "fireMode" : "<abilitySlot>",
                         "function" : [
-                            "d8WeapItem.nextMunition"
+                            "d8WeapItem.nextMunition",
+                            {
+								"callback" : "statusEx.statNegative",
+								"args" : ["JPBAIBlock"]
+							}
                         ],
                         "hasLineOfSight" : {
                             "spawnPos" : "fireOffset",
@@ -387,7 +457,11 @@
         "fire" : {
             "stance" : "fire",
             "possibleOutcome" : [
-                { "require" : { "stance" : "aim", "function" : [ "d8WeapItem.curMagEmpty" ] }, "behavior" : "empty" },
+                { "require" : { "stance" : "aim", "function" : [ "d8WeapItem.curMagEmpty",
+                            {
+								"callback" : "statusEx.statNegative",
+								"args" : ["JPBAIBlock"]
+							} ] }, "behavior" : "empty" },
                 { "require" : { "stance" : "aim" }, "behavior" : "aim" }
             ],
             "periodicEvent" : [],
@@ -431,7 +505,14 @@
                 { "require" : { "stance" : "idle" }, "behavior" : "idle" }
             ],
             "eventOnInit" : [
-                "pitchReload"
+                "pitchReload",
+                {
+                    "event" : "function",
+                    "callback" : "status.setPersistentEffects",
+                    "args" : [
+                        "JPBAIBlock", [{"stat" : "JPBAIBlock", "amount" : 1}]
+                    ]
+                }
             ],
             "eventOnUninit" : [
                 {
@@ -441,6 +522,11 @@
                 {
                     "event" : "function",
                     "callback" : "d8WeapItem.refillCurMag"
+                },
+                {
+                    "event" : "function",
+                    "callback" : "status.clearPersistentEffects",
+                    "args" : [ "JPBAIBlock" ]
                 }
             ]
         },
@@ -468,12 +554,36 @@
                     "args" : [
                         "slide"
                     ]
+                },
+                {
+                    "event" : "function",
+                    "callback" : "status.setPersistentEffects",
+                    "args" : [
+                        "JPBAIBlock", [{"stat" : "JPBAIBlock", "amount" : 1}]
+                    ]
+                }
+            ],
+            "eventOnUninit" : [
+                {
+                    "event" : "function",
+                    "callback" : "status.clearPersistentEffects",
+                    "args" : [ "JPBAIBlock" ]
                 }
             ]
         }
     },
 
     "behaviorEvents" : {
+        "openPane1" : [
+            {
+                "event" : "function",
+                "callback" : "player.interact",
+                "args" : [
+                    "scriptPane", 
+                    "/D8Weaponry/interfaces/JPBAI_attach/gun/pane.config"
+                ]
+            }
+        ],
         "pitchReload" : [
             {
                 "event" : "function",

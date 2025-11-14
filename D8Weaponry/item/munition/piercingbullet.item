@@ -10,6 +10,7 @@
     "itemTags" : ["munition"],
     "inventoryIcon" : "/projectiles/guns/bullets/piercingbullet/icon.png",
 
+    "munitionType" : "rifle",
     "projectileType" : "piercingbullet",
     "projectileCount" : 1,
     "projectileParameter" : {}

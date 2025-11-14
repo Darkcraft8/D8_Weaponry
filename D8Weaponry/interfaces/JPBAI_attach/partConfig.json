@@ -1,0 +1,32 @@
+{
+    "grip" : {
+        "allowed" : true,
+        "func" : "muzzleAttachOptions",
+        "name" : "Grip",
+        "icon" : "/D8Weaponry/interfaces/JPBAI_attach/gun/icon/muzzleAttach.png"
+    },
+    "receiver" : {
+        "func" : "muzzleAttachOptions",
+        "name" : "Receiver",
+        "icon" : "/D8Weaponry/interfaces/JPBAI_attach/gun/icon/muzzleAttach.png"
+    },
+
+    "muzzle" : {
+        "kind" : "muzzle",
+        "func" : "muzzleAttachOptions",
+        "name" : "Muzzle Attachment",
+        "icon" : "/D8Weaponry/interfaces/JPBAI_attach/gun/icon/muzzleAttach.png"
+    },
+    "magazine" : {
+        "kind" : "magazine",
+        "func" : "magazineOptions",
+        "name" : "Magazine",
+        "icon" : "/D8Weaponry/interfaces/JPBAI_attach/gun/icon/magazine.png"
+    },
+    "munition" : {
+        "kind" : "magazine",
+        "func" : "magazineOptions",
+        "name" : "Munition Arrangement : <munitionAmount>/<magazineCapacity>",
+        "icon" : "/D8Weaponry/interfaces/JPBAI_attach/gun/icon/magazine.png"
+    }
+}

@@ -346,6 +346,7 @@
 
         "postFire" : true,
         "emptyToReloadAddAmmo" : true,
+        "reloadwithattack" : true,
         "ammoType" : "d8Weaponry_shotgunshell",
         "ammoName" : "Shotgun Shell",
         "ammoMaxName" : "cylinderCapacity",
