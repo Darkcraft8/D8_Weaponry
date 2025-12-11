@@ -1,5 +1,6 @@
 {
     "TLDR" : [
-        "Basicaly New Deploy Type That depending on the server capability"
+        "Basicaly New Deploy Type That depending on the server capability",
+        "Would use a new deployment object"
     ]
 }

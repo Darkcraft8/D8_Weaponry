@@ -1,5 +1,5 @@
 {
-    "scripts" : ["/jpbai/module/specialised/weapon.lua", "/D8Weaponry/activeitem/JPBAI/module/specialised/d8Weap/ranged.lua"],
+    "scripts" : ["/jpbai/module/specialised/weapon.lua", "/D8Weaponry/activeitem/JPBAI/module/specialised/d8Weap/ranged.lua", "/jpbai/module/utils/hitscan.lua"],
     "animationCustom" : {
         "sounds" : {
             "emptyChamber" : [],

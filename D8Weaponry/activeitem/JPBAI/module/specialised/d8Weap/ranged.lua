@@ -14,7 +14,7 @@ function d8WeapItem.init()
     table.insert(updateFunc, "d8WeapItem.update")
     --d8WeapItem.addMunition({item = "d8Weaponry_standardbullet"})
     if player then
-        local property = player.getProperty("d8Weap")
+        local property = player.getProperty("d8Weap") or {}
         property[activeItem.hand()] = true
         player.setProperty("d8Weap", property)
 
@@ -25,7 +25,7 @@ end
 function d8WeapItem.uninit()
     if d8WeapItem.curMagazine then activeItem.setInstanceValue("curMagazine", d8WeapItem.curMagazine) end
     if player then
-        local property = player.getProperty("d8Weap")
+        local property = player.getProperty("d8Weap") or {}
         property[activeItem.hand()] = false
         player.setProperty("d8Weap", property)
 

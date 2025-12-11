@@ -15,13 +15,13 @@ function uninit()
 end
 
 --A few usefull function
-function callFunction(path, args1, args2, args3, args4, args5) --Call the function after checking for any dot as to not get the jankiness of table.func
+function callFunction(path, ...) --Call the function after checking for any dot as to not get the jankiness of table.func
     local func, error = getFunction(path)
     if not error then
         if string.find(path, "[.:]") then
-            func(nil, args1, args2, args3, args4, args5) --puting nil as first args because function in table LOVE to eat them up
+            func(nil, ...) --puting nil as first args because function in table LOVE to eat them up
         else
-            func(args1, args2, args3, args4, args5)
+            func(...)
         end
     end
 end

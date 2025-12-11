@@ -6,7 +6,7 @@
   "description" : "A makeshift electrolizer, serve to electrolise water to obtain ^gray;Hydrogen^reset; and ^blue;Oxygen^reset;.",
   "category" : "crafting",
   "objectType" : "container",
-  "price" : 15,
+  "price" : 30,
   "printable" : false,
   "retainObjectParametersInItem" : true,
   "tooltipKind" : "d8MachineryShared_ResourceContainer",
