@@ -84,9 +84,17 @@
       "op": "add",
       "path": "/defaultBlueprints/tier1/-",
       "value": {
+        "item": "d8Weaponry_JPBAI_makarov"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
         "item": "d8Weaponry_makarov"
       }
     },
+
     {
       "op": "add",
       "path": "/defaultBlueprints/tier1/-",
@@ -101,6 +109,7 @@
         "item": "d8Weaponry_doublebarrelshotgun"
       }
     },
+
     {
       "op": "add",
       "path": "/defaultBlueprints/tier1/-",
@@ -112,7 +121,38 @@
       "op": "add",
       "path": "/defaultBlueprints/tier1/-",
       "value": {
+        "item": "d8Weaponry_JPBAI_glock"
+      }
+    },
+    
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
         "item": "d8Weaponry_chauchat"
+      }
+    },
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item": "d8Weaponry_JPBAI_chauchat"
+      }
+    },
+    
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item" : "d8Weaponry_medievalWeaponPack1_crossbow"
+      }
+    },
+    
+    {
+      "op": "add",
+      "path": "/defaultBlueprints/tier1/-",
+      "value": {
+        "item" : "d8Weaponry_woodenbolt"
       }
     },
 
@@ -134,7 +174,6 @@
         "item" : "d8Weaponry_guide-codex"
       }
     }
-    
   ],
 
   [

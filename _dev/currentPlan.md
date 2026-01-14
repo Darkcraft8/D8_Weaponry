@@ -20,4 +20,4 @@
 
 ### mod compact
 - d8:encyclopedia
- - update to use the rewrite and be more complete
+ - update to use the rewrite and be complete/feature full

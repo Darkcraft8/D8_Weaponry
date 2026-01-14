@@ -1,6 +1,6 @@
-# 1.2.0
+# V1.1.7.2
 ## Addition :
-- Gunsmithing
+- Legacy Crossbow (T1) are craftable now
 
 ## Change :
 
@@ -9,7 +9,7 @@
 ## Nerf : 
 
 ## Fix : 
-  Fixed bug causing the renderer call to not be sent when loading a character that hold a weapon
+  Added missing nil check to the behavior functions and the configuration pane
   
 ## Work in progress :
 - Medieval Weapon Pack 1
