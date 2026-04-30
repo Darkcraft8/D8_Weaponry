@@ -210,7 +210,7 @@
                 "armRotation" : 0,
                 "weaponOffset" : [-0.5, 0],
                 "animationStates" : {},
-                "frontArmFrame" : "run.2?crop=3;3;43;43",
+                "frontArmFrame" : "run.2",
                 "allowRotate" : true,
                 "twoHanded" : true,
                 "weaponRotationCenter" : [0, 0]
@@ -222,7 +222,7 @@
                 "armRotation" : 0,
                 "weaponOffset" : [-0.5, 0],
                 "burstParticleEmitters" : ["bulletShell"],
-                "frontArmFrame" : "run.2?crop=3;3;43;43",
+                "frontArmFrame" : "run.2",
                 "animationStates" : {
                     "animation" : "fire"
                 },
@@ -236,7 +236,7 @@
                 "allowFlip" : false,
                 "armRotation" : 0,
                 "weaponOffset" : [-0.5, 0],
-                "frontArmFrame" : "run.2?crop=3;3;43;43",
+                "frontArmFrame" : "run.2",
                 "allowRotate" : false,
                 "twoHanded" : true,
                 "weaponRotationCenter" : [0, 0]
@@ -266,7 +266,7 @@
                 "animationStates" : {
                     "animation" : "reload2"
                 },
-                "frontArmFrame" : "swim.4?crop;0;2;43;43",
+                "frontArmFrame" : "swim.4",
                 "allowRotate" : false,
                 "twoHanded" : true,
                 "playSounds" : []
@@ -282,7 +282,7 @@
                 "animationStates" : {
                     "animation" : "idle"
                 },
-                "frontArmFrame" : "swim.5?crop;0;2;43;43",
+                "frontArmFrame" : "swim.5",
                 "allowRotate" : false,
                 "twoHanded" : true,
                 "playSounds" : ["reload4"]
@@ -295,7 +295,7 @@
         "ammoName" : "Wooden bolt",
         "ammoMaxName" : "primAmmoCap",
         "ammoCountName" : "primAmmo",
-        "reloadType" : "full",
+        "reloadType" : "single",
         "ammoAnimationPart" : "ammo",
         "ammoCost" : 1
     },

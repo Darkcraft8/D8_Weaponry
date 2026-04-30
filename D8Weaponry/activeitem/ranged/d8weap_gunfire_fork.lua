@@ -241,7 +241,7 @@ end
 function GunFire:burst()
   self.weapon:setStance(self.stances.fire)
 
-  local shots = self.burstCount
+  local shots = math.min(self.burstCount, config.getParameter(self.ammoCountName))
   while shots > 0 and status.overConsumeResource("energy", self:energyPerShot()) do
     self:fireProjectile()
     self:muzzleFlash()

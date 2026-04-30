@@ -41,6 +41,19 @@ function d8WeapItem.update(dt, fireMode, isShiftHeld, currentMove)
         else
             d8SharedRendererUtil.updateDrawable(d8Weap_buildDrawable_Magazine(d8WeapItem.curMagazine, d8WeapItem.magazine, "d8WeapItem"), "d8WeapItem" .. config.getParameter("shortdescription", "") .. activeItem.hand())
         end
+        
+        if activeItem.setSecondaryIcon then
+            if d8WeapItem.curMagazine[1] then
+                local configParam = function(json, parameter, default)
+                    if json["parameters"][parameter] then return json["parameters"][parameter] end
+                    if json["config"][parameter] then return json["config"][parameter] end
+                    return default
+                end
+                activeItem.setSecondaryIcon(configParam(root.itemConfig(d8WeapItem.curMagazine[1]["name"]), "inventoryIcon" ))
+            else
+                activeItem.setSecondaryIcon("/interface/x.png")
+            end
+        end
     end
 end
 

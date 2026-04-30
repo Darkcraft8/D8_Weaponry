@@ -5,7 +5,7 @@
     "maxStack" : 5000,
     "rarity" : "Common",
     "category" : "d8Weaponry_munition",
-    "description" : "a standard bullet",
+    "description" : "A standard bullet",
     "shortdescription" : "Standard bullet",
     "itemTags" : ["munition"],
     "inventoryIcon" : "/projectiles/guns/bullets/standardbullet/icon.png",

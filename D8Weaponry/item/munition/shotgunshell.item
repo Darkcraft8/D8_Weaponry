@@ -5,7 +5,7 @@
     "maxStack" : 5000,
     "rarity" : "Common",
     "category" : "d8Weaponry_munition",
-    "description" : "a standard shotgun shell",
+    "description" : "A standard shotgun shell",
     "shortdescription" : "Shotgun Shell",
     "itemTags" : ["munition"],
     "inventoryIcon" : "/D8Weaponry/item/munition/shotgunshell.png",
