@@ -13,5 +13,7 @@
     "munitionType" : "rifle",
     "projectileType" : "piercingbullet",
     "projectileCount" : 1,
-    "projectileParameter" : {}
+    "projectileParameter" : {
+        "speed" : 600
+    }
 }

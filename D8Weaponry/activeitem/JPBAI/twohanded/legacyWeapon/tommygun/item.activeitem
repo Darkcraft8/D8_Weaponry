@@ -278,7 +278,6 @@
             "allowRotate" : false,
             "twoHanded" : true,
 
-            "lerpTo" : true,
             "transition" : "aimLocked"
         },
 		"aimLocked" : {
@@ -287,6 +286,7 @@
             "allowFlip" : false,
             "allowRotate" : false,
 
+            "lerpTo" : true,
             "transition" : "aim"
 		},
         "reload1" : {
@@ -464,7 +464,7 @@
       },
       "override" : {
         "inaccuracy" : 0.015,
-        "fireOffset" : [2.3, 0.075]
+        "fireOffset" : [2.75, 0.325]
       }
     }
 }

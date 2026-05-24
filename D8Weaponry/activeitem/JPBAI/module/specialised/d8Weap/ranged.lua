@@ -97,16 +97,10 @@ function d8WeapItem.shotMunition(spawnPos, spawnOffset, scalingFunction, damage,
     --sb.logInfo("projectileConfig(%s) %s", args.type, root.projectileConfig(args.type))
     local useHitscan = (args.parameter.speed or root.projectileConfig(args.type).speed or 0) >= 250--disabledbecausehitscanfuncisnotfinished--
     if useHitscan then
-        --[[ simulated
-        if args.scalingFunction or Weapon then -- Scale based on weapon stat or scaling function
-            local callback = call({callback = args.scalingFunction or "Weapon.basicDamage", args = args})
-            args.parameter.power = args.parameter.power or callback
-            args.parameter.powerMultiplier = args.parameter.powerMultiplier or activeItem.ownerPowerMultiplier()
-        end
-
-        Weapon.hitscan(args.type, args.parameter, range, spawnPosition(args), args.inaccuracy)
+        --[[ simulated ]]
+        Weapon.hitscan(args.type, args.parameter, range, spawnPosition(args), args.inaccuracy, nil, args.scalingFunction or "Weapon.basicDamage", args.damageSourceKind or "default", args.hitboxName or "hitscan-bullet")
         --]]
-        --[[ speed-up projectile]]
+        --[[ speed-up projectile
         local speed = 700
         local projectileConfig = root.projectileConfig(args.type)
         local configParam = function(paramName, defaultValue)

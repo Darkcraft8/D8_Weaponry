@@ -457,11 +457,19 @@
         "fire" : {
             "stance" : "fire",
             "possibleOutcome" : [
-                { "require" : { "stance" : "aim", "function" : [ "d8WeapItem.curMagEmpty",
+                { 
+                    "require" : { 
+                        "stance" : "aim", 
+                        "function" : [ 
+                            "d8WeapItem.curMagEmpty",
                             {
-								"callback" : "statusEx.statNegative",
-								"args" : ["JPBAIBlock"]
-							} ] }, "behavior" : "empty" },
+                                "callback" : "statusEx.statNegative",
+                                "args" : ["JPBAIBlock"]
+                            }
+                        ]
+                    },
+                    "behavior" : "empty" 
+                },
                 { "require" : { "stance" : "aim" }, "behavior" : "aim" }
             ],
             "periodicEvent" : [],
