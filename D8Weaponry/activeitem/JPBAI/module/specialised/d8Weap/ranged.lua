@@ -97,24 +97,7 @@ function d8WeapItem.shotMunition(spawnPos, spawnOffset, scalingFunction, damage,
     --sb.logInfo("projectileConfig(%s) %s", args.type, root.projectileConfig(args.type))
     local useHitscan = (args.parameter.speed or root.projectileConfig(args.type).speed or 0) >= 250--disabledbecausehitscanfuncisnotfinished--
     if useHitscan then
-        --[[ simulated ]]
-        Weapon.hitscan(args.type, args.parameter, range, spawnPosition(args), args.inaccuracy, nil, args.scalingFunction or "Weapon.basicDamage", args.damageSourceKind or "default", args.hitboxName or "hitscan-bullet")
-        --]]
-        --[[ speed-up projectile
-        local speed = 700
-        local projectileConfig = root.projectileConfig(args.type)
-        local configParam = function(paramName, defaultValue)
-            return args.parameter[paramName] or projectileConfig[paramName] or defaultValue
-        end
-        args.parameter.movementSettings = configParam("movementSettings", {})
-        args.parameter.movementSettings.maximumCorrection = 10
-        args.parameter.movementSettings.speedLimit = speed
-        args.parameter.speed = speed
-        args.parameter.periodicAction = configParam("periodicActions", {})
-        
-        --args.type = "d8weap_physicalHitscan"
-        behavior_projectile(args)
-        --]]
+        Weapon.hitscan(args.type, args.parameter, range, spawnPosition(args), args.inaccuracy, nil, args.scalingFunction or "Weapon.basicDamage", args.damageSourceKind or "default", args.extra, args.maxSegmentRange)
     else
         behavior_projectile(args)
     end
